@@ -634,7 +634,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-sm font-semibold text-foreground">RertChat-AI</h1>
-              <p className="text-xs text-muted-foreground">{settings.aiModel}</p>
+              <p className="text-xs text-muted-foreground">{settings.aiModel.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

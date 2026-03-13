@@ -252,7 +252,7 @@ export default function ConversationsPage() {
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium text-foreground truncate">
-                        {conv.title}
+                        {conv.title.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
                       </h3>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-muted-foreground flex items-center gap-1">
@@ -285,7 +285,7 @@ export default function ConversationsPage() {
                     </div>
                     <div className="text-xs text-muted-foreground line-clamp-2">
                       {conv.messages.length > 0 
-                        ? conv.messages[conv.messages.length - 1].content.slice(0, 100) + 
+                        ? conv.messages[conv.messages.length - 1].content.replace(/</g, "&lt;").replace(/>/g, "&gt;").slice(0, 100) + 
                           (conv.messages[conv.messages.length - 1].content.length > 100 ? "..." : "")
                         : "无消息"
                       }
