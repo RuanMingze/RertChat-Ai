@@ -1,0 +1,244 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { getSettings, saveSettings, type Settings } from "@/lib/chat-db"
+import { cn } from "@/lib/utils"
+
+export default function SettingsPage() {
+  const [settings, setSettings] = useState<Settings>({
+    id: 'default',
+    streamingEnabled: true,
+    aiModel: 'deepseek/deepseek-v3.2',
+    theme: 'dark',
+    autoRedirectToRecent: true
+  })
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    loadSettings()
+  }, [])
+
+  const loadSettings = async () => {
+    try {
+      const loadedSettings = await getSettings()
+      setSettings(loadedSettings)
+      // 同步应用主题到 DOM
+      const root = window.document.documentElement
+      root.classList.remove("light", "dark")
+      root.classList.add(loadedSettings.theme)
+    } catch (error) {
+      console.error('Failed to load settings:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+    setSettings(prev => ({ ...prev, theme: newTheme }))
+    // 直接操作 DOM 切换主题
+    const root = window.document.documentElement
+    root.classList.remove("light", "dark")
+    root.classList.add(newTheme)
+  }
+
+  const handleSave = async () => {
+    try {
+      setIsSaving(true)
+      await saveSettings(settings)
+      // 保存成功后返回主页
+      router.push('/')
+    } catch (error) {
+      console.error('Failed to save settings:', error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-dvh items-center justify-center">
+        <div className="text-center">加载设置中...</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex h-dvh bg-background">
+      <main className="flex flex-1 flex-col p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-2xl font-semibold">设置</h1>
+        </div>
+
+        <div className="max-w-2xl mx-auto w-full space-y-6">
+          {/* AI 助手设置 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>AI 助手设置</CardTitle>
+              <CardDescription>配置 AI 助手的行为和模型</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* 流式输出 */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="streaming" className="text-base">流式输出</Label>
+                  <Switch
+                    id="streaming"
+                    checked={settings.streamingEnabled}
+                    onCheckedChange={(checked) => setSettings(prev => ({
+                      ...prev,
+                      streamingEnabled: checked
+                    }))}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  开启后，AI 会逐字输出回答，提供更流畅的体验
+                </p>
+              </div>
+
+              {/* AI 模型 */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="ai-model" className="text-base">AI 模型</Label>
+                  <a
+                    href="https://openrouter.ai/models"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline flex items-center gap-1"
+                  >
+                    查找模型
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+                <Input
+                  id="ai-model"
+                  value={settings.aiModel}
+                  onChange={(e) => setSettings(prev => ({
+                    ...prev,
+                    aiModel: e.target.value
+                  }))}
+                  placeholder="输入 AI 模型名称，例如 deepseek/deepseek-v3.2"
+                />
+                <p className="text-sm text-muted-foreground">
+                  默认使用 deepseek/deepseek-v3.2
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 外观设置 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>外观设置</CardTitle>
+              <CardDescription>自定义界面主题</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div
+                onClick={() => handleThemeChange('light')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
+                    settings.theme === 'light'
+                      ? "border-primary bg-primary/10"
+                      : "border-border"
+                  )}>
+                    <Sun className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-base font-medium">浅色模式</div>
+                    <p className="text-sm text-muted-foreground">明亮的界面主题</p>
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "h-4 w-4 rounded-full border-2",
+                    settings.theme === 'light'
+                      ? "border-primary bg-primary"
+                      : "border-muted-foreground"
+                  )}
+                />
+              </div>
+
+              <div
+                onClick={() => handleThemeChange('dark')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
+                    settings.theme === 'dark'
+                      ? "border-primary bg-primary/10"
+                      : "border-border"
+                  )}>
+                    <Moon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-base font-medium">深色模式</div>
+                    <p className="text-sm text-muted-foreground">暗色的界面主题</p>
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "h-4 w-4 rounded-full border-2",
+                    settings.theme === 'dark'
+                      ? "border-primary bg-primary"
+                      : "border-muted-foreground"
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 行为设置 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>行为设置</CardTitle>
+              <CardDescription>配置应用的行为</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <MessageCircle className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="auto-redirect" className="text-base">自动跳转到最近对话</Label>
+                      <p className="text-sm text-muted-foreground">打开页面时自动跳转到最近的一轮对话</p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="auto-redirect"
+                    checked={settings.autoRedirectToRecent}
+                    onCheckedChange={(checked) => setSettings(prev => ({
+                      ...prev,
+                      autoRedirectToRecent: checked
+                    }))}
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button onClick={handleSave} disabled={isSaving} size="lg">
+                {isSaving ? '保存中...' : '保存'}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </main>
+    </div>
+  )
+}
