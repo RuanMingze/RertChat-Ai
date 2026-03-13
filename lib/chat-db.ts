@@ -139,7 +139,7 @@ export async function getSettings(): Promise<Settings> {
             streamingEnabled: true,
             aiModel: 'deepseek/deepseek-v3.2',
             theme: 'dark',
-            autoRedirectToRecent: true
+            autoRedirectToRecent: false
           }
           resolve(defaultSettings)
         }
@@ -151,7 +151,7 @@ export async function getSettings(): Promise<Settings> {
               streamingEnabled: true,
               aiModel: 'deepseek/deepseek-v3.2',
               theme: 'dark',
-              autoRedirectToRecent: true
+              autoRedirectToRecent: false
             }
             resolve({ ...defaultSettings, ...request.result } as Settings)
           } else {
@@ -161,7 +161,7 @@ export async function getSettings(): Promise<Settings> {
               streamingEnabled: true,
               aiModel: 'deepseek/deepseek-v3.2',
               theme: 'dark',
-              autoRedirectToRecent: true
+              autoRedirectToRecent: false
             }
             const saveRequest = store.put(defaultSettings)
             saveRequest.onerror = () => {
@@ -178,7 +178,7 @@ export async function getSettings(): Promise<Settings> {
           streamingEnabled: true,
           aiModel: 'deepseek/deepseek-v3.2',
           theme: 'dark',
-          autoRedirectToRecent: true
+          autoRedirectToRecent: false
         }
         resolve(defaultSettings)
       }
@@ -190,7 +190,7 @@ export async function getSettings(): Promise<Settings> {
       streamingEnabled: true,
       aiModel: 'deepseek/deepseek-v3.2',
       theme: 'dark',
-      autoRedirectToRecent: true
+      autoRedirectToRecent: false
     }
   }
 }

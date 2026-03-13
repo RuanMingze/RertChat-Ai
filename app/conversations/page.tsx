@@ -246,9 +246,9 @@ export default function ConversationsPage() {
                   key={conv.id}
                   className="group relative rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-sm"
                 >
-                  <button
+                  <div
                     onClick={() => handleSelectConversation(conv.id)}
-                    className="flex flex-col gap-2"
+                    className="flex flex-col gap-2 cursor-pointer"
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium text-foreground truncate">
@@ -290,7 +290,7 @@ export default function ConversationsPage() {
                         : "无消息"
                       }
                     </div>
-                  </button>
+                  </div>
                 </div>
               ))}
             </div>

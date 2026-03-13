@@ -1,7 +1,8 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import { getSettings, type Settings } from "@/lib/chat-db"
+import { useTheme as useNextTheme } from "next-themes"
+import { getSettings, saveSettings, type Settings } from "@/lib/chat-db"
 
 type Theme = "light" | "dark"
 
@@ -13,44 +14,45 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark")
+  const { theme: nextTheme, setTheme: setNextTheme, resolvedTheme } = useNextTheme({
+    defaultTheme: "dark",
+    enableSystem: false,
+  })
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     // 从设置中加载主题
     getSettings()
       .then((settings: Settings) => {
-        setThemeState(settings.theme)
+        if (settings.theme !== nextTheme) {
+          setNextTheme(settings.theme)
+        }
       })
       .catch(() => {
         // 如果加载失败，使用默认主题
-        setThemeState("dark")
+        setNextTheme("dark")
       })
       .finally(() => {
         setMounted(true)
       })
-  }, [])
+  }, [nextTheme, setNextTheme])
 
-  useEffect(() => {
-    if (mounted) {
-      // 更新 html 标签的 class
-      const root = window.document.documentElement
-      root.classList.remove("light", "dark")
-      root.classList.add(theme)
+  const setTheme = async (newTheme: Theme) => {
+    setNextTheme(newTheme)
+    // 保存主题设置到 IndexedDB
+    try {
+      const settings = await getSettings()
+      await saveSettings({ ...settings, theme: newTheme })
+    } catch (error) {
+      console.error("Failed to save theme:", error)
     }
-  }, [theme, mounted])
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme)
   }
 
-  // 防止闪烁，在加载完成前不渲染
-  if (!mounted) {
-    return <>{children}</>
-  }
+  // 使用 resolvedTheme 作为实际主题
+  const currentTheme = (resolvedTheme || nextTheme) as Theme
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: currentTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )

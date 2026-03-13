@@ -66,7 +66,10 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="flex h-dvh items-center justify-center">
-        <div className="text-center">加载设置中...</div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary" />
+          <p className="text-sm text-muted-foreground">加载设置中...</p>
+        </div>
       </div>
     )
   }

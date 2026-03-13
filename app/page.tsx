@@ -32,18 +32,157 @@ import {
   Code,
   Copy,
   Check,
+  Brain,
   Settings as SettingsIcon,
 } from "lucide-react"
 
 // Markdown 渲染组件
 const MarkdownContent = memo(function MarkdownContent({ content }: { content: string }) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState(false)
 
   const handleCopy = useCallback((code: string) => {
     navigator.clipboard.writeText(code)
     setCopiedCode(code)
     setTimeout(() => setCopiedCode(null), 2000)
   }, [])
+
+  // 处理深度思考格式
+  const processContent = useCallback((text: string) => {
+    // 匹配新的深度思考格式
+    const deepThinkingRegex = /^思考中：\s*([\s\S]*?)思考结束\n\s*回答内容：\s*([\s\S]*)$/
+    const match = deepThinkingRegex.exec(text)
+    
+    if (match) {
+      const [, thinkingContent, answerContent] = match
+      return {
+        hasDeepThinking: true,
+        thinkingContent,
+        answerContent
+      }
+    }
+    
+    return {
+      hasDeepThinking: false,
+      content: text
+    }
+  }, [])
+
+  const processed = processContent(content)
+
+  if (processed.hasDeepThinking) {
+    return (
+      <div>
+        <div className="mb-4">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="w-full flex justify-between items-center p-2 text-left hover:bg-muted/50 transition-colors"
+          >
+            <span className="text-muted-foreground font-medium">已完成思考</span>
+            <span className={`transition-transform ${expanded ? 'rotate-180' : ''} text-muted-foreground`}>
+              ▼
+            </span>
+          </button>
+          {expanded && (
+            <div className="mt-2 pl-4 border-l-2 border-border text-muted-foreground text-sm">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  p: ({ children }) => <p className="mb-2 last:mb-0 text-sm">{children}</p>,
+                  ul: ({ children }) => <ul className="mb-2 ml-4 list-disc space-y-1 text-sm">{children}</ul>,
+                  li: ({ children }) => <li className="leading-relaxed text-sm">{children}</li>,
+                }}
+              >
+                {processed.thinkingContent}
+              </ReactMarkdown>
+              <div className="mt-2 text-xs">
+                <span>已完成</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="mt-4">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
+              h1: ({ children }) => <h1 className="mb-4 mt-6 text-xl font-bold first:mt-0">{children}</h1>,
+              h2: ({ children }) => <h2 className="mb-3 mt-5 text-lg font-semibold first:mt-0">{children}</h2>,
+              h3: ({ children }) => <h3 className="mb-2 mt-4 text-base font-semibold first:mt-0">{children}</h3>,
+              ul: ({ children }) => <ul className="mb-3 ml-4 list-disc space-y-1">{children}</ul>,
+              ol: ({ children }) => <ol className="mb-3 ml-4 list-decimal space-y-1">{children}</ol>,
+              li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+              blockquote: ({ children }) => (
+                <blockquote className="my-3 border-l-4 border-primary/50 pl-4 italic text-muted-foreground">
+                  {children}
+                </blockquote>
+              ),
+              hr: () => <hr className="my-4 border-border" />,
+              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+              em: ({ children }) => <em className="italic">{children}</em>,
+              a: ({ href, children }) => (
+                <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">
+                  {children}
+                </a>
+              ),
+              code: ({ className, children }) => {
+                const match = /language-(\w+)/.exec(className || "")
+                const isCodeBlock = match || (typeof children === "string" && children.includes("\n"))
+                
+                if (isCodeBlock) {
+                  const codeText = String(children).replace(/\n$/, "")
+                  return (
+                    <div className="group relative my-3 overflow-hidden rounded-lg border border-border bg-background">
+                      <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2">
+                        <span className="text-xs text-muted-foreground">{match?.[1] || "code"}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCopy(codeText)}
+                          className="h-7 gap-1.5 px-2 text-xs"
+                        >
+                          {copiedCode === codeText ? (
+                            <>
+                              <Check className="h-3.5 w-3.5" />
+                              已复制
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3.5 w-3.5" />
+                              复制
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      <pre className="overflow-x-auto p-4">
+                        <code className="font-mono text-sm">{codeText}</code>
+                      </pre>
+                    </div>
+                  )
+                }
+                
+                return (
+                  <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">
+                    {children}
+                  </code>
+                )
+              },
+              table: ({ children }) => (
+                <div className="my-3 overflow-x-auto rounded-lg border border-border">
+                  <table className="w-full">{children}</table>
+                </div>
+              ),
+              thead: ({ children }) => <thead className="bg-muted/50">{children}</thead>,
+              th: ({ children }) => <th className="border-b border-border px-4 py-2 text-left font-semibold">{children}</th>,
+              td: ({ children }) => <td className="border-b border-border px-4 py-2">{children}</td>,
+            }}
+          >
+            {processed.answerContent}
+          </ReactMarkdown>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <ReactMarkdown
@@ -121,7 +260,7 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
         td: ({ children }) => <td className="border-b border-border px-4 py-2">{children}</td>,
       }}
     >
-      {content}
+      {processed.content}
     </ReactMarkdown>
   )
 })
@@ -183,7 +322,9 @@ async function sendWithContextFallback(
   currentMessage: Message,
   signal: AbortSignal,
   model: string,
-  streaming: boolean
+  streaming: boolean,
+  programmingMode: boolean,
+  deepThinkingMode: boolean
 ): Promise<Response> {
   // 计算最大可用轮数
   const maxRounds = Math.floor(historyMessages.length / 2)
@@ -200,7 +341,29 @@ async function sendWithContextFallback(
   for (const contextRounds of contextLevels) {
     try {
       const messages = buildMessagesWithContext(historyMessages, currentMessage, contextRounds)
-      const response = await sendRequestWithRetry(messages, signal, model, streaming)
+      
+      // 构建系统提示词
+      let systemMessages = []
+      
+      // 添加编程模式系统提示
+      if (programmingMode) {
+        systemMessages.push({
+          role: "system",
+          content: "你现在是一位经验丰富、专业严谨、实战能力极强的资深编程工程师。你的职责是：1. 精准理解用户的编程需求，直接给出可运行、高质量、规范的代码。2. 代码结构清晰、注释合理、逻辑严谨，符合行业最佳实践。3. 优先提供完整解决方案，而不是只给思路或片段。4. 遇到问题时主动分析、排查、给出优化建议。5. 语言简洁专业，不废话，直接输出有效代码与解释。请以资深程序员的身份，帮我完成接下来所有编程任务。"
+        })
+      }
+      
+      // 添加深度思考模式系统提示
+      if (deepThinkingMode) {
+        systemMessages.push({
+          role: "system",
+          content: "你现在要深度思考我提出的问题，输出格式如下：\n思考中：\n1. 思考点1\n2. 思考点2\n3. 思考点3\n...\n思考结束\n 最终回答：你的回答内容"
+        })
+      }
+      
+      const finalMessages = systemMessages.length > 0 ? [...systemMessages, ...messages] : messages
+      
+      const response = await sendRequestWithRetry(finalMessages, signal, model, streaming)
       return response
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") {
@@ -229,6 +392,8 @@ export default function Home() {
     theme: 'dark',
     autoRedirectToRecent: true
   })
+  const [programmingMode, setProgrammingMode] = useState(false)
+  const [deepThinkingMode, setDeepThinkingMode] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -238,67 +403,44 @@ export default function Home() {
     const urlParams = new URLSearchParams(window.location.search)
     const conversationId = urlParams.get('conversationId')
     
-    // 加载设置
-    getSettings()
-      .then((loadedSettings) => {
+    // 并行加载设置和对话数据
+    Promise.all([
+      getSettings(),
+      getAllConversations()
+    ])
+      .then(([loadedSettings, convs]) => {
+        // 更新设置
         setSettings(loadedSettings)
-        // 如果启用了自动重定向到最近对话，且有对话 ID 存在
-        if (loadedSettings.autoRedirectToRecent && conversationId) {
-          getAllConversations()
-            .then((convs) => {
-              const targetConv = convs.find(c => c.id === conversationId)
-              if (targetConv) {
-                setCurrentConversationId(targetConv.id)
-                setMessages(targetConv.messages)
-              }
-            })
+        
+        // 更新对话列表
+        setConversations(convs)
+        
+        // 选择对话
+        let targetConv: Conversation | undefined
+        if (conversationId) {
+          targetConv = convs.find(c => c.id === conversationId)
+        } else if (loadedSettings.autoRedirectToRecent && convs.length > 0) {
+          // 只有在 autoRedirectToRecent 为 true 时才自动选择最近的对话
+          const sortedConvs = [...convs].sort((a, b) => b.updatedAt - a.updatedAt)
+          targetConv = sortedConvs[0]
         }
+        
+        // 更新当前对话
+        if (targetConv) {
+          setCurrentConversationId(targetConv.id)
+          setMessages(targetConv.messages)
+        }
+        
+        // 添加设置日志
+        console.log('Settings loaded:', loadedSettings)
+        console.log('Auto redirect to recent:', loadedSettings.autoRedirectToRecent)
+        
+        setDbReady(true)
       })
       .catch((err) => {
-        console.error("Failed to load settings:", err)
+        console.error("Failed to load data:", err)
+        setDbReady(true)
       })
-    
-    if (conversationId) {
-      getAllConversations()
-        .then((convs) => {
-          setConversations(convs)
-          const targetConv = convs.find(c => c.id === conversationId)
-          if (targetConv) {
-            setCurrentConversationId(targetConv.id)
-            setMessages(targetConv.messages)
-          } else if (convs.length > 0) {
-            // 如果指定的对话不存在，选择最近的对话
-            const sortedConvs = [...convs].sort((a, b) => b.updatedAt - a.updatedAt)
-            const mostRecentConv = sortedConvs[0]
-            setCurrentConversationId(mostRecentConv.id)
-            setMessages(mostRecentConv.messages)
-          }
-          setDbReady(true)
-        })
-        .catch((err) => {
-          console.error("Failed to load conversations:", err)
-          setDbReady(true)
-        })
-    } else {
-      // 没有指定对话 ID，加载所有对话并选择最近的
-      getAllConversations()
-        .then((convs) => {
-          setConversations(convs)
-          // 如果有对话历史，自动选择最近更新的对话
-          if (convs.length > 0) {
-            // 按 updatedAt 时间戳排序，选择最近的对话
-            const sortedConvs = [...convs].sort((a, b) => b.updatedAt - a.updatedAt)
-            const mostRecentConv = sortedConvs[0]
-            setCurrentConversationId(mostRecentConv.id)
-            setMessages(mostRecentConv.messages)
-          }
-          setDbReady(true)
-        })
-        .catch((err) => {
-          console.error("Failed to load conversations:", err)
-          setDbReady(true)
-        })
-    }
   }, [])
 
   const scrollToBottom = useCallback(() => {
@@ -364,7 +506,9 @@ export default function Home() {
           userMessage,
           abortControllerRef.current.signal,
           settings.aiModel,
-          settings.streamingEnabled
+          settings.streamingEnabled,
+          programmingMode,
+          deepThinkingMode
         )
 
         const reader = response.body?.getReader()
@@ -464,7 +608,7 @@ export default function Home() {
         abortControllerRef.current = null
       }
     },
-    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled]
+    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, programmingMode, deepThinkingMode]
   )
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -522,7 +666,17 @@ export default function Home() {
     }
   }
 
-  const suggestions = [
+  const suggestions = deepThinkingMode ? [
+    { icon: Brain, text: "为什么 0 不能作为除数" },
+    { icon: Brain, text: "如何理解量子计算的基本原理" },
+    { icon: Brain, text: "解释一下相对论的时间 dilation 效应" },
+    { icon: Brain, text: "什么是人工智能中的神经网络" },
+  ] : programmingMode ? [
+    { icon: Code, text: "帮我写一个 Python 快速排序算法" },
+    { icon: Code, text: "用 React 实现一个待办事项列表" },
+    { icon: Code, text: "解释一下 JavaScript 的闭包概念" },
+    { icon: Code, text: "如何优化 React 应用的性能" },
+  ] : [
     { icon: MessageSquare, text: "请简要介绍一下你自己" },
     { icon: Code, text: "帮我写一个 Python 快速排序算法" },
     { icon: Sparkles, text: "给我讲一个有趣的故事" },
@@ -748,6 +902,26 @@ export default function Home() {
         {/* Input - Fixed at bottom */}
         <div className="shrink-0 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-sm">
           <div className="mx-auto max-w-3xl">
+            <div className="mb-2 flex gap-2">
+              <Button
+                variant={programmingMode ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setProgrammingMode(!programmingMode)}
+                className="gap-2 border border-border"
+              >
+                <Code className="h-4 w-4" />
+                编程模式
+              </Button>
+              <Button
+                variant={deepThinkingMode ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setDeepThinkingMode(!deepThinkingMode)}
+                className="gap-2 border border-border"
+              >
+                <Brain className="h-4 w-4" />
+                深度思考
+              </Button>
+            </div>
             <div className="relative flex items-end gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring">
               <Textarea
                 ref={textareaRef}
