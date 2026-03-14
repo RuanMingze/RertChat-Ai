@@ -5,3 +5,8 @@
 node_modules/
 .next/
 .DS_Store
+
+# Build output
+out/
+dist/
+build/
