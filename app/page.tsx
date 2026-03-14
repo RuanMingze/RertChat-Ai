@@ -12,9 +12,11 @@ import {
   saveConversation,
   deleteConversation as deleteConversationFromDB,
   getSettings,
+  getUserProfile,
   type Conversation,
   type Message,
   type Settings,
+  type UserProfile,
 } from "@/lib/chat-db"
 import {
   Bot,
@@ -394,6 +396,7 @@ export default function Home() {
   })
   const [programmingMode, setProgrammingMode] = useState(false)
   const [deepThinkingMode, setDeepThinkingMode] = useState(false)
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -406,11 +409,15 @@ export default function Home() {
     // 并行加载设置和对话数据
     Promise.all([
       getSettings(),
-      getAllConversations()
+      getAllConversations(),
+      getUserProfile()
     ])
-      .then(([loadedSettings, convs]) => {
+      .then(([loadedSettings, convs, profile]) => {
         // 更新设置
         setSettings(loadedSettings)
+        
+        // 更新用户资料
+        setUserProfile(profile)
         
         // 更新对话列表
         setConversations(convs)
@@ -805,6 +812,34 @@ export default function Home() {
               <Button variant="ghost" size="sm" onClick={handleClear} className="gap-2 text-muted-foreground hover:text-foreground">
                 <RotateCcw className="h-4 w-4" />
                 清空对话
+              </Button>
+            )}
+            {userProfile ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.open("https://ruanmgjx.dpdns.org/user", "_blank")}
+                className="gap-2"
+              >
+                <img
+                  src={userProfile.avatar_url}
+                  alt={userProfile.name}
+                  className="h-6 w-6 rounded-full"
+                />
+                {userProfile.name}
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanmgjx.dpdns.org/callback&response_type=code&scope=read write"
+                  window.location.href = authUrl
+                }}
+                className="gap-2"
+              >
+                <User className="h-4 w-4" />
+                登录
               </Button>
             )}
           </div>

@@ -1,9 +1,10 @@
 // IndexedDB 数据库封装
 
 const DB_NAME = 'ai-chat-db'
-const DB_VERSION = 3
+const DB_VERSION = 4
 const STORE_NAME = 'conversations'
 const SETTINGS_STORE_NAME = 'settings'
+const USER_STORE_NAME = 'user'
 
 export interface Message {
   id: string
@@ -25,6 +26,14 @@ export interface Settings {
   aiModel: string
   theme: 'light' | 'dark'
   autoRedirectToRecent: boolean
+}
+
+export interface UserProfile {
+  id: string
+  name: string
+  email: string
+  avatar_url: string
+  has_beta_access: boolean
 }
 
 let dbInstance: IDBDatabase | null = null
@@ -53,6 +62,9 @@ function getDB(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(SETTINGS_STORE_NAME)) {
         db.createObjectStore(SETTINGS_STORE_NAME, { keyPath: 'id' })
+      }
+      if (!db.objectStoreNames.contains(USER_STORE_NAME)) {
+        db.createObjectStore(USER_STORE_NAME, { keyPath: 'id' })
       }
     }
   })
@@ -201,6 +213,46 @@ export async function saveSettings(settings: Settings): Promise<void> {
     const transaction = db.transaction(SETTINGS_STORE_NAME, 'readwrite')
     const store = transaction.objectStore(SETTINGS_STORE_NAME)
     const request = store.put(settings)
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => resolve()
+  })
+}
+
+export async function getUserProfile(): Promise<UserProfile | null> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    try {
+      const transaction = db.transaction(USER_STORE_NAME, 'readonly')
+      const store = transaction.objectStore(USER_STORE_NAME)
+      const request = store.get('current')
+
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => resolve(request.result || null)
+    } catch (error) {
+      resolve(null)
+    }
+  })
+}
+
+export async function saveUserProfile(profile: UserProfile): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(USER_STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(USER_STORE_NAME)
+    const request = store.put({ ...profile, id: 'current' })
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => resolve()
+  })
+}
+
+export async function deleteUserProfile(): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(USER_STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(USER_STORE_NAME)
+    const request = store.delete('current')
 
     request.onerror = () => reject(request.error)
     request.onsuccess = () => resolve()

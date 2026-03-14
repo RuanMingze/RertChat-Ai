@@ -6,9 +6,9 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getSettings, saveSettings, type Settings } from "@/lib/chat-db"
+import { getSettings, saveSettings, getUserProfile, deleteUserProfile, type Settings, type UserProfile } from "@/lib/chat-db"
 import { cn } from "@/lib/utils"
 
 export default function SettingsPage() {
@@ -19,6 +19,7 @@ export default function SettingsPage() {
     theme: 'dark',
     autoRedirectToRecent: true
   })
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
@@ -35,6 +36,10 @@ export default function SettingsPage() {
       const root = window.document.documentElement
       root.classList.remove("light", "dark")
       root.classList.add(loadedSettings.theme)
+      
+      // 加载用户资料
+      const profile = await getUserProfile()
+      setUserProfile(profile)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -63,6 +68,20 @@ export default function SettingsPage() {
     }
   }
 
+  const handleLogin = () => {
+    const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanmgjx.dpdns.org/callback&response_type=code&scope=read write"
+    window.location.href = authUrl
+  }
+
+  const handleLogout = async () => {
+    try {
+      await deleteUserProfile()
+      setUserProfile(null)
+    } catch (error) {
+      console.error('Failed to logout:', error)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="flex h-dvh items-center justify-center">
@@ -82,6 +101,29 @@ export default function SettingsPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-2xl font-semibold">设置</h1>
+          <div className="ml-auto">
+            {userProfile ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                退出登录
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={handleLogin}
+                className="gap-2"
+              >
+                <User className="h-4 w-4" />
+                登录
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="max-w-2xl mx-auto w-full space-y-6">

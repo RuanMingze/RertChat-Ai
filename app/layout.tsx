@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'RertChat - AI助手',
-  description: '基于 DeepSeek 的智能对话助手',
+  description: '基于 OpenRouter 的智能对话助手',
   generator: 'Ruanm',
   icons: {
     icon: '/favicon.ico',
