@@ -15,7 +15,7 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<Settings>({
     id: 'default',
     streamingEnabled: true,
-    aiModel: 'deepseek/deepseek-v3.2',
+    aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     theme: 'dark',
     autoRedirectToRecent: true
   })
@@ -173,10 +173,10 @@ export default function SettingsPage() {
                     ...prev,
                     aiModel: e.target.value
                   }))}
-                  placeholder="输入 AI 模型名称，例如 deepseek/deepseek-v3.2"
+                  placeholder="输入 AI 模型名称，例如 @cf/qwen/qwen3-30b-a3b-fp8"
                 />
                 <p className="text-sm text-muted-foreground">
-                  默认使用 deepseek/deepseek-v3.2
+                  默认使用 @cf/qwen/qwen3-30b-a3b-fp8
                 </p>
               </div>
             </CardContent>

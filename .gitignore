@@ -1,7 +1,18 @@
 # Environment variables
 .env*.local
+.dev.vars
 
 # Common ignores
 node_modules/
 .next/
+.open-next/
 .DS_Store
+
+# TypeScript ignores
+next-env.d.ts
+
+# log ignores
+.log
+
+# Wrangler
+.wrangler/

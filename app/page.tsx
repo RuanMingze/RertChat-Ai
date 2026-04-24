@@ -300,12 +300,12 @@ async function sendRequestWithRetry(
   model: string,
   streaming: boolean
 ): Promise<Response> {
-  const response = await fetch("https://ruanmgjx.dpdns.org/api/v1/ai", {
+  const response = await fetch("/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: model,
       messages,
+      model: model,
       stream: streaming,
     }),
     signal,
@@ -390,7 +390,7 @@ export default function Home() {
   const [settings, setSettings] = useState<Settings>({
     id: 'default',
     streamingEnabled: true,
-    aiModel: 'deepseek/deepseek-v3.2',
+    aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     theme: 'dark',
     autoRedirectToRecent: true
   })

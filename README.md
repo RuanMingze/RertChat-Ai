@@ -109,7 +109,6 @@ rertchat/
 │   └── utils.ts          # 工具函数
 ├── public/               # 静态资源
 │   ├── manifest.json     # PWA 配置
-│   ├── sw.js            # Service Worker
 │   └── favicon*.png     # 应用图标
 └── package.json
 ```

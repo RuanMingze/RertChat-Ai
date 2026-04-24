@@ -149,7 +149,7 @@ export async function getSettings(): Promise<Settings> {
           const defaultSettings: Settings = {
             id: 'default',
             streamingEnabled: true,
-            aiModel: 'deepseek/deepseek-v3.2',
+            aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
             theme: 'dark',
             autoRedirectToRecent: false
           }
@@ -161,7 +161,7 @@ export async function getSettings(): Promise<Settings> {
             const defaultSettings: Settings = {
               id: 'default',
               streamingEnabled: true,
-              aiModel: 'deepseek/deepseek-v3.2',
+              aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false
             }
@@ -171,7 +171,7 @@ export async function getSettings(): Promise<Settings> {
             const defaultSettings: Settings = {
               id: 'default',
               streamingEnabled: true,
-              aiModel: 'deepseek/deepseek-v3.2',
+              aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false
             }
@@ -188,7 +188,7 @@ export async function getSettings(): Promise<Settings> {
         const defaultSettings: Settings = {
           id: 'default',
           streamingEnabled: true,
-          aiModel: 'deepseek/deepseek-v3.2',
+          aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
           theme: 'dark',
           autoRedirectToRecent: false
         }
@@ -200,7 +200,7 @@ export async function getSettings(): Promise<Settings> {
     return {
       id: 'default',
       streamingEnabled: true,
-      aiModel: 'deepseek/deepseek-v3.2',
+      aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
       theme: 'dark',
       autoRedirectToRecent: false
     }

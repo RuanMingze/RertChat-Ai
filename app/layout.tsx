@@ -32,23 +32,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning className="dark">
-      <head>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                  .then(function(registration) {
-                    console.log('Service Worker registered:', registration.scope);
-                  })
-                  .catch(function(error) {
-                    console.log('Service Worker registration failed:', error);
-                  });
-              });
-            }
-          `
-        }} />
-      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>
           {children}
