@@ -113,6 +113,17 @@ export function ChatContainer() {
     [currentConversationId, clearMessages]
   )
 
+  const handleRenameConversation = useCallback(
+    (id: string, newName: string) => {
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === id ? { ...c, title: newName, updatedAt: new Date() } : c
+        )
+      )
+    },
+    []
+  )
+
   const handleClear = useCallback(() => {
     clearMessages()
     if (currentConversationId) {
@@ -160,6 +171,7 @@ export function ChatContainer() {
         onSelect={handleSelectConversation}
         onNew={handleNewConversation}
         onDelete={handleDeleteConversation}
+        onRename={handleRenameConversation}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
       />

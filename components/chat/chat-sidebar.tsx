@@ -11,7 +11,10 @@ import {
   Trash2,
   PanelLeftClose,
   PanelLeft,
+  Pencil,
 } from "lucide-react"
+import { ContextMenu, ContextMenuItem } from "@/components/ui/context-menu-custom"
+import { RenameDialog } from "@/components/ui/rename-dialog"
 
 interface ChatSidebarProps {
   conversations: Conversation[]
@@ -19,6 +22,7 @@ interface ChatSidebarProps {
   onSelect: (id: string) => void
   onNew: () => void
   onDelete: (id: string) => void
+  onRename: (id: string, newName: string) => void
   isOpen: boolean
   onToggle: () => void
 }
@@ -29,10 +33,63 @@ export function ChatSidebar({
   onSelect,
   onNew,
   onDelete,
+  onRename,
   isOpen,
   onToggle,
 }: ChatSidebarProps) {
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [contextMenu, setContextMenu] = useState<{
+    x: number
+    y: number
+    conversationId: string | null
+  }>({ x: 0, y: 0, conversationId: null })
+
+  const [renameDialog, setRenameDialog] = useState<{
+    isOpen: boolean
+    conversationId: string | null
+    currentName: string
+  }>({ isOpen: false, conversationId: null, currentName: "" })
+
+  const handleContextMenu = (
+    e: React.MouseEvent,
+    conversation: Conversation
+  ) => {
+    e.preventDefault()
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      conversationId: conversation.id,
+    })
+  }
+
+  const handleRename = () => {
+    const conversation = conversations.find((c) => c.id === contextMenu.conversationId)
+    if (conversation) {
+      setRenameDialog({
+        isOpen: true,
+        conversationId: conversation.id,
+        currentName: conversation.title,
+      })
+      setContextMenu({ x: 0, y: 0, conversationId: null })
+    }
+  }
+
+  const handleDelete = () => {
+    if (contextMenu.conversationId) {
+      onDelete(contextMenu.conversationId)
+      setContextMenu({ x: 0, y: 0, conversationId: null })
+    }
+  }
+
+  const handleRenameConfirm = (newName: string) => {
+    if (renameDialog.conversationId) {
+      onRename(renameDialog.conversationId, newName)
+    }
+    setRenameDialog({ isOpen: false, conversationId: null, currentName: "" })
+  }
+
+  const handleRenameCancel = () => {
+    setRenameDialog({ isOpen: false, conversationId: null, currentName: "" })
+  }
 
   return (
     <>
@@ -93,8 +150,7 @@ export function ChatSidebar({
                       ? "bg-sidebar-accent text-sidebar-accent-foreground"
                       : "hover:bg-sidebar-accent/50"
                   )}
-                  onMouseEnter={() => setHoveredId(conversation.id)}
-                  onMouseLeave={() => setHoveredId(null)}
+                  onContextMenu={(e) => handleContextMenu(e, conversation)}
                 >
                   <button
                     onClick={() => onSelect(conversation.id)}
@@ -105,25 +161,41 @@ export function ChatSidebar({
                       {conversation.title}
                     </span>
                   </button>
-                  {hoveredId === conversation.id && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onDelete(conversation.id)
-                      }}
-                      className="absolute right-2 h-7 w-7 text-sidebar-foreground/50 hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
                 </div>
               ))
             )}
           </div>
         </ScrollArea>
       </aside>
+
+      {/* Context Menu */}
+      {contextMenu.conversationId && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu({ x: 0, y: 0, conversationId: null })}
+        >
+          <ContextMenuItem onClick={handleRename}>
+            <Pencil className="mr-2 h-4 w-4" />
+            重命名
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={handleDelete}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            删除
+          </ContextMenuItem>
+        </ContextMenu>
+      )}
+
+      {/* Rename Dialog */}
+      <RenameDialog
+        isOpen={renameDialog.isOpen}
+        currentName={renameDialog.currentName}
+        onConfirm={handleRenameConfirm}
+        onCancel={handleRenameCancel}
+      />
 
       {/* Overlay */}
       {isOpen && (

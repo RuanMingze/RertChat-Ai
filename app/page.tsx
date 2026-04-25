@@ -13,6 +13,7 @@ import {
   deleteConversation as deleteConversationFromDB,
   getSettings,
   getUserProfile,
+  renameConversation as renameConversationInDB,
   type Conversation,
   type Message,
   type Settings,
@@ -36,7 +37,10 @@ import {
   Check,
   Brain,
   Settings as SettingsIcon,
+  Pencil,
 } from "lucide-react"
+import { ContextMenu, ContextMenuItem } from "@/components/ui/context-menu-custom"
+import { RenameDialog } from "@/components/ui/rename-dialog"
 
 // Markdown 渲染组件
 const MarkdownContent = memo(function MarkdownContent({ content }: { content: string }) {
@@ -397,6 +401,21 @@ export default function Home() {
   const [programmingMode, setProgrammingMode] = useState(false)
   const [deepThinkingMode, setDeepThinkingMode] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+  
+  // 右键菜单状态
+  const [contextMenu, setContextMenu] = useState<{
+    x: number
+    y: number
+    conversationId: string | null
+  }>({ x: 0, y: 0, conversationId: null })
+  
+  // 重命名对话框状态
+  const [renameDialog, setRenameDialog] = useState<{
+    isOpen: boolean
+    conversationId: string | null
+    currentName: string
+  }>({ isOpen: false, conversationId: null, currentName: "" })
+  
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -652,6 +671,54 @@ export default function Home() {
     deleteConversationFromDB(id).catch(console.error)
   }
 
+  const handleRenameConversation = (id: string, newName: string) => {
+    setConversations((prev) =>
+      prev.map((c) =>
+        c.id === id ? { ...c, title: newName, updatedAt: Date.now() } : c
+      )
+    )
+    renameConversationInDB(id, newName).catch(console.error)
+  }
+
+  const handleContextMenu = (e: React.MouseEvent, conversation: Conversation) => {
+    e.preventDefault()
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      conversationId: conversation.id,
+    })
+  }
+
+  const handleRenameClick = () => {
+    const conversation = conversations.find((c) => c.id === contextMenu.conversationId)
+    if (conversation) {
+      setRenameDialog({
+        isOpen: true,
+        conversationId: conversation.id,
+        currentName: conversation.title,
+      })
+      setContextMenu({ x: 0, y: 0, conversationId: null })
+    }
+  }
+
+  const handleDeleteClick = () => {
+    if (contextMenu.conversationId) {
+      handleDeleteConversation(contextMenu.conversationId)
+      setContextMenu({ x: 0, y: 0, conversationId: null })
+    }
+  }
+
+  const handleRenameConfirm = (newName: string) => {
+    if (renameDialog.conversationId) {
+      handleRenameConversation(renameDialog.conversationId, newName)
+    }
+    setRenameDialog({ isOpen: false, conversationId: null, currentName: "" })
+  }
+
+  const handleRenameCancel = () => {
+    setRenameDialog({ isOpen: false, conversationId: null, currentName: "" })
+  }
+
   const handleClear = () => {
     setMessages([])
     if (currentConversationId) {
@@ -738,6 +805,7 @@ export default function Home() {
                       ? "bg-sidebar-accent text-sidebar-accent-foreground"
                       : "hover:bg-sidebar-accent/50"
                   )}
+                  onContextMenu={(e) => handleContextMenu(e, conv)}
                 >
                   <button
                     onClick={() => handleSelectConversation(conv.id)}
@@ -746,14 +814,6 @@ export default function Home() {
                     <MessageSquare className="h-4 w-4 shrink-0 text-sidebar-foreground/70" />
                     <span className="truncate text-sm text-sidebar-foreground">{conv.title}</span>
                   </button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDeleteConversation(conv.id)}
-                    className="absolute right-2 h-7 w-7 opacity-0 group-hover:opacity-100 text-sidebar-foreground/50 hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </div>
               ))
             )}
@@ -777,6 +837,35 @@ export default function Home() {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Context Menu */}
+      {contextMenu.conversationId && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu({ x: 0, y: 0, conversationId: null })}
+        >
+          <ContextMenuItem onClick={handleRenameClick}>
+            <Pencil className="mr-2 h-4 w-4" />
+            重命名
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={handleDeleteClick}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            删除
+          </ContextMenuItem>
+        </ContextMenu>
+      )}
+
+      {/* Rename Dialog */}
+      <RenameDialog
+        isOpen={renameDialog.isOpen}
+        currentName={renameDialog.currentName}
+        onConfirm={handleRenameConfirm}
+        onCancel={handleRenameCancel}
+      />
 
       {/* Main Content */}
       <main className={cn("relative flex flex-1 flex-col overflow-hidden transition-all duration-300", sidebarOpen ? "md:ml-72" : "ml-0")}>

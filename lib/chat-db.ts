@@ -123,6 +123,32 @@ export async function deleteConversation(id: string): Promise<void> {
   })
 }
 
+export async function renameConversation(id: string, newName: string): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.get(id)
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const conversation = request.result as Conversation
+      if (conversation) {
+        const updatedConversation = {
+          ...conversation,
+          title: newName,
+          updatedAt: Date.now(),
+        }
+        const updateRequest = store.put(updatedConversation)
+        updateRequest.onerror = () => reject(updateRequest.error)
+        updateRequest.onsuccess = () => resolve()
+      } else {
+        reject(new Error(`Conversation ${id} not found`))
+      }
+    }
+  })
+}
+
 export async function clearAllConversations(): Promise<void> {
   const db = await getDB()
   return new Promise((resolve, reject) => {
