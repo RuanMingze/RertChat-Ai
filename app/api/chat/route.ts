@@ -3,12 +3,11 @@ export const runtime = 'edge'
 import { NextRequest, NextResponse } from 'next/server'
 
 // 内置聊天界面的 secret token，防止外部调用
+// 注意：生产环境使用 Workers 服务器，此 Secret 仅用于本地开发
 const INTERNAL_SECRET = process.env.INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
 
 export async function POST(request: NextRequest) {
   console.log('🔵 [API Chat] Received POST request')
-  console.log(' [API Chat] Request URL:', request.url)
-  console.log('🔵 [API Chat] Request headers:', Object.fromEntries(request.headers))
   
   try {
     // 验证内部 secret token
@@ -33,65 +32,40 @@ export async function POST(request: NextRequest) {
     console.log('🟢 [API Chat] Internal secret token verified')
     
     const body = await request.json()
-    console.log('🔵 [API Chat] Request body:', JSON.stringify(body, null, 2))
-    
     const { messages, model = '@cf/qwen/qwen3-30b-a3b-fp8', stream = true } = body
     
-    console.log('🔵 [API Chat] Parsed messages:', messages)
-    console.log('🔵 [API Chat] Model:', model)
-    console.log('🔵 [API Chat] Stream:', stream)
-
-    const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN
-    const cloudflareAccountId = process.env.CLOUDFLARE_ACCOUNT_ID
-
-    console.log('🔵 [API Chat] Env vars loaded:')
-    console.log('  - Token exists:', !!cloudflareApiToken)
-    console.log('  - Token prefix:', cloudflareApiToken ? cloudflareApiToken.substring(0, 10) + '...' : 'N/A')
-    console.log('  - Account ID:', cloudflareAccountId)
-
-    if (!cloudflareApiToken || !cloudflareAccountId) {
-      console.error('🔴 [API Chat] Cloudflare API configuration missing')
-      return NextResponse.json(
-        { error: 'Cloudflare API configuration missing' },
-        { status: 500 }
-      )
-    }
-
-    const apiUrl = `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/ai/run/${model}`
-    console.log('🟢 [API Chat] Calling Cloudflare API:', apiUrl)
+    // 转发请求到 Workers 服务器
+    const workersUrl = process.env.CHAT_SERVER_URL || 'https://chatapi.rertx.dpdns.org'
+    console.log('🟢 [API Chat] Forwarding to Workers:', workersUrl)
     
     const fetchBody = JSON.stringify({
       messages,
       stream,
     })
-    console.log('🟢 [API Chat] Fetch body:', fetchBody)
 
     const response = await fetch(
-      apiUrl,
+      workersUrl,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${cloudflareApiToken}`,
+          'Authorization': `Bearer ${INTERNAL_SECRET}`,
           'Content-Type': 'application/json',
         },
         body: fetchBody,
       }
     )
 
-    console.log('🟢 [API Chat] Cloudflare response status:', response.status)
-    console.log('🟢 [API Chat] Cloudflare response headers:', Object.fromEntries(response.headers))
+    console.log('🟢 [API Chat] Workers response status:', response.status)
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('🔴 [API Chat] Cloudflare API error:', errorText)
+      console.error('🔴 [API Chat] Workers API error:', errorText)
       return NextResponse.json(
-        { error: `Cloudflare API error: ${response.status}` },
+        { error: `Workers API error: ${response.status}` },
         { status: response.status }
       )
     }
 
-    console.log('🟢 [API Chat] Returning streaming response')
-    
     // 返回流式响应
     return new Response(response.body, {
       headers: {

@@ -27,3 +27,6 @@ next-env.d.ts
 # test ignores
 test/
 packages/ai-api/test.ts
+
+# Server ignores
+workers/
