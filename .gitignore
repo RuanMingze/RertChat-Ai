@@ -23,3 +23,7 @@ next-env.d.ts
 .cursor/
 .qoder/
 .trae-aicc/
+
+# test ignores
+test/
+packages/ai-api/test.ts

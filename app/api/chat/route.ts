@@ -2,12 +2,36 @@ export const runtime = 'edge'
 
 import { NextRequest, NextResponse } from 'next/server'
 
+// 内置聊天界面的 secret token，防止外部调用
+const INTERNAL_SECRET = process.env.INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
+
 export async function POST(request: NextRequest) {
   console.log('🔵 [API Chat] Received POST request')
   console.log(' [API Chat] Request URL:', request.url)
   console.log('🔵 [API Chat] Request headers:', Object.fromEntries(request.headers))
   
   try {
+    // 验证内部 secret token
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('🔴 [API Chat] Missing or invalid Authorization header')
+      return NextResponse.json(
+        { error: '缺少或无效的 Authorization header' },
+        { status: 401 }
+      )
+    }
+
+    const token = authHeader.substring(7)
+    if (token !== INTERNAL_SECRET) {
+      console.error('🔴 [API Chat] Invalid secret token')
+      return NextResponse.json(
+        { error: '无效的认证 token' },
+        { status: 403 }
+      )
+    }
+
+    console.log('🟢 [API Chat] Internal secret token verified')
+    
     const body = await request.json()
     console.log('🔵 [API Chat] Request body:', JSON.stringify(body, null, 2))
     

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback, memo } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
@@ -38,9 +39,19 @@ import {
   Brain,
   Settings as SettingsIcon,
   Pencil,
+  Key,
+  LogOut,
 } from "lucide-react"
 import { ContextMenu, ContextMenuItem } from "@/components/ui/context-menu-custom"
 import { RenameDialog } from "@/components/ui/rename-dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Markdown 渲染组件
 const MarkdownContent = memo(function MarkdownContent({ content }: { content: string }) {
@@ -304,9 +315,15 @@ async function sendRequestWithRetry(
   model: string,
   streaming: boolean
 ): Promise<Response> {
+  // 使用内部 secret token 验证
+  const internalSecret = process.env.NEXT_PUBLIC_INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
+  
   const response = await fetch("/api/chat", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${internalSecret}`
+    },
     body: JSON.stringify({
       messages,
       model: model,
@@ -384,6 +401,7 @@ async function sendWithContextFallback(
 }
 
 export default function Home() {
+  const router = useRouter()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -897,31 +915,66 @@ export default function Home() {
               </Button>
             )}
             {userProfile ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.open("https://ruanmgjx.dpdns.org/user", "_blank")}
-                className="gap-2"
-              >
-                <img
-                  src={userProfile.avatar_url}
-                  alt={userProfile.name}
-                  className="h-6 w-6 rounded-full"
-                />
-                {userProfile.name}
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 p-0"
+                  >
+                    <img
+                      src={userProfile.avatar_url}
+                      alt={userProfile.name}
+                      className="h-7 w-7 rounded-full"
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">{userProfile.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{userProfile.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => window.open("https://ruanmgjx.dpdns.org/user", "_blank")}
+                    className="cursor-pointer"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    用户中心
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => router.push("/keys")}
+                    className="cursor-pointer"
+                  >
+                    <Key className="mr-2 h-4 w-4" />
+                    API Keys 管理
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      localStorage.removeItem("user_profile")
+                      window.location.reload()
+                    }}
+                    className="cursor-pointer text-destructive"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    退出登录
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Button
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => {
                   const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
                   window.location.href = authUrl
                 }}
-                className="gap-2"
+                className="h-9 w-9 text-muted-foreground hover:text-foreground"
               >
                 <User className="h-4 w-4" />
-                登录
               </Button>
             )}
           </div>
