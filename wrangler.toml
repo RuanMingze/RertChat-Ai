@@ -1,6 +1,10 @@
-name = "rertchat-ai"
-compatibility_date = "2024-01-01"
+name = "rertchat"
+compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
 
-# Pages 项目配置
-pages_build_output_dir = ".open-next"
+[vars]
+# Cloudflare AI API 配置
+# 注意：生产环境请使用 Cloudflare Pages 环境变量设置
+# CLOUDFLARE_API_TOKEN = "your-api-token"
+# CLOUDFLARE_ACCOUNT_ID = "your-account-id"
