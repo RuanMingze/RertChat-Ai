@@ -16,3 +16,10 @@ next-env.d.ts
 
 # Wrangler
 .wrangler/
+
+# IDE ignores
+.vscode/
+.trae/
+.cursor/
+.qoder/
+.trae-aicc/
