@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback, memo } from "react"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import { ChatInput } from "@/components/chat/chat-input"
 import {
   getAllConversations,
   saveConversation,
@@ -459,13 +459,6 @@ export default function Home() {
   useEffect(() => {
     scrollToBottom()
   }, [messages, scrollToBottom])
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"
-      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + "px"
-    }
-  }, [input])
 
   const stop = useCallback(() => {
     if (abortControllerRef.current) {
@@ -935,53 +928,17 @@ export default function Home() {
         )}
 
         {/* Input - Fixed at bottom */}
-        <div className="shrink-0 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-sm">
+        <div className="shrink-0 border-t border-border bg-background/95 backdrop-blur-sm">
           <div className="mx-auto max-w-3xl">
-            <div className="mb-2 flex gap-2">
-              <Button
-                variant={programmingMode ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setProgrammingMode(!programmingMode)}
-                className="gap-2 border border-border"
-              >
-                <Code className="h-4 w-4" />
-                编程模式
-              </Button>
-              <Button
-                variant={deepThinkingMode ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setDeepThinkingMode(!deepThinkingMode)}
-                className="gap-2 border border-border"
-              >
-                <Brain className="h-4 w-4" />
-                深度思考
-              </Button>
-            </div>
-            <div className="relative flex items-end gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1 focus-within:ring-ring">
-              <Textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="输入消息，按 Enter 发送..."
-                rows={3}
-                className="max-h-[200px] min-h-[80px] flex-1 resize-none border-0 bg-transparent px-3 py-2 text-sm leading-relaxed placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0"
-              />
-              <Button
-                onClick={isLoading ? stop : () => sendMessage(input)}
-                disabled={!isLoading && !input.trim()}
-                size="icon"
-                className={cn(
-                  "h-11 w-11 shrink-0 rounded-xl transition-all",
-                  isLoading ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"
-                )}
-              >
-                {isLoading ? <Square className="h-4 w-4 fill-current" /> : <ArrowUp className="h-5 w-5" />}
-              </Button>
-            </div>
-            <p className="mt-2 text-center text-xs text-muted-foreground">
-              AI 可能会产生不准确的信息，请仔细核实重要内容
-            </p>
+            <ChatInput
+              onSend={(content) => sendMessage(content)}
+              onStop={stop}
+              isLoading={isLoading}
+              programmingMode={programmingMode}
+              onToggleProgrammingMode={() => setProgrammingMode(!programmingMode)}
+              deepThinkingMode={deepThinkingMode}
+              onToggleDeepThinkingMode={() => setDeepThinkingMode(!deepThinkingMode)}
+            />
           </div>
         </div>
       </main>

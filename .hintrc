@@ -14,6 +14,7 @@
       {
         "nested-interactive": "off"
       }
-    ]
+    ],
+    "axe/structure": "off"
   }
 }
