@@ -833,7 +833,7 @@ export default function Home() {
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanmgjx.dpdns.org/callback&response_type=code&scope=read write"
+                  const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
                   window.location.href = authUrl
                 }}
                 className="gap-2"

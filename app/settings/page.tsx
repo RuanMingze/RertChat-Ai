@@ -157,7 +157,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <Label htmlFor="ai-model" className="text-base">AI 模型</Label>
                   <a
-                    href="https://openrouter.ai/models"
+                    href="https://dash.cloudflare.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-primary hover:underline flex items-center gap-1"

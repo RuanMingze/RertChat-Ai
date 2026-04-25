@@ -1,16 +1,16 @@
 # RertChat
 
-基于 DeepSeek 的智能对话助手，支持流式输出、多轮对话上下文、PWA离线访问等功能。
+基于 Qwen 的智能对话助手，支持流式输出、多轮对话上下文、PWA离线访问等功能。
 
 ## 功能特性
 
-- **智能对话**：基于 DeepSeek API 的智能对话功能
+- **智能对话**：基于 Cloudflare AI Gateway 的智能对话功能
 - **流式输出**：AI回答逐字显示，提供更流畅的体验
 - **多轮对话**：支持上下文记忆，可配置上下文轮数
 - **对话管理**：支持创建、删除、搜索对话历史
 - **主题切换**：支持浅色/深色模式切换
 - **PWA支持**：可安装为桌面应用，支持离线访问
-- **自定义模型**：支持自定义AI模型（通过OpenRouter）
+- **自定义模型**：支持自定义AI模型（通过Cloudflare AI Gateway）
 
 ## 技术栈
 
@@ -71,7 +71,7 @@ pnpm start
 
 ### 默认设置
 
-- **AI模型**：deepseek/deepseek-v3.2
+- **AI模型**：@cf/qwen/qwen3-30b-a3b-fp8
 - **流式输出**：开启
 - **主题**：深色模式
 - **自动跳转**：开启（打开页面时自动跳转到最近对话）
@@ -82,13 +82,6 @@ pnpm start
 2. 在"AI模型"输入框中输入模型名称
 3. 点击"查找模型"链接查看可用模型列表
 4. 保存设置
-
-支持的模型格式：`provider/model-name`
-
-示例：
-- `deepseek/deepseek-v3.2`
-- `openai/gpt-4`
-- `anthropic/claude-3-sonnet`
 
 ## 项目结构
 
@@ -126,6 +119,5 @@ MIT License
 
 ## 致谢
 
-- [DeepSeek](https://deepseek.com/) - AI模型支持
-- [OpenRouter](https://openrouter.ai/) - API路由服务
 - [shadcn/ui](https://ui.shadcn.com/) - UI组件库
+- [Cloudflare AI Gateway](https://www.cloudflare.com/ai-gateway/) - AI模型支持
