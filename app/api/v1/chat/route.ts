@@ -67,67 +67,41 @@ export async function POST(request: NextRequest) {
 
     console.log('🟢 [API v1 Chat] API Key 验证成功，用户:', foundUserEmail)
 
-    // 4. API Key 验证通过，处理聊天请求
+    // 4. API Key 验证通过，转发请求到 Workers 服务器
     const body = await request.json()
-    console.log('🔵 [API v1 Chat] Request body:', JSON.stringify(body, null, 2))
-    
     const { messages, model = '@cf/qwen/qwen3-30b-a3b-fp8', stream = true } = body
     
-    console.log('🔵 [API v1 Chat] Parsed messages:', messages)
-    console.log('🔵 [API v1 Chat] Model:', model)
-    console.log('🔵 [API v1 Chat] Stream:', stream)
-
-    const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN
-    const cloudflareAccountId = process.env.CLOUDFLARE_ACCOUNT_ID
-
-    console.log('🔵 [API v1 Chat] Env vars loaded:')
-    console.log('  - Token exists:', !!cloudflareApiToken)
-    console.log('  - Token prefix:', cloudflareApiToken ? cloudflareApiToken.substring(0, 10) + '...' : 'N/A')
-    console.log('  - Account ID:', cloudflareAccountId)
-
-    if (!cloudflareApiToken || !cloudflareAccountId) {
-      console.error('🔴 [API v1 Chat] Cloudflare API configuration missing')
-      return NextResponse.json(
-        { error: 'Cloudflare API configuration missing' },
-        { status: 500 }
-      )
-    }
-
-    const apiUrl = `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/ai/run/${model}`
-    console.log('🟢 [API v1 Chat] Calling Cloudflare API:', apiUrl)
+    // 转发到 Workers 服务器
+    const workersUrl = process.env.CHAT_SERVER_URL || 'https://chatapi.rertx.dpdns.org'
+    console.log('� [API v1 Chat] Forwarding to Workers:', workersUrl)
     
     const fetchBody = JSON.stringify({
       messages,
       stream,
     })
-    console.log('🟢 [API v1 Chat] Fetch body:', fetchBody)
 
     const response = await fetch(
-      apiUrl,
+      workersUrl,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${cloudflareApiToken}`,
           'Content-Type': 'application/json',
         },
         body: fetchBody,
       }
     )
 
-    console.log('🟢 [API v1 Chat] Cloudflare response status:', response.status)
-    console.log('🟢 [API v1 Chat] Cloudflare response headers:', Object.fromEntries(response.headers))
+    console.log('🟢 [API v1 Chat] Workers response status:', response.status)
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('🔴 [API v1 Chat] Cloudflare API error:', errorText)
+      console.error('🔴 [API v1 Chat] Workers API error:', errorText)
       return NextResponse.json(
-        { error: `Cloudflare API error: ${response.status}` },
+        { error: `Workers API error: ${response.status}` },
         { status: response.status }
       )
     }
 
-    console.log('🟢 [API v1 Chat] Returning streaming response')
-    
     // 返回流式响应
     return new Response(response.body, {
       headers: {
