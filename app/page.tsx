@@ -315,14 +315,10 @@ async function sendRequestWithRetry(
   model: string,
   streaming: boolean
 ): Promise<Response> {
-  // 使用内部 secret token 验证
-  const internalSecret = process.env.NEXT_PUBLIC_INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
-  
   const response = await fetch("/api/chat", {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${internalSecret}`
     },
     body: JSON.stringify({
       messages,

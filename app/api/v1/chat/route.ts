@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // 2. 在数据库中验证 API Key
     const { data: allRecords, error: fetchError } = await supabaseAdmin
       .from('keys')
-      .select('keys')
+      .select('*')
 
     if (fetchError) {
       console.error('🔴 [API v1 Chat] 查询数据库失败:', fetchError)
@@ -73,18 +73,22 @@ export async function POST(request: NextRequest) {
     
     // 转发到 Workers 服务器
     const workersUrl = process.env.CHAT_SERVER_URL || 'https://chatapi.rertx.dpdns.org'
-    console.log('� [API v1 Chat] Forwarding to Workers:', workersUrl)
+    console.log('[API v1 Chat] Forwarding to Workers:', workersUrl)
     
     const fetchBody = JSON.stringify({
       messages,
       stream,
     })
 
+    // 获取内部 secret 用于 Workers 认证
+    const internalSecret = process.env.INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
+    
     const response = await fetch(
       workersUrl,
       {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${internalSecret}`,
           'Content-Type': 'application/json',
         },
         body: fetchBody,
