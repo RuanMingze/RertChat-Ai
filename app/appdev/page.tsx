@@ -5,7 +5,6 @@ import { RefreshCw, Eye, Coffee, Loader2, Monitor } from 'lucide-react'
 
 export default function AppDevPage() {
   const [status, setStatus] = useState<'loading' | 'working' | 'resting'>('loading')
-  const [showWelcome, setShowWelcome] = useState(true)
   const [error, setError] = useState<string>('')
 
   const checkDevStatus = async () => {
@@ -34,23 +33,11 @@ export default function AppDevPage() {
   }, [])
 
   const handleViewProgress = () => {
-    setShowWelcome(false)
+    window.location.href = '/appdev/view'
   }
 
   const handleRefresh = () => {
     checkDevStatus()
-  }
-
-  if (!showWelcome) {
-    return (
-      <div className="fixed inset-0 bg-background">
-        <iframe
-          src="https://apidev.rertx.dpdns.org"
-          className="w-full h-full border-0"
-          title="开发进度追踪"
-        />
-      </div>
-    )
   }
 
   return (
