@@ -26,6 +26,7 @@ export interface Settings {
   aiModel: string
   theme: 'light' | 'dark'
   autoRedirectToRecent: boolean
+  showLoadingScreen: boolean
 }
 
 export interface UserProfile {
@@ -177,7 +178,8 @@ export async function getSettings(): Promise<Settings> {
             streamingEnabled: true,
             aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
             theme: 'dark',
-            autoRedirectToRecent: false
+            autoRedirectToRecent: false,
+            showLoadingScreen: true
           }
           resolve(defaultSettings)
         }
@@ -189,7 +191,8 @@ export async function getSettings(): Promise<Settings> {
               streamingEnabled: true,
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
-              autoRedirectToRecent: false
+              autoRedirectToRecent: false,
+              showLoadingScreen: true
             }
             resolve({ ...defaultSettings, ...request.result } as Settings)
           } else {
@@ -199,7 +202,8 @@ export async function getSettings(): Promise<Settings> {
               streamingEnabled: true,
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
-              autoRedirectToRecent: false
+              autoRedirectToRecent: false,
+              showLoadingScreen: true
             }
             const saveRequest = store.put(defaultSettings)
             saveRequest.onerror = () => {
@@ -216,7 +220,8 @@ export async function getSettings(): Promise<Settings> {
           streamingEnabled: true,
           aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
           theme: 'dark',
-          autoRedirectToRecent: false
+          autoRedirectToRecent: false,
+          showLoadingScreen: true
         }
         resolve(defaultSettings)
       }
@@ -228,7 +233,8 @@ export async function getSettings(): Promise<Settings> {
       streamingEnabled: true,
       aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
       theme: 'dark',
-      autoRedirectToRecent: false
+      autoRedirectToRecent: false,
+      showLoadingScreen: true
     }
   }
 }
@@ -241,7 +247,15 @@ export async function saveSettings(settings: Settings): Promise<void> {
     const request = store.put(settings)
 
     request.onerror = () => reject(request.error)
-    request.onsuccess = () => resolve()
+    request.onsuccess = () => {
+      // 同时保存到 localStorage，供加载页面使用
+      try {
+        localStorage.setItem('ai-chat-settings', JSON.stringify(settings))
+      } catch (error) {
+        console.warn('Failed to save settings to localStorage:', error)
+      }
+      resolve()
+    }
   })
 }
 

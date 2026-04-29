@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "env": {
+    "VERCEL_TOOLBAR_DISABLED": "true"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Powered-By", "value": "RertChat" }
+      ]
+    }
+  ]
+}

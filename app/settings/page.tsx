@@ -17,7 +17,8 @@ export default function SettingsPage() {
     streamingEnabled: true,
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     theme: 'dark',
-    autoRedirectToRecent: true
+    autoRedirectToRecent: true,
+    showLoadingScreen: true
   })
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -271,6 +272,28 @@ export default function SettingsPage() {
                     onCheckedChange={(checked) => setSettings(prev => ({
                       ...prev,
                       autoRedirectToRecent: checked
+                    }))}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <Sun className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="loading-screen" className="text-base">显示加载页面</Label>
+                      <p className="text-sm text-muted-foreground">打开页面时显示加载动画</p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="loading-screen"
+                    checked={settings.showLoadingScreen}
+                    onCheckedChange={(checked) => setSettings(prev => ({
+                      ...prev,
+                      showLoadingScreen: checked
                     }))}
                   />
                 </div>

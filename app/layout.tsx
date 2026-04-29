@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import LoadingPage from '@/components/loading/LoadingPage'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
+        <LoadingPage />
         <ThemeProvider>
           {children}
         </ThemeProvider>
