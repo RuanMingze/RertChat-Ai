@@ -12,9 +12,11 @@ import {
   getAllConversations,
   saveConversation,
   deleteConversation as deleteConversationFromDB,
+  deleteConversations,
   getSettings,
   getUserProfile,
   renameConversation as renameConversationInDB,
+  pinConversation,
   type Conversation,
   type Message,
   type Settings,
@@ -41,9 +43,16 @@ import {
   Pencil,
   Key,
   LogOut,
+  Download,
+  Upload,
+  Pin,
+  SquarePen,
+  CheckSquare,
+  Trash,
 } from "lucide-react"
 import { ContextMenu, ContextMenuItem } from "@/components/ui/context-menu-custom"
 import { RenameDialog } from "@/components/ui/rename-dialog"
+import { notificationManager } from "@/lib/notification"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -409,6 +418,9 @@ export default function Home() {
     id: 'default',
     streamingEnabled: true,
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
+    showLoadingScreen: true,
+    notificationsEnabled: true,
+    soundEnabled: false,
     theme: 'dark',
     autoRedirectToRecent: true
   })
@@ -429,10 +441,179 @@ export default function Home() {
     conversationId: string | null
     currentName: string
   }>({ isOpen: false, conversationId: null, currentName: "" })
+
+  // 批量选择状态
+  const [selectedConversations, setSelectedConversations] = useState<Set<string>>(new Set())
+  const [isSelectionMode, setIsSelectionMode] = useState(false)
   
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // 导出对话
+  const handleExportConversation = useCallback(async (conversation: Conversation) => {
+    try {
+      const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        conversations: [conversation]
+      }
+      
+      const jsonStr = JSON.stringify(exportData, null, 2)
+      const blob = new Blob([jsonStr], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${conversation.title.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')}_${Date.now()}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('导出对话失败:', error)
+    }
+  }, [])
+
+  // 导出所有对话
+  const handleExportAllConversations = useCallback(async () => {
+    try {
+      const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        conversations: conversations
+      }
+      
+      const jsonStr = JSON.stringify(exportData, null, 2)
+      const blob = new Blob([jsonStr], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `rertchat_export_${Date.now()}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('导出所有对话失败:', error)
+    }
+  }, [conversations])
+
+  // 导入对话
+  const handleImportConversation = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      const text = await file.text()
+      const importData = JSON.parse(text)
+      
+      if (!importData.conversations || !Array.isArray(importData.conversations)) {
+        console.error('无效的导入文件格式')
+        return
+      }
+
+      const importedConversations = importData.conversations.map((conv: Conversation) => ({
+        ...conv,
+        id: crypto.randomUUID(),
+        createdAt: conv.createdAt || Date.now(),
+        updatedAt: Date.now()
+      }))
+
+      for (const conv of importedConversations) {
+        await saveConversation(conv)
+      }
+
+      const allConversations = await getAllConversations()
+      setConversations(allConversations)
+      
+      if (importedConversations.length > 0) {
+        setCurrentConversationId(importedConversations[0].id)
+        setMessages(importedConversations[0].messages)
+      }
+    } catch (error) {
+      console.error('导入对话失败:', error)
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }, [])
+
+  // 置顶/取消置顶对话
+  const handleTogglePin = useCallback(async (id: string) => {
+    const conversation = conversations.find(c => c.id === id)
+    if (!conversation) return
+
+    try {
+      const newPinnedState = !conversation.isPinned
+      await pinConversation(id, newPinnedState)
+      setConversations(prev => {
+        return prev.map(c => 
+          c.id === id ? { ...c, isPinned: newPinnedState } : c
+        )
+      })
+    } catch (error) {
+      console.error('置顶对话失败:', error)
+    }
+  }, [conversations])
+
+  // 切换选择模式
+  const toggleSelectionMode = useCallback(() => {
+    setIsSelectionMode(prev => !prev)
+    if (isSelectionMode) {
+      setSelectedConversations(new Set())
+    }
+  }, [isSelectionMode])
+
+  // 切换选择单个对话
+  const toggleSelectConversation = useCallback((id: string) => {
+    setSelectedConversations(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }, [])
+
+  // 全选对话
+  const selectAllConversations = useCallback(() => {
+    if (selectedConversations.size === conversations.length) {
+      setSelectedConversations(new Set())
+    } else {
+      setSelectedConversations(new Set(conversations.map(c => c.id)))
+    }
+  }, [conversations, selectedConversations.size])
+
+  // 批量删除选中的对话
+  const handleBatchDelete = useCallback(async () => {
+    if (selectedConversations.size === 0) return
+
+    try {
+      const idsToDelete = Array.from(selectedConversations)
+      await deleteConversations(idsToDelete)
+
+      setConversations(prev => {
+        const updated = prev.filter(c => !selectedConversations.has(c.id))
+        return updated
+      })
+
+      if (currentConversationId && selectedConversations.has(currentConversationId)) {
+        setCurrentConversationId(null)
+        setMessages([])
+      }
+
+      setSelectedConversations(new Set())
+      setIsSelectionMode(false)
+    } catch (error) {
+      console.error('批量删除对话失败:', error)
+    }
+  }, [selectedConversations, currentConversationId])
 
   // 从 URL 获取对话 ID
   useEffect(() => {
@@ -514,6 +695,7 @@ export default function Home() {
           messages: [],
           createdAt: Date.now(),
           updatedAt: Date.now(),
+          isPinned: false,
         }
         setConversations((prev) => [newConv!, ...prev])
         setCurrentConversationId(newConv.id)
@@ -626,6 +808,12 @@ export default function Home() {
           if (conv) saveConversation(conv).catch(console.error)
           return updated
         })
+
+        // 发送通知
+        if (settings.notificationsEnabled && fullContent) {
+          const currentConv = conversations.find((c) => c.id === convId)
+          notificationManager.notifyConversationComplete(currentConv?.title || '新对话').catch(console.error)
+        }
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") return
         setMessages((prev) => {
@@ -641,7 +829,7 @@ export default function Home() {
         abortControllerRef.current = null
       }
     },
-    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, programmingMode, deepThinkingMode]
+    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, settings.notificationsEnabled, programmingMode, deepThinkingMode, conversations]
   )
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -659,6 +847,7 @@ export default function Home() {
       messages: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
+      isPinned: false
     }
     setConversations((prev) => [newConv, ...prev])
     setCurrentConversationId(newConv.id)
@@ -810,37 +999,87 @@ export default function Home() {
             {conversations.length === 0 ? (
               <p className="px-3 py-8 text-center text-sm text-sidebar-foreground/50">暂无对话历史</p>
             ) : (
-              conversations.map((conv) => (
-                <div
-                  key={conv.id}
-                  className={cn(
-                    "group relative flex items-center rounded-xl transition-colors",
-                    currentConversationId === conv.id
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "hover:bg-sidebar-accent/50"
-                  )}
-                  onContextMenu={(e) => handleContextMenu(e, conv)}
-                >
-                  <button
-                    onClick={() => handleSelectConversation(conv.id)}
-                    className="flex flex-1 items-center gap-3 px-3 py-3 text-left"
+              conversations
+                .sort((a, b) => {
+                  if (a.isPinned && !b.isPinned) return -1
+                  if (!a.isPinned && b.isPinned) return 1
+                  return b.updatedAt - a.updatedAt
+                })
+                .map((conv) => (
+                  <div
+                    key={conv.id}
+                    className={cn(
+                      "group relative flex items-center rounded-xl transition-colors",
+                      currentConversationId === conv.id
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        : "hover:bg-sidebar-accent/50"
+                    )}
+                    onContextMenu={(e) => handleContextMenu(e, conv)}
                   >
-                    <MessageSquare className="h-4 w-4 shrink-0 text-sidebar-foreground/70" />
-                    <span className="truncate text-sm text-sidebar-foreground">{conv.title}</span>
-                  </button>
-                </div>
-              ))
+                    {isSelectionMode && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleSelectConversation(conv.id)
+                        }}
+                        className="ml-2 shrink-0"
+                      >
+                        <div className={cn(
+                          "h-5 w-5 rounded border-2 flex items-center justify-center transition-colors",
+                          selectedConversations.has(conv.id)
+                            ? "bg-primary border-primary"
+                            : "border-muted-foreground/50"
+                        )}>
+                          {selectedConversations.has(conv.id) && (
+                            <Check className="h-3 w-3 text-primary-foreground" />
+                          )}
+                        </div>
+                      </button>
+                    )}
+                    <button
+                      onClick={() => isSelectionMode ? toggleSelectConversation(conv.id) : handleSelectConversation(conv.id)}
+                      className="flex flex-1 items-center gap-3 px-3 py-3 text-left"
+                    >
+                      {conv.isPinned && (
+                        <Pin className="h-3 w-3 shrink-0 text-primary" />
+                      )}
+                      <MessageSquare className={cn("h-4 w-4 shrink-0", conv.isPinned ? "text-primary" : "text-sidebar-foreground/70")} />
+                      <span className="truncate text-sm text-sidebar-foreground">{conv.title}</span>
+                    </button>
+                  </div>
+                ))
             )}
           </div>
         </ScrollArea>
-        <div className="p-3 border-t border-sidebar-border">
-          <Button
-            onClick={() => window.location.href = "/settings"}
-            className="w-full justify-start gap-2 rounded-xl hover:bg-sidebar-accent/50"
-          >
-            <SettingsIcon className="h-4 w-4" />
-            设置
-          </Button>
+        <div className="p-3 border-t border-sidebar-border space-y-2">
+          {isSelectionMode ? (
+            <>
+              <Button
+                onClick={handleBatchDelete}
+                disabled={selectedConversations.size === 0}
+                variant="destructive"
+                className="w-full justify-start gap-2 rounded-xl"
+              >
+                <Trash className="h-4 w-4" />
+                删除选中 ({selectedConversations.size})
+              </Button>
+              <Button
+                onClick={toggleSelectionMode}
+                variant="outline"
+                className="w-full justify-start gap-2 rounded-xl border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              >
+                取消选择
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => window.location.href = "/settings"}
+              className="w-full justify-start gap-2 rounded-xl hover:bg-sidebar-accent/50"
+            >
+              <SettingsIcon className="h-4 w-4" />
+              设置
+            </Button>
+          )}
         </div>
       </aside>
 
@@ -862,6 +1101,29 @@ export default function Home() {
           <ContextMenuItem onClick={handleRenameClick}>
             <Pencil className="mr-2 h-4 w-4" />
             重命名
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => {
+              if (contextMenu.conversationId) {
+                handleTogglePin(contextMenu.conversationId)
+              }
+              setContextMenu({ x: 0, y: 0, conversationId: null })
+            }}
+          >
+            <Pin className="mr-2 h-4 w-4" />
+            {conversations.find(c => c.id === contextMenu.conversationId)?.isPinned ? '取消置顶' : '置顶'}
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => {
+              const conversation = conversations.find(c => c.id === contextMenu.conversationId)
+              if (conversation) {
+                handleExportConversation(conversation)
+              }
+              setContextMenu({ x: 0, y: 0, conversationId: null })
+            }}
+          >
+            <Download className="mr-2 h-4 w-4" />
+            导出
           </ContextMenuItem>
           <ContextMenuItem
             onClick={handleDeleteClick}

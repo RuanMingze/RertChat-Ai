@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getSettings, saveSettings, getUserProfile, deleteUserProfile, type Settings, type UserProfile } from "@/lib/chat-db"
 import { cn } from "@/lib/utils"
@@ -18,7 +18,9 @@ export default function SettingsPage() {
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     theme: 'dark',
     autoRedirectToRecent: true,
-    showLoadingScreen: true
+    showLoadingScreen: true,
+    notificationsEnabled: false,
+    soundEnabled: true
   })
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -294,6 +296,68 @@ export default function SettingsPage() {
                     onCheckedChange={(checked) => setSettings(prev => ({
                       ...prev,
                       showLoadingScreen: checked
+                    }))}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 通知设置 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>通知设置</CardTitle>
+              <CardDescription>配置应用通知和声音</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <Bell className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="notifications" className="text-base">桌面通知</Label>
+                      <p className="text-sm text-muted-foreground">AI 回复完成时发送桌面通知</p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="notifications"
+                    checked={settings.notificationsEnabled}
+                    onCheckedChange={async (checked) => {
+                      if (checked) {
+                        const { notificationManager } = await import('@/lib/notification')
+                        const granted = await notificationManager.requestPermission()
+                        if (!granted) {
+                          return
+                        }
+                      }
+                      setSettings(prev => ({
+                        ...prev,
+                        notificationsEnabled: checked
+                      }))
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <Volume2 className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="sound" className="text-base">消息提示音</Label>
+                      <p className="text-sm text-muted-foreground">收到新消息时播放提示音</p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="sound"
+                    checked={settings.soundEnabled}
+                    onCheckedChange={(checked) => setSettings(prev => ({
+                      ...prev,
+                      soundEnabled: checked
                     }))}
                   />
                 </div>

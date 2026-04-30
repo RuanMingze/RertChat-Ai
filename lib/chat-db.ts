@@ -1,7 +1,7 @@
 // IndexedDB 数据库封装
 
 const DB_NAME = 'ai-chat-db'
-const DB_VERSION = 4
+const DB_VERSION = 5
 const STORE_NAME = 'conversations'
 const SETTINGS_STORE_NAME = 'settings'
 const USER_STORE_NAME = 'user'
@@ -18,6 +18,7 @@ export interface Conversation {
   messages: Message[]
   createdAt: number
   updatedAt: number
+  isPinned: boolean
 }
 
 export interface Settings {
@@ -27,6 +28,8 @@ export interface Settings {
   theme: 'light' | 'dark'
   autoRedirectToRecent: boolean
   showLoadingScreen: boolean
+  notificationsEnabled: boolean
+  soundEnabled: boolean
 }
 
 export interface UserProfile {
@@ -150,6 +153,47 @@ export async function renameConversation(id: string, newName: string): Promise<v
   })
 }
 
+export async function pinConversation(id: string, pinned: boolean): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.get(id)
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const conversation = request.result as Conversation
+      if (conversation) {
+        const updatedConversation = {
+          ...conversation,
+          isPinned: pinned,
+          updatedAt: pinned ? Date.now() : conversation.updatedAt,
+        }
+        const updateRequest = store.put(updatedConversation)
+        updateRequest.onerror = () => reject(updateRequest.error)
+        updateRequest.onsuccess = () => resolve()
+      } else {
+        reject(new Error(`Conversation ${id} not found`))
+      }
+    }
+  })
+}
+
+export async function deleteConversations(ids: string[]): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(STORE_NAME)
+
+    for (const id of ids) {
+      store.delete(id)
+    }
+
+    transaction.oncomplete = () => resolve()
+    transaction.onerror = () => reject(transaction.error)
+  })
+}
+
 export async function clearAllConversations(): Promise<void> {
   const db = await getDB()
   return new Promise((resolve, reject) => {
@@ -179,7 +223,9 @@ export async function getSettings(): Promise<Settings> {
             aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
             theme: 'dark',
             autoRedirectToRecent: false,
-            showLoadingScreen: true
+            showLoadingScreen: true,
+            notificationsEnabled: false,
+            soundEnabled: false
           }
           resolve(defaultSettings)
         }
@@ -192,7 +238,9 @@ export async function getSettings(): Promise<Settings> {
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false,
-              showLoadingScreen: true
+              showLoadingScreen: true,
+              notificationsEnabled: false,
+              soundEnabled: false
             }
             resolve({ ...defaultSettings, ...request.result } as Settings)
           } else {
@@ -203,7 +251,9 @@ export async function getSettings(): Promise<Settings> {
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false,
-              showLoadingScreen: true
+              showLoadingScreen: true,
+              notificationsEnabled: false,
+              soundEnabled: false
             }
             const saveRequest = store.put(defaultSettings)
             saveRequest.onerror = () => {
@@ -221,7 +271,9 @@ export async function getSettings(): Promise<Settings> {
           aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
           theme: 'dark',
           autoRedirectToRecent: false,
-          showLoadingScreen: true
+          showLoadingScreen: true,
+          notificationsEnabled: false,
+          soundEnabled: false
         }
         resolve(defaultSettings)
       }
@@ -234,10 +286,12 @@ export async function getSettings(): Promise<Settings> {
       aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
       theme: 'dark',
       autoRedirectToRecent: false,
-      showLoadingScreen: true
+      showLoadingScreen: true,
+      notificationsEnabled: false,
+      soundEnabled: false
+    }
     }
   }
-}
 
 export async function saveSettings(settings: Settings): Promise<void> {
   const db = await getDB()

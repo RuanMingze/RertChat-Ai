@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -10,7 +10,9 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import {
   getAllConversations,
+  saveConversation,
   deleteConversation as deleteConversationFromDB,
+  deleteConversations,
   type Conversation,
 } from "@/lib/chat-db"
 import {
@@ -23,6 +25,10 @@ import {
   X,
   Download,
   FileText,
+  Upload,
+  CheckSquare,
+  Square,
+  Trash,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -31,7 +37,68 @@ export default function ConversationsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [useRegex, setUseRegex] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedConversations, setSelectedConversations] = useState<Set<string>>(new Set())
+  const [isSelectionMode, setIsSelectionMode] = useState(false)
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // 切换选择模式
+  const toggleSelectionMode = useCallback(() => {
+    setIsSelectionMode(prev => !prev)
+    if (isSelectionMode) {
+      setSelectedConversations(new Set())
+    }
+  }, [isSelectionMode])
+
+  // 切换选择单个对话
+  const toggleSelectConversation = useCallback((id: string) => {
+    setSelectedConversations(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }, [])
+
+  // 导入对话
+  const handleImportConversation = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      const text = await file.text()
+      const importData = JSON.parse(text)
+      
+      if (!importData.conversations || !Array.isArray(importData.conversations)) {
+        console.error('无效的导入文件格式')
+        return
+      }
+
+      const importedConversations = importData.conversations.map((conv: Conversation) => ({
+        ...conv,
+        id: crypto.randomUUID(),
+        createdAt: conv.createdAt || Date.now(),
+        updatedAt: Date.now()
+      }))
+
+      for (const conv of importedConversations) {
+        await saveConversation(conv)
+      }
+
+      const allConversations = await getAllConversations()
+      const sortedConvs = [...allConversations].sort((a, b) => b.updatedAt - a.updatedAt)
+      setConversations(sortedConvs)
+    } catch (error) {
+      console.error('导入对话失败:', error)
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }, [])
 
   // 加载对话历史
   useEffect(() => {
@@ -93,6 +160,37 @@ export default function ConversationsPage() {
       deleteConversationFromDB(id).catch(console.error)
     }
   }
+
+  // 全选对话
+  const selectAllConversations = useCallback(() => {
+    if (selectedConversations.size === filteredConversations.length) {
+      setSelectedConversations(new Set())
+    } else {
+      setSelectedConversations(new Set(filteredConversations.map(c => c.id)))
+    }
+  }, [filteredConversations, selectedConversations])
+
+  // 批量删除选中的对话
+  const handleBatchDelete = useCallback(async () => {
+    if (selectedConversations.size === 0) return
+
+    if (confirm(`确定要删除选中的 ${selectedConversations.size} 个对话吗？`)) {
+      try {
+        const idsToDelete = Array.from(selectedConversations)
+        await deleteConversations(idsToDelete)
+
+        setConversations(prev => {
+          const updated = prev.filter(c => !selectedConversations.has(c.id))
+          return updated
+        })
+
+        setSelectedConversations(new Set())
+        setIsSelectionMode(false)
+      } catch (error) {
+        console.error('批量删除对话失败:', error)
+      }
+    }
+  }, [selectedConversations])
 
   // 导出对话为文本文件
   const exportConversation = (conv: Conversation) => {
@@ -158,15 +256,75 @@ export default function ConversationsPage() {
       {/* Header */}
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card/50 px-4 backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.push("/")}
-            className="h-9 w-9 rounded-xl hover:bg-secondary"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold text-foreground">全部对话</h1>
+          {isSelectionMode ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSelectionMode}
+              className="h-9 w-9 rounded-xl hover:bg-secondary"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.push("/")}
+              className="h-9 w-9 rounded-xl hover:bg-secondary"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+          )}
+          {isSelectionMode ? (
+            <span className="text-sm text-foreground">已选 {selectedConversations.size} 项</span>
+          ) : (
+            <h1 className="text-lg font-semibold text-foreground">全部对话</h1>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {isSelectionMode ? (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={selectAllConversations}
+                className="gap-2"
+              >
+                <CheckSquare className="h-4 w-4" />
+                {selectedConversations.size === filteredConversations.length ? '取消全选' : '全选'}
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleBatchDelete}
+                disabled={selectedConversations.size === 0}
+                className="gap-2"
+              >
+                <Trash className="h-4 w-4" />
+                删除
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleSelectionMode}
+                className="h-9 w-9 rounded-xl hover:bg-secondary"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </>
+          ) : (
+            conversations.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleSelectionMode}
+                className="h-9 w-9 rounded-xl hover:bg-secondary"
+                title="批量选择"
+              >
+                <Square className="h-5 w-5" />
+              </Button>
+            )
+          )}
         </div>
       </header>
 
@@ -203,15 +361,33 @@ export default function ConversationsPage() {
             </Label>
           </div>
           {conversations.length > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={exportAllConversations}
-              className="gap-2 text-muted-foreground hover:text-foreground"
-            >
-              <Download className="h-4 w-4" />
-              导出全部对话
-            </Button>
+            <>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json"
+                onChange={handleImportConversation}
+                className="hidden"
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <Upload className="h-4 w-4" />
+                导入
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={exportAllConversations}
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <Download className="h-4 w-4" />
+                导出全部
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -244,11 +420,34 @@ export default function ConversationsPage() {
               {filteredConversations.map((conv) => (
                 <div
                   key={conv.id}
-                  className="group relative rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-sm"
+                  className={cn(
+                    "group relative rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-sm",
+                    selectedConversations.has(conv.id) && "border-primary bg-primary/5"
+                  )}
                 >
+                  {isSelectionMode && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleSelectConversation(conv.id)
+                      }}
+                      className="absolute left-3 top-1/2 -translate-y-1/2"
+                    >
+                      <div className={cn(
+                        "h-5 w-5 rounded border-2 flex items-center justify-center transition-colors",
+                        selectedConversations.has(conv.id)
+                          ? "bg-primary border-primary"
+                          : "border-muted-foreground/50"
+                      )}>
+                        {selectedConversations.has(conv.id) && (
+                          <CheckSquare className="h-3 w-3 text-primary-foreground" />
+                        )}
+                      </div>
+                    </button>
+                  )}
                   <div
-                    onClick={() => handleSelectConversation(conv.id)}
-                    className="flex flex-col gap-2 cursor-pointer"
+                    onClick={() => isSelectionMode ? toggleSelectConversation(conv.id) : handleSelectConversation(conv.id)}
+                    className={cn("flex flex-col gap-2 cursor-pointer", isSelectionMode && "pl-6")}
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium text-foreground truncate">
@@ -259,28 +458,32 @@ export default function ConversationsPage() {
                           <Clock className="h-3 w-3" />
                           {formatDate(conv.updatedAt)}
                         </span>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            exportConversation(conv)
-                          }}
-                          className="h-8 w-8 opacity-0 group-hover:opacity-100 text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                        >
-                          <FileText className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleDeleteConversation(conv.id)
-                          }}
-                          className="h-8 w-8 opacity-0 group-hover:opacity-100 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        {!isSelectionMode && (
+                          <>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                exportConversation(conv)
+                              }}
+                              className="h-8 w-8 opacity-0 group-hover:opacity-100 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                            >
+                              <FileText className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleDeleteConversation(conv.id)
+                              }}
+                              className="h-8 w-8 opacity-0 group-hover:opacity-100 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div className="text-xs text-muted-foreground line-clamp-2">
