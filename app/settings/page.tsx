@@ -70,7 +70,7 @@ export default function SettingsPage() {
   }
 
   const handleLogin = () => {
-    const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanmgjx.dpdns.org/callback&response_type=code&scope=read write"
+    const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanm.pages.dev/callback&response_type=code&scope=read write"
     window.location.href = authUrl
   }
 

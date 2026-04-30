@@ -83,7 +83,7 @@ async function testChatWithHistory() {
       { role: 'user', content: 'Python' }
     ]
     
-    const response = await client.chatWithHistory(messages)
+    const response = await client.chatWithHistory(messages as { role: 'user' | 'assistant'; content: string }[])
     console.log('响应:', response)
     console.log('\n✅ 多轮对话测试通过\n')
   } catch (error) {

@@ -5,3 +5,4 @@ pages_build_output_dir = ".vercel/output/static"
 
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://rertx.dpdns.org"
+VERCEL_PREVIEW_FEEDBACK_ENABLED = "0"

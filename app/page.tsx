@@ -934,7 +934,7 @@ export default function Home() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => window.open("https://ruanmgjx.dpdns.org/user", "_blank")}
+                    onClick={() => window.open("https://ruanm.pages.dev/user", "_blank")}
                     className="cursor-pointer"
                   >
                     <User className="mr-2 h-4 w-4" />
@@ -965,7 +965,7 @@ export default function Home() {
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
+                  const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
                   window.location.href = authUrl
                 }}
                 className="h-9 w-9 text-muted-foreground hover:text-foreground"

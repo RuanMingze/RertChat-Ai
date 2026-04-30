@@ -1,6 +1,6 @@
-# RertChat
+# RertChat - AI助手
 
-基于 Qwen 的智能对话助手，支持流式输出、多轮对话上下文、PWA离线访问等功能。
+基于 Cloudflare AI Gateway 的智能对话助手，支持流式输出、多轮对话上下文、PWA离线访问等功能。
 
 ## 功能特性
 
@@ -211,4 +211,4 @@ MIT License
 
 - [shadcn/ui](https://ui.shadcn.com/) - UI组件库
 - [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless 运行
-- [Cloudflare AI](https://www.cloudflare.com/ai/) - AI 模型支持
+- [Cloudflare AI](https://www.cloudflare.com/) - AI 模型支持

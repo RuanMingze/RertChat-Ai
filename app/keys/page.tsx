@@ -68,7 +68,7 @@ export default function KeysPage() {
       
       if (!profile) {
         // 未登录，重定向到 OAuth 登录页，登录后跳转到 keys 页面
-        const authUrl = "https://ruanmgjx.dpdns.org/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
+        const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
         window.location.href = authUrl
         return
       }
