@@ -17,7 +17,7 @@ export function ChatHeader({ onClear, hasMessages }: ChatHeaderProps) {
         </div>
         <div>
           <h1 className="text-sm font-semibold text-foreground">RertChat</h1>
-          <p className="text-xs text-muted-foreground">DeepSeek V3.2</p>
+          <p className="text-xs text-muted-foreground">@cf/qwen/qwen3-30b-a3b-fp8</p>
         </div>
       </div>
       {hasMessages && (

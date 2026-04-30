@@ -422,7 +422,8 @@ export default function Home() {
     notificationsEnabled: true,
     soundEnabled: false,
     theme: 'dark',
-    autoRedirectToRecent: true
+    autoRedirectToRecent: true,
+    showAIWarning: true
   })
   const [programmingMode, setProgrammingMode] = useState(false)
   const [deepThinkingMode, setDeepThinkingMode] = useState(false)

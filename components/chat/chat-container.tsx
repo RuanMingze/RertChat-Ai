@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useCustomChat } from "@/hooks/use-custom-chat"
 import { ChatMessage } from "./chat-message"
-import { ChatInput } from "./chat-input"
+import { ChatInput, ChatInputRef } from "./chat-input"
 import { ChatHeader } from "./chat-header"
 import { ChatSidebar } from "./chat-sidebar"
 import { WelcomeScreen } from "./welcome-screen"
@@ -15,12 +15,14 @@ import {
   Message,
 } from "@/lib/chat-store"
 import { cn } from "@/lib/utils"
+import { useGlobalKeyboard } from "@/hooks/use-keyboard-navigation"
 
 export function ChatContainer() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<ChatInputRef>(null)
 
   const { messages, isLoading, sendMessage, stop, clearMessages, setMessages } = useCustomChat({
     onFinish: (message) => {
@@ -137,6 +139,30 @@ export function ChatContainer() {
     }
   }, [currentConversationId, clearMessages])
 
+  const handleEscape = useCallback(() => {
+    if (sidebarOpen) {
+      setSidebarOpen(false)
+    }
+  }, [sidebarOpen])
+
+  const handleFocusInput = useCallback(() => {
+    inputRef.current?.focus()
+  }, [])
+
+  const handleToggleSidebar = useCallback(() => {
+    setSidebarOpen((prev) => !prev)
+  }, [])
+
+  useGlobalKeyboard({
+    onToggleSidebar: handleToggleSidebar,
+    onNewConversation: handleNewConversation,
+    onFocusInput: handleFocusInput,
+    onClear: handleClear,
+    onStop: stop,
+    onEscape: handleEscape,
+    enabled: true,
+  })
+
   const syncMessages = useCallback(
     (newMessages: Message[]) => {
       if (currentConversationId) {
@@ -173,7 +199,7 @@ export function ChatContainer() {
         onDelete={handleDeleteConversation}
         onRename={handleRenameConversation}
         isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onToggle={handleToggleSidebar}
       />
 
       <main
@@ -201,6 +227,7 @@ export function ChatContainer() {
         )}
 
         <ChatInput
+          ref={inputRef}
           onSend={handleSend}
           onStop={stop}
           isLoading={isLoading}

@@ -30,6 +30,7 @@ export interface Settings {
   showLoadingScreen: boolean
   notificationsEnabled: boolean
   soundEnabled: boolean
+  showAIWarning: boolean
 }
 
 export interface UserProfile {
@@ -240,7 +241,8 @@ export async function getSettings(): Promise<Settings> {
               autoRedirectToRecent: false,
               showLoadingScreen: true,
               notificationsEnabled: false,
-              soundEnabled: false
+              soundEnabled: false,
+              showAIWarning: true
             }
             resolve({ ...defaultSettings, ...request.result } as Settings)
           } else {
@@ -253,7 +255,8 @@ export async function getSettings(): Promise<Settings> {
               autoRedirectToRecent: false,
               showLoadingScreen: true,
               notificationsEnabled: false,
-              soundEnabled: false
+              soundEnabled: false,
+              showAIWarning: true
             }
             const saveRequest = store.put(defaultSettings)
             saveRequest.onerror = () => {
@@ -273,7 +276,8 @@ export async function getSettings(): Promise<Settings> {
           autoRedirectToRecent: false,
           showLoadingScreen: true,
           notificationsEnabled: false,
-          soundEnabled: false
+          soundEnabled: false,
+          showAIWarning: true
         }
         resolve(defaultSettings)
       }

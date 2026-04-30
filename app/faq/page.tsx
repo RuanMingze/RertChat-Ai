@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronDown, ChevronRight, Search, HelpCircle, MessageSquare, Key, Bell, Database, Shield, RefreshCw, Github, Mail, ExternalLink } from "lucide-react"
+import { ChevronDown, ChevronRight, Search, HelpCircle, MessageSquare, Key, Bell, Database, Shield, RefreshCw, Github, Mail, ExternalLink, Keyboard } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -41,6 +41,21 @@ function FAQItem({ question, answer }: FAQItemProps) {
 }
 
 const faqCategories = [
+  {
+    id: "keyboard-shortcuts",
+    title: "键盘快捷键",
+    icon: Keyboard,
+    faqs: [
+      {
+        question: "有哪些可用的键盘快捷键？",
+        answer: (
+          <div>
+            访问 <Link href="/keyboard-shortcuts" className="mx-1 text-primary hover:underline">快捷键指南</Link> 页面查看完整的快捷键列表和说明。
+          </div>
+        ),
+      },
+    ],
+  },
   {
     id: "getting-started",
     title: "快速开始",
@@ -94,37 +109,10 @@ const faqCategories = [
     icon: Key,
     faqs: [
       {
-        question: "如何获取 API 密钥？",
+        question: "API 密钥如何管理？",
         answer: (
           <div>
-            前往
-            <Link href="/keys" className="mx-1 text-primary hover:underline">密钥管理</Link>
-            页面，点击
-            <code className="mx-1 px-1.5 py-0.5 bg-primary/10 text-primary rounded text-xs">生成新密钥</code>
-            按钮即可创建新的 API 密钥。请妥善保管您的密钥，不要泄露给他人。
-          </div>
-        ),
-      },
-      {
-        question: "API 密钥有什么用途？",
-        answer: (
-          <div>
-            API 密钥用于：
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>通过 API 接口调用 AI 对话服务</li>
-              <li>在本地开发时验证用户身份</li>
-              <li>集成第三方应用到 RertChat</li>
-            </ul>
-          </div>
-        ),
-      },
-      {
-        question: "密钥丢失了怎么办？",
-        answer: (
-          <div>
-            如果您的密钥丢失，请前往
-            <Link href="/keys" className="mx-1 text-primary hover:underline">密钥管理</Link>
-            页面，删除丢失的密钥并重新生成一个新的密钥。丢失的密钥将无法恢复。
+            RertChat 使用 Cloudflare Pages 的环境变量和机密存储管理 API 密钥，确保密钥安全。
           </div>
         ),
       },
@@ -242,8 +230,6 @@ const faqCategories = [
             如果发送消息失败，请检查：
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>网络连接是否正常</li>
-              <li>API 密钥是否有效</li>
-              <li>API 密钥额度是否充足</li>
               <li>浏览器控制台是否有错误信息</li>
             </ul>
           </div>
@@ -282,7 +268,7 @@ const faqCategories = [
 export default function FAQPage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState("getting-started")
+  const [activeCategory, setActiveCategory] = useState("keyboard-shortcuts")
 
   const filteredCategories = faqCategories.map((category) => ({
     ...category,

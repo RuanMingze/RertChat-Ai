@@ -1,10 +1,14 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowUp, Square, Mic, Code, Brain } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+export interface ChatInputRef {
+  focus: () => void
+}
 
 interface ChatInputProps {
   onSend: (message: string) => void
@@ -17,7 +21,7 @@ interface ChatInputProps {
   onToggleDeepThinkingMode?: () => void
 }
 
-export function ChatInput({
+export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatInput({
   onSend,
   onStop,
   isLoading,
@@ -26,12 +30,19 @@ export function ChatInput({
   onToggleProgrammingMode,
   deepThinkingMode = false,
   onToggleDeepThinkingMode,
-}: ChatInputProps) {
+}, ref) {
   const [input, setInput] = useState("")
   const [isRecording, setIsRecording] = useState(false)
   const [currentTranscript, setCurrentTranscript] = useState("")
+  const [showAIWarning, setShowAIWarning] = useState(true)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      textareaRef.current?.focus()
+    },
+  }), [])
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -39,6 +50,18 @@ export function ChatInput({
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + "px"
     }
   }, [input])
+
+  useEffect(() => {
+    try {
+      const storedSettings = localStorage.getItem('ai-chat-settings')
+      if (storedSettings) {
+        const settings = JSON.parse(storedSettings)
+        setShowAIWarning(settings.showAIWarning !== false)
+      }
+    } catch (error) {
+      console.error('Failed to load settings:', error)
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined" && ("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
@@ -194,10 +217,12 @@ export function ChatInput({
             </Button>
           </div>
         </div>
-        <p className="mt-2 text-center text-xs text-muted-foreground">
-          AI 可能会产生不准确的信息，请仔细核实重要内容
-        </p>
+        {showAIWarning && (
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            AI 可能会产生不准确的信息，请仔细核实重要内容
+          </p>
+        )}
       </div>
     </div>
   )
-}
+})

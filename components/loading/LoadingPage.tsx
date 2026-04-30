@@ -33,6 +33,35 @@ export default function LoadingPage() {
   }, [])
 
   useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload()
+      })
+
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.update()
+        
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                const loadingScreen = document.getElementById('loading-screen')
+                if (loadingScreen) {
+                  loadingScreen.classList.add('fade-out')
+                  setTimeout(() => {
+                    newWorker.postMessage({ type: 'SKIP_WAITING' })
+                  }, 500)
+                }
+              }
+            })
+          }
+        })
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     if (!isLoading) {
       const loadingScreen = document.getElementById('loading-screen')
       if (loadingScreen) {

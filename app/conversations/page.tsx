@@ -31,6 +31,7 @@ import {
   Trash,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useConfirm } from "@/components/confirm-dialog"
 
 export default function ConversationsPage() {
   const [conversations, setConversations] = useState<Conversation[]>([])
@@ -40,6 +41,7 @@ export default function ConversationsPage() {
   const [selectedConversations, setSelectedConversations] = useState<Set<string>>(new Set())
   const [isSelectionMode, setIsSelectionMode] = useState(false)
   const router = useRouter()
+  const confirm = useConfirm()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // 切换选择模式
@@ -154,8 +156,9 @@ export default function ConversationsPage() {
   }
 
   // 处理删除对话
-  const handleDeleteConversation = (id: string) => {
-    if (confirm("确定要删除这个对话吗？")) {
+  const handleDeleteConversation = async (id: string) => {
+    const confirmed = await confirm("删除对话", "确定要删除这个对话吗？")
+    if (confirmed) {
       setConversations((prev) => prev.filter((c) => c.id !== id))
       deleteConversationFromDB(id).catch(console.error)
     }
@@ -174,7 +177,11 @@ export default function ConversationsPage() {
   const handleBatchDelete = useCallback(async () => {
     if (selectedConversations.size === 0) return
 
-    if (confirm(`确定要删除选中的 ${selectedConversations.size} 个对话吗？`)) {
+    const confirmed = await confirm(
+      "批量删除对话",
+      `确定要删除选中的 ${selectedConversations.size} 个对话吗？`
+    )
+    if (confirmed) {
       try {
         const idsToDelete = Array.from(selectedConversations)
         await deleteConversations(idsToDelete)
@@ -190,7 +197,7 @@ export default function ConversationsPage() {
         console.error('批量删除对话失败:', error)
       }
     }
-  }, [selectedConversations])
+  }, [selectedConversations, confirm])
 
   // 导出对话为文本文件
   const exportConversation = (conv: Conversation) => {

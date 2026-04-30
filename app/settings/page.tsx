@@ -6,9 +6,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2 } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getSettings, saveSettings, getUserProfile, deleteUserProfile, type Settings, type UserProfile } from "@/lib/chat-db"
+import { useConfirm } from "@/components/confirm-dialog"
 import { cn } from "@/lib/utils"
 
 export default function SettingsPage() {
@@ -20,12 +21,13 @@ export default function SettingsPage() {
     autoRedirectToRecent: true,
     showLoadingScreen: true,
     notificationsEnabled: false,
-    soundEnabled: true
+    soundEnabled: true,
+    showAIWarning: true
   })
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
+  const confirm = useConfirm()
 
   useEffect(() => {
     loadSettings()
@@ -45,8 +47,6 @@ export default function SettingsPage() {
       setUserProfile(profile)
     } catch (error) {
       console.error('Failed to load settings:', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -83,17 +83,6 @@ export default function SettingsPage() {
     } catch (error) {
       console.error('Failed to logout:', error)
     }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex h-dvh items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary" />
-          <p className="text-sm text-muted-foreground">加载设置中...</p>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -360,6 +349,55 @@ export default function SettingsPage() {
                       soundEnabled: checked
                     }))}
                   />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <AlertTriangle className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="ai-warning" className="text-base">AI 风险提示</Label>
+                      <p className="text-sm text-muted-foreground">在聊天框显示 AI 可能产生不准确信息的提醒</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {settings.showAIWarning ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => {
+                          const confirmed = await confirm(
+                            '关闭 AI 风险提示？',
+                            '关闭后，聊天框将不再显示提醒。\n\n建议保留此提醒，以避免因 AI 生成内容不准确而造成损失。'
+                          )
+                          if (confirmed) {
+                            setSettings(prev => ({
+                              ...prev,
+                              showAIWarning: false
+                            }))
+                          }
+                        }}
+                      >
+                        关闭
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSettings(prev => ({
+                            ...prev,
+                            showAIWarning: true
+                          }))
+                        }}
+                      >
+                        启用
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </CardContent>

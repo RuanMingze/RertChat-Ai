@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import LoadingPage from '@/components/loading/LoadingPage'
+import { ConfirmDialogProvider } from '@/components/confirm-dialog'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -35,10 +36,29 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
         <LoadingPage />
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ConfirmDialogProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ConfirmDialogProvider>
         <Analytics />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                      console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                      console.error('Service Worker registration failed:', error);
+                    });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   )
