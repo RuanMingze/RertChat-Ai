@@ -6,9 +6,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe, Info } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getSettings, saveSettings, getUserProfile, deleteUserProfile, type Settings, type UserProfile } from "@/lib/chat-db"
+import Link from "next/link"
+import { getSettings, saveSettings, getUserProfile, deleteUserProfile, clearAllData, unregisterServiceWorker, clearAllCaches, type Settings, type UserProfile } from "@/lib/chat-db"
 import { useConfirm } from "@/components/confirm-dialog"
 import { cn } from "@/lib/utils"
 import { useI18n, locales, localeNames, Locale } from "@/lib/i18n"
@@ -74,14 +75,17 @@ export default function SettingsPage() {
   }
 
   const handleLogin = () => {
-    const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=lyjasfguplvmjijbhvbsgvdyg0il05bq&redirect_uri=https://ai.ruanm.pages.dev/callback&response_type=code&scope=read write"
+    const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
     window.location.href = authUrl
   }
 
   const handleLogout = async () => {
     try {
-      await deleteUserProfile()
+      await clearAllData()
+      await unregisterServiceWorker()
+      await clearAllCaches()
       setUserProfile(null)
+      window.location.href = '/'
     } catch (error) {
       console.error('Failed to logout:', error)
     }
@@ -450,6 +454,21 @@ export default function SettingsPage() {
                 {isSaving ? t('settings.saving') : t('common.save')}
               </Button>
             </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('about.title')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/about">
+                  <Info className="mr-2 h-4 w-4" />
+                  {t('about.subtitle')}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
           </Card>
         </div>
       </main>

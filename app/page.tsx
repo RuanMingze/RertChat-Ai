@@ -1212,25 +1212,28 @@ export default function Home() {
                     className="cursor-pointer"
                   >
                     <User className="mr-2 h-4 w-4" />
-                    用户中心
+                    {t('settings.userCenter')}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => router.push("/keys")}
                     className="cursor-pointer"
                   >
                     <Key className="mr-2 h-4 w-4" />
-                    API Keys 管理
+                    {t('settings.manageApiKeys')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => {
-                      localStorage.removeItem("user_profile")
-                      window.location.reload()
+                    onClick={async () => {
+                      const { clearAllData, unregisterServiceWorker, clearAllCaches } = await import('@/lib/chat-db')
+                      await clearAllData()
+                      await unregisterServiceWorker()
+                      await clearAllCaches()
+                      window.location.href = '/'
                     }}
                     className="cursor-pointer text-destructive"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    退出登录
+                    {t('settings.logout')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

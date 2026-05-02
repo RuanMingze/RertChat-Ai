@@ -144,6 +144,25 @@ pnpm dev
 
 MIT License
 
+## 建议与反馈
+
+我们非常重视每一位用户的声音！无论是功能建议、bug 反馈还是体验优化，都欢迎大家积极提出：
+
+- **功能建议**：希望添加什么新功能？
+- **体验优化**：哪些地方可以做得更好？
+- **Bug 反馈**：发现了任何问题？
+- **社区贡献**：想参与项目开发？
+
+### 如何提出建议
+
+1. **GitHub Issues**：前往 [GitHub Issues](https://github.com/RuanMingze/RertChat-Ai/issues) 创建新 issue
+2. **GitHub Discussions**：参与 [GitHub Discussions](https://github.com/RuanMingze/RertChat-Ai/discussions) 讨论
+3. **Pull Request**：欢迎提交 PR 贡献代码！
+
+### 感谢你的参与
+
+每一个建议都可能让 RertChat 变得更好！我们期待与大家一起打造更出色的轻量级 AI 对话助手。
+
 ## 致谢
 
 - [shadcn/ui](https://ui.shadcn.com/) - UI 组件库

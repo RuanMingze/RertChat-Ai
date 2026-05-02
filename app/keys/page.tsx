@@ -350,21 +350,21 @@ export default function KeysPage() {
   },
   body: JSON.stringify({
     messages: [
-      { role: 'user', content: '你好' }
+      { role: 'user', content: 'Hello' }
     ]
   })
 })`}</code>
                 </pre>
               </div>
               <div>
-                <Label className="text-sm font-medium">3. cURL 示例</Label>
+                <Label className="text-sm font-medium">3. {t('keys.curlExample')}</Label>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
                   <code>{`curl -X POST https://rertx.dpdns.org/api/v1/chat \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "messages": [
-      {"role": "user", "content": "你好"}
+      {"role": "user", "content": "Hello"}
     ],
     "model": "@cf/qwen/qwen3-30b-a3b-fp8",
     "stream": true
@@ -386,7 +386,7 @@ headers = {
 
 data = {
     "messages": [
-        {"role": "user", "content": "你好"}
+        {"role": "user", "content": "Hello"}
     ],
     "stream": True
 }
@@ -412,7 +412,7 @@ async function chat() {
     },
     body: JSON.stringify({
       messages: [
-        { role: 'user', content: '你好' }
+        { role: 'user', content: 'Hello' }
       ],
       stream: true
     })

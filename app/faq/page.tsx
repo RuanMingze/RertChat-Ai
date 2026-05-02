@@ -321,7 +321,7 @@ export default function FAQPage() {
                       <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                     <a
-                      href="https://github.com/RuanMingze/RertChat-AI/issues"
+                      href="https://github.com/RuanMingze/RertChat-Ai/issues"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-secondary/50 transition-colors group"

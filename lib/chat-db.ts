@@ -356,3 +356,37 @@ export async function deleteUserProfile(): Promise<void> {
     request.onsuccess = () => resolve()
   })
 }
+
+export async function clearSettings(): Promise<void> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(SETTINGS_STORE_NAME, 'readwrite')
+    const store = transaction.objectStore(SETTINGS_STORE_NAME)
+    const request = store.clear()
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => resolve()
+  })
+}
+
+export async function clearAllData(): Promise<void> {
+  await Promise.all([
+    clearAllConversations(),
+    clearSettings(),
+    deleteUserProfile(),
+  ])
+}
+
+export async function unregisterServiceWorker(): Promise<void> {
+  if ('serviceWorker' in navigator) {
+    const registrations = await navigator.serviceWorker.getRegistrations()
+    await Promise.all(registrations.map((registration) => registration.unregister()))
+  }
+}
+
+export async function clearAllCaches(): Promise<void> {
+  if ('caches' in window) {
+    const cacheNames = await caches.keys()
+    await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)))
+  }
+}
