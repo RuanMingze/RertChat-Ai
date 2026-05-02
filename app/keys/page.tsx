@@ -10,9 +10,11 @@ import { getUserProfile } from "@/lib/chat-db"
 import { getApiKeys, createApiKey, deleteApiKey, rotateApiKey, type ApiKey } from "@/lib/api-keys-client"
 import { Plus, Trash2, RotateCcw, Check, Key, AlertCircle, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useI18n } from "@/lib/i18n"
 
 export default function KeysPage() {
   const router = useRouter()
+  const { t } = useI18n()
   const [isLoading, setIsLoading] = useState(true)
   const [isCreating, setIsCreating] = useState(false)
   const [isRotating, setIsRotating] = useState<string | null>(null)
@@ -168,7 +170,7 @@ export default function KeysPage() {
             </Button>
             <div className="flex items-center gap-2">
               <Key className="h-5 w-5 text-primary" />
-              <h2 className="text-sm font-semibold">API Keys</h2>
+              <h2 className="text-sm font-semibold">{t('keys.title')}</h2>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -186,9 +188,9 @@ export default function KeysPage() {
         <div className="mx-auto max-w-4xl">
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold mb-2">API Keys 管理</h1>
+            <h1 className="text-2xl font-semibold mb-2">{t('keys.management')}</h1>
             <p className="text-muted-foreground">
-              管理你的 API 密钥，用于访问 RertChat AI 服务
+              {t('keys.description')}
             </p>
           </div>
 
@@ -203,9 +205,9 @@ export default function KeysPage() {
           {/* Create Key Button */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-lg">创建新的 API Key</CardTitle>
+              <CardTitle className="text-lg">{t('keys.createNewKey')}</CardTitle>
               <CardDescription>
-                创建一个新的 API 密钥用于访问 API 服务
+                {t('keys.createKeyDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -215,7 +217,7 @@ export default function KeysPage() {
                 className="w-full sm:w-auto"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                {isCreating ? "创建中..." : "创建 API Key"}
+                {isCreating ? t('keys.creating') : t('keys.createApiKey')}
               </Button>
             </CardContent>
           </Card>
@@ -229,9 +231,9 @@ export default function KeysPage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Key className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground mb-2">暂无 API Keys</p>
+                <p className="text-muted-foreground mb-2">{t('keys.noKeys')}</p>
                 <p className="text-sm text-muted-foreground">
-                  点击上方按钮创建你的第一个 API Key
+                  {t('keys.noKeysHint')}
                 </p>
               </CardContent>
             </Card>
@@ -248,15 +250,15 @@ export default function KeysPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <CardTitle className="text-base">
-                            {canCopy ? (
-                              <span className="flex items-center gap-2 text-green-600">
-                                <Check className="h-4 w-4" />
-                                新创建的 Key
-                              </span>
-                            ) : (
-                              "API Key"
-                            )}
-                          </CardTitle>
+                              {canCopy ? (
+                                <span className="flex items-center gap-2 text-green-600">
+                                  <Check className="h-4 w-4" />
+                                  {t('keys.newlyCreated')}
+                                </span>
+                              ) : (
+                                t('keys.title')
+                              )}
+                            </CardTitle>
                         </div>
                         <div className="flex items-center gap-2">
                           <Button
@@ -264,7 +266,7 @@ export default function KeysPage() {
                             size="sm"
                             onClick={() => handleRotateKey(key.id)}
                             disabled={isRotatingNow || isDeletingNow}
-                            title="轮转 Key（生成新 Key 并自动复制）"
+                            title={t('keys.rotateTitle')}
                           >
                             <RotateCcw className={cn("h-4 w-4", isRotatingNow && "animate-spin")} />
                           </Button>
@@ -273,7 +275,7 @@ export default function KeysPage() {
                             size="sm"
                             onClick={() => handleDeleteKey(key.id)}
                             disabled={isDeletingNow}
-                            title="删除 Key"
+                            title={t('keys.deleteTitle')}
                           >
                             <Trash2 className={cn("h-4 w-4", isDeletingNow && "animate-pulse")} />
                           </Button>
@@ -312,12 +314,12 @@ export default function KeysPage() {
                       {canCopy ? (
                         <p className="mt-2 text-xs text-green-600">
                           <Check className="inline h-3 w-3 mr-1" />
-                          已复制到剪贴板！2 秒后复制按钮将自动消失
+                          {t('keys.copied')}
                         </p>
                       ) : (
                         <p className="mt-2 text-xs text-muted-foreground">
                           <AlertCircle className="inline h-3 w-3 mr-1" />
-                          为安全起见，刷新页面后 Key 将显示为掩码格式且无法复制
+                          {t('keys.masked')}
                         </p>
                       )}
                     </CardContent>
@@ -330,14 +332,14 @@ export default function KeysPage() {
           {/* Usage Guide */}
           <Card className="mt-8">
             <CardHeader>
-              <CardTitle className="text-lg">使用指南</CardTitle>
-              <CardDescription>如何在你的项目中使用 API Key</CardDescription>
+              <CardTitle className="text-lg">{t('keys.usageGuide')}</CardTitle>
+              <CardDescription>{t('keys.usageGuideDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-sm font-medium">1. 对外公开接口（需要 API Key）</Label>
+                <Label className="text-sm font-medium">1. {t('keys.externalApi')}</Label>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  适用于外部应用、第三方集成等场景
+                  {t('keys.externalApiDescription')}
                 </p>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
                   <code>{`fetch('https://rertx.dpdns.org/api/v1/chat', {
@@ -351,20 +353,6 @@ export default function KeysPage() {
       { role: 'user', content: '你好' }
     ]
   })
-})`}</code>
-                </pre>
-              </div>
-              <div>
-                <Label className="text-sm font-medium">2. 内置聊天接口（使用 Secret Token）</Label>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  仅供本网站内置聊天界面使用，外部调用会被拒绝
-                </p>
-                <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
-                  <code>{`// 内置聊天界面自动使用，无需手动配置
-fetch('/api/chat', {
-  headers: {
-    'Authorization': 'Bearer <internal-secret>'
-  }
 })`}</code>
                 </pre>
               </div>
@@ -384,7 +372,7 @@ fetch('/api/chat', {
                 </pre>
               </div>
               <div>
-                <Label className="text-sm font-medium">4. Python 示例</Label>
+                <Label className="text-sm font-medium">4. {t('keys.pythonExample')}</Label>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
                   <code>{`import requests
 
@@ -408,7 +396,7 @@ print(response.text)`}</code>
                 </pre>
               </div>
               <div>
-                <Label className="text-sm font-medium">5. Node.js 示例</Label>
+                <Label className="text-sm font-medium">5. {t('keys.nodeExample')}</Label>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
                   <code>{`const fetch = require('node-fetch');
 
@@ -438,14 +426,14 @@ chat();`}</code>
                 </pre>
               </div>
               <div>
-                <Label className="text-sm font-medium">6. 安全提示</Label>
+                <Label className="text-sm font-medium">6. {t('keys.securityTips')}</Label>
                 <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                  <li>不要将 API Key 提交到版本控制系统（如 Git）</li>
-                  <li>如果 Key 泄露，立即使用轮转功能生成新的 Key</li>
-                  <li>轮转 Key 后会自动复制新 Key，旧 Key 立即失效</li>
-                  <li>建议定期轮转 Key 以保证安全</li>
-                  <li>在生产环境中使用环境变量存储 API Key</li>
-                  <li>不要在前端代码中硬编码 API Key</li>
+                  <li>{t('keys.securityTip1')}</li>
+                  <li>{t('keys.securityTip2')}</li>
+                  <li>{t('keys.securityTip3')}</li>
+                  <li>{t('keys.securityTip4')}</li>
+                  <li>{t('keys.securityTip5')}</li>
+                  <li>{t('keys.securityTip6')}</li>
                 </ul>
               </div>
             </CardContent>

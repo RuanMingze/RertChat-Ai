@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef, type ChangeEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -32,6 +32,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useConfirm } from "@/components/confirm-dialog"
+import { useI18n } from "@/lib/i18n"
 
 export default function ConversationsPage() {
   const [conversations, setConversations] = useState<Conversation[]>([])
@@ -43,6 +44,7 @@ export default function ConversationsPage() {
   const router = useRouter()
   const confirm = useConfirm()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { t } = useI18n()
 
   // 切换选择模式
   const toggleSelectionMode = useCallback(() => {
@@ -66,7 +68,7 @@ export default function ConversationsPage() {
   }, [])
 
   // 导入对话
-  const handleImportConversation = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportConversation = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -75,7 +77,7 @@ export default function ConversationsPage() {
       const importData = JSON.parse(text)
       
       if (!importData.conversations || !Array.isArray(importData.conversations)) {
-        console.error('无效的导入文件格式')
+        console.error(t('conversations.invalidImportFormat'))
         return
       }
 
@@ -94,7 +96,7 @@ export default function ConversationsPage() {
       const sortedConvs = [...allConversations].sort((a, b) => b.updatedAt - a.updatedAt)
       setConversations(sortedConvs)
     } catch (error) {
-      console.error('导入对话失败:', error)
+      console.error(t('conversations.importFailed'), error)
     } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
@@ -157,7 +159,7 @@ export default function ConversationsPage() {
 
   // 处理删除对话
   const handleDeleteConversation = async (id: string) => {
-    const confirmed = await confirm("删除对话", "确定要删除这个对话吗？")
+    const confirmed = await confirm(t('conversations.deleteConversation'), t('conversations.deleteConfirm'))
     if (confirmed) {
       setConversations((prev) => prev.filter((c) => c.id !== id))
       deleteConversationFromDB(id).catch(console.error)
@@ -178,8 +180,8 @@ export default function ConversationsPage() {
     if (selectedConversations.size === 0) return
 
     const confirmed = await confirm(
-      "批量删除对话",
-      `确定要删除选中的 ${selectedConversations.size} 个对话吗？`
+      t('conversations.batchDeleteTitle'),
+      t('conversations.batchDeleteConfirm', { count: selectedConversations.size })
     )
     if (confirmed) {
       try {
@@ -194,20 +196,20 @@ export default function ConversationsPage() {
         setSelectedConversations(new Set())
         setIsSelectionMode(false)
       } catch (error) {
-        console.error('批量删除对话失败:', error)
+        console.error(t('conversations.batchDeleteFailed'), error)
       }
     }
-  }, [selectedConversations, confirm])
+  }, [selectedConversations, confirm, t])
 
   // 导出对话为文本文件
   const exportConversation = (conv: Conversation) => {
-    let content = `对话标题: ${conv.title}\n`
-    content += `创建时间: ${formatDate(conv.createdAt)}\n`
-    content += `更新时间: ${formatDate(conv.updatedAt)}\n\n`
-    content += `=== 对话内容 ===\n\n`
+    let content = `${t('conversations.exportTitle', { title: conv.title })}\n`
+    content += `${t('conversations.exportCreated', { time: formatDate(conv.createdAt) })}\n`
+    content += `${t('conversations.exportUpdated', { time: formatDate(conv.updatedAt) })}\n\n`
+    content += `=== ${t('conversations.exportContent')} ===\n\n`
 
     conv.messages.forEach((msg, index) => {
-      const role = msg.role === "user" ? "我" : "AI"
+      const role = msg.role === "user" ? t('chat.newChat') : "AI"
       content += `${role}: ${msg.content}\n\n`
     })
 
@@ -224,17 +226,17 @@ export default function ConversationsPage() {
 
   // 导出所有对话
   const exportAllConversations = () => {
-    let content = `=== 全部对话导出 ===\n`
-    content += `导出时间: ${formatDate(Date.now())}\n`
-    content += `对话数量: ${conversations.length}\n\n`
+    let content = `=== ${t('conversations.exportAllTitle')} ===\n`
+    content += `${t('conversations.exportTime')}: ${formatDate(Date.now())}\n`
+    content += `${t('conversations.exportCount')}: ${conversations.length}\n\n`
 
     conversations.forEach((conv, convIndex) => {
-      content += `=== 对话 ${convIndex + 1}: ${conv.title} ===\n`
-      content += `创建时间: ${formatDate(conv.createdAt)}\n`
-      content += `更新时间: ${formatDate(conv.updatedAt)}\n\n`
+      content += `=== ${t('conversations.title')} ${convIndex + 1}: ${conv.title} ===\n`
+      content += `${t('conversations.exportCreated', { time: formatDate(conv.createdAt) })}\n`
+      content += `${t('conversations.exportUpdated', { time: formatDate(conv.updatedAt) })}\n\n`
 
       conv.messages.forEach((msg, msgIndex) => {
-        const role = msg.role === "user" ? "我" : "AI"
+        const role = msg.role === "user" ? t('chat.newChat') : "AI"
         content += `${role}: ${msg.content}\n\n`
       })
 
@@ -245,7 +247,7 @@ export default function ConversationsPage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `全部对话_${formatDate(Date.now()).replace(/[^a-zA-Z0-9]/g, "_")}.txt`
+    a.download = `${t('conversations.title')}_${formatDate(Date.now()).replace(/[^a-zA-Z0-9]/g, "_")}.txt`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -283,9 +285,9 @@ export default function ConversationsPage() {
             </Button>
           )}
           {isSelectionMode ? (
-            <span className="text-sm text-foreground">已选 {selectedConversations.size} 项</span>
+            <span className="text-sm text-foreground">{t('conversations.selectedCount', { count: selectedConversations.size })}</span>
           ) : (
-            <h1 className="text-lg font-semibold text-foreground">全部对话</h1>
+            <h1 className="text-lg font-semibold text-foreground">{t('conversations.title')}</h1>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -298,7 +300,7 @@ export default function ConversationsPage() {
                 className="gap-2"
               >
                 <CheckSquare className="h-4 w-4" />
-                {selectedConversations.size === filteredConversations.length ? '取消全选' : '全选'}
+                {selectedConversations.size === filteredConversations.length ? t('conversations.deselectAll') : t('conversations.selectAll')}
               </Button>
               <Button
                 variant="destructive"
@@ -308,7 +310,7 @@ export default function ConversationsPage() {
                 className="gap-2"
               >
                 <Trash className="h-4 w-4" />
-                删除
+                {t('conversations.batchDelete')}
               </Button>
               <Button
                 variant="ghost"
@@ -342,7 +344,7 @@ export default function ConversationsPage() {
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={useRegex ? "使用正则表达式搜索对话..." : "搜索对话标题或内容..."}
+            placeholder={useRegex ? t('conversations.regexSearchPlaceholder') : t('conversations.searchPlaceholder')}
             className="pl-10"
           />
           {searchQuery && (
@@ -364,7 +366,7 @@ export default function ConversationsPage() {
               onCheckedChange={(checked) => setUseRegex(checked === true)}
             />
             <Label htmlFor="use-regex" className="text-sm">
-              使用正则表达式
+              {t('conversations.useRegex')}
             </Label>
           </div>
           {conversations.length > 0 && (
@@ -383,7 +385,7 @@ export default function ConversationsPage() {
                 className="gap-2 text-muted-foreground hover:text-foreground"
               >
                 <Upload className="h-4 w-4" />
-                导入
+                {t('conversations.import')}
               </Button>
               <Button
                 variant="ghost"
@@ -392,7 +394,7 @@ export default function ConversationsPage() {
                 className="gap-2 text-muted-foreground hover:text-foreground"
               >
                 <Download className="h-4 w-4" />
-                导出全部
+                {t('conversations.exportAll')}
               </Button>
             </>
           )}
@@ -410,16 +412,16 @@ export default function ConversationsPage() {
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <MessageSquare className="h-12 w-12 text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
-                {searchQuery ? "没有找到匹配的对话" : "暂无对话历史"}
+                {searchQuery ? t('conversations.noSearchResults') : t('conversations.noConversations')}
               </h3>
               <p className="text-muted-foreground mb-6">
                 {searchQuery 
-                  ? "尝试调整搜索条件" 
-                  : "开始与 AI 助手的对话吧"
+                  ? t('conversations.noSearchResultsHint')
+                  : t('conversations.startConversation')
                 }
               </p>
               <Button onClick={() => router.push("/")}>
-                新建对话
+                {t('conversations.newConversation')}
               </Button>
             </div>
           ) : (
@@ -497,7 +499,7 @@ export default function ConversationsPage() {
                       {conv.messages.length > 0 
                         ? conv.messages[conv.messages.length - 1].content.replace(/</g, "&lt;").replace(/>/g, "&gt;").slice(0, 100) + 
                           (conv.messages[conv.messages.length - 1].content.length > 100 ? "..." : "")
-                        : "无消息"
+                        : t('conversations.noMessages')
                       }
                     </div>
                   </div>
@@ -510,8 +512,8 @@ export default function ConversationsPage() {
 
       {/* Footer */}
       <footer className="border-t border-border bg-card/50 px-4 py-3 text-center text-xs text-muted-foreground">
-        共 {conversations.length} 个对话
-        {searchQuery && ` (筛选出 ${filteredConversations.length} 个)`}
+        {t('conversations.totalConversations', { count: conversations.length })}
+        {searchQuery && ` (${t('conversations.filteredCount', { count: filteredConversations.length })})`}
       </footer>
     </div>
   )

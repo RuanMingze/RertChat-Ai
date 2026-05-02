@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export interface NotificationOptions {
   title: string
   body?: string
@@ -85,10 +86,10 @@ class NotificationManager {
     })
   }
 
-  async notifyConversationComplete(title: string): Promise<Notification | null> {
+  async notifyConversationComplete(notificationTitle: string, notificationBody: string): Promise<Notification | null> {
     return this.showNotification({
-      title: '对话完成',
-      body: `"${title}" 已生成完整回复`,
+      title: notificationTitle,
+      body: notificationBody,
       icon: '/favicon.png',
       tag: 'conversation-complete',
       silent: true,

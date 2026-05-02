@@ -1,10 +1,13 @@
+/* eslint-disable no-undef */
 "use client"
+import { SpeechRecognition } from "@/types/speech-recognition"
 
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowUp, Square, Mic, Code, Brain } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useI18n } from "@/lib/i18n"
 
 export interface ChatInputRef {
   focus: () => void
@@ -31,6 +34,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
   deepThinkingMode = false,
   onToggleDeepThinkingMode,
 }, ref) {
+  const { t, locale } = useI18n()
   const [input, setInput] = useState("")
   const [isRecording, setIsRecording] = useState(false)
   const [currentTranscript, setCurrentTranscript] = useState("")
@@ -69,7 +73,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
       const recognition = new SpeechRecognition() as SpeechRecognition
       recognition.continuous = true
       recognition.interimResults = true
-      recognition.lang = "zh-CN"
+      recognition.lang = locale
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
         const result = event.results[event.results.length - 1]
@@ -119,7 +123,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
 
   const handleVoiceInput = () => {
     if (!recognitionRef.current) {
-      console.error("浏览器不支持语音识别")
+      console.error("Browser does not support speech recognition")
       return
     }
 
@@ -148,7 +152,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
               className="gap-2 border border-border"
             >
               <Code className="h-4 w-4" />
-              编程模式
+              {t('modes.programmingMode')}
             </Button>
           )}
           {onToggleDeepThinkingMode && (
@@ -159,7 +163,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
               className="gap-2 border border-border"
             >
               <Brain className="h-4 w-4" />
-              深度思考
+              {t('modes.deepThinkingMode')}
             </Button>
           )}
         </div>
@@ -169,7 +173,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="输入消息，按 Enter 发送..."
+            placeholder={t('chat.typeMessage')}
             disabled={disabled}
             rows={2}
             className={cn(
@@ -219,7 +223,7 @@ export const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(function ChatI
         </div>
         {showAIWarning && (
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            AI 可能会产生不准确的信息，请仔细核实重要内容
+            {t('chat.aiWarning')}
           </p>
         )}
       </div>

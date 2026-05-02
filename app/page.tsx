@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback, memo } from "react"
+import type { ChangeEvent, KeyboardEvent, MouseEvent } from "react"
+import React from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -8,6 +10,7 @@ import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { ChatInput } from "@/components/chat/chat-input"
+import { useI18n } from "@/lib/i18n"
 import {
   getAllConversations,
   saveConversation,
@@ -66,6 +69,7 @@ import {
 const MarkdownContent = memo(function MarkdownContent({ content }: { content: string }) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [expanded, setExpanded] = useState(false)
+  const { t } = useI18n()
 
   const handleCopy = useCallback((code: string) => {
     navigator.clipboard.writeText(code)
@@ -73,10 +77,9 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
     setTimeout(() => setCopiedCode(null), 2000)
   }, [])
 
-  // 处理深度思考格式
   const processContent = useCallback((text: string) => {
-    // 匹配新的深度思考格式
-    const deepThinkingRegex = /^思考中：\s*([\s\S]*?)思考结束\n\s*回答内容：\s*([\s\S]*)$/
+    // 匹配深度思考格式 (中文和英文)
+    const deepThinkingRegex = /^(?:思考中：|Thinking：)\s*([\s\S]*?)(?:思考结束|End of thinking)\n\s*(?:回答内容：|Final answer：)\s*([\s\S]*)$/
     const match = deepThinkingRegex.exec(text)
     
     if (match) {
@@ -104,7 +107,7 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
             onClick={() => setExpanded(!expanded)}
             className="w-full flex justify-between items-center p-2 text-left hover:bg-muted/50 transition-colors"
           >
-            <span className="text-muted-foreground font-medium">已完成思考</span>
+            <span className="text-muted-foreground font-medium">{t('chat.thinkingComplete')}</span>
             <span className={`transition-transform ${expanded ? 'rotate-180' : ''} text-muted-foreground`}>
               ▼
             </span>
@@ -122,7 +125,7 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
                 {processed.thinkingContent}
               </ReactMarkdown>
               <div className="mt-2 text-xs">
-                <span>已完成</span>
+                <span>{t('common.success')}</span>
               </div>
             </div>
           )}
@@ -170,12 +173,12 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
                           {copiedCode === codeText ? (
                             <>
                               <Check className="h-3.5 w-3.5" />
-                              已复制
+                              {t('chat.copied')}
                             </>
                           ) : (
                             <>
                               <Copy className="h-3.5 w-3.5" />
-                              复制
+                              {t('chat.copy')}
                             </>
                           )}
                         </Button>
@@ -253,12 +256,12 @@ const MarkdownContent = memo(function MarkdownContent({ content }: { content: st
                     {copiedCode === codeText ? (
                       <>
                         <Check className="h-3.5 w-3.5" />
-                        已复制
+                        {t('chat.copied')}
                       </>
                     ) : (
                       <>
                         <Copy className="h-3.5 w-3.5" />
-                        复制
+                        {t('chat.copy')}
                       </>
                     )}
                   </Button>
@@ -352,14 +355,13 @@ async function sendWithContextFallback(
   model: string,
   streaming: boolean,
   programmingMode: boolean,
-  deepThinkingMode: boolean
+  deepThinkingMode: boolean,
+  t: (key: string) => string
 ): Promise<Response> {
   // 计算最大可用轮数
   const maxRounds = Math.floor(historyMessages.length / 2)
   
-  // 降级策略：全部 -> 2轮 -> 1轮 -> 0轮
   const contextLevels = [maxRounds, 2, 1, 0].filter((level, index, arr) => {
-    // 去重并保持递减顺序
     if (index === 0) return true
     return level < arr[index - 1]
   })
@@ -370,22 +372,19 @@ async function sendWithContextFallback(
     try {
       const messages = buildMessagesWithContext(historyMessages, currentMessage, contextRounds)
       
-      // 构建系统提示词
       let systemMessages = []
       
-      // 添加编程模式系统提示
       if (programmingMode) {
         systemMessages.push({
           role: "system",
-          content: "你现在是一位经验丰富、专业严谨、实战能力极强的资深编程工程师。你的职责是：1. 精准理解用户的编程需求，直接给出可运行、高质量、规范的代码。2. 代码结构清晰、注释合理、逻辑严谨，符合行业最佳实践。3. 优先提供完整解决方案，而不是只给思路或片段。4. 遇到问题时主动分析、排查、给出优化建议。5. 语言简洁专业，不废话，直接输出有效代码与解释。请以资深程序员的身份，帮我完成接下来所有编程任务。"
+          content: t('systemPrompts.programmingMode')
         })
       }
       
-      // 添加深度思考模式系统提示
       if (deepThinkingMode) {
         systemMessages.push({
           role: "system",
-          content: "你现在要深度思考我提出的问题，遵循以下原则：\n\n【核心思考要求】\n1. **场景化理解**：分析用户问题中的关键名词（如'洗车店'、'加油站'、'停车场'等），理解其隐含的行为场景\n   - 例如：'洗车店' = 开车去洗车，不是人去那里看一眼就回来\n   - 例如：'加油站' = 开车去加油，不是步行去参观\n2. **目的性原则**：用户去一个地方就是为了在那里做该做的事，这是默认前提\n   - 去洗车店 = 要洗车（车是服务对象，必须开车去）\n   - 去加油站 = 要加油（车是服务对象，必须开车去）\n   - 去餐厅 = 要吃饭（人是服务对象，可以步行或开车）\n   - 去超市 = 要购物（人是服务对象，可以步行或开车）\n3. **常识判断**：分析关键信息是否符合常理和现实逻辑\n4. **准确理解用户意图**：不要断章取义，要理解完整场景和默认前提\n5. **识别隐含前提**：很多问题有默认场景，不需要用户明说\n\n【思考步骤】\n1. 提取问题中的关键名词和动词\n2. 分析这个地方的功能：用户去那里是为了做什么？（默认就是要做该做的事）\n3. 分析服务对象是谁：是人还是车？（决定用什么交通工具）\n4. 基于场景常识给出合理建议\n\n【输出格式】\n思考中：\n1. 关键词分析：[提取关键名词，分析这个地方的功能和默认行为]\n2. 服务对象判断：[用户去那里是为了什么？服务对象是人还是车？]\n3. 场景理解：[用户的真实意图和完整场景是什么]\n4. 常识判断：[基于目的性原则，分析是否符合现实逻辑]\n思考结束\n最终回答：[基于思考给出最符合场景常识的建议]"
+          content: t('systemPrompts.deepThinkingMode')
         })
       }
       
@@ -407,6 +406,7 @@ async function sendWithContextFallback(
 
 export default function Home() {
   const router = useRouter()
+  const { t } = useI18n()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -503,7 +503,7 @@ export default function Home() {
   }, [conversations])
 
   // 导入对话
-  const handleImportConversation = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportConversation = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -716,7 +716,6 @@ export default function Home() {
       abortControllerRef.current = new AbortController()
 
       try {
-        // 使用带降级的上下文请求
         const response = await sendWithContextFallback(
           messages,
           userMessage,
@@ -724,7 +723,8 @@ export default function Home() {
           settings.aiModel,
           settings.streamingEnabled,
           programmingMode,
-          deepThinkingMode
+          deepThinkingMode,
+          t
         )
 
         const reader = response.body?.getReader()
@@ -734,7 +734,8 @@ export default function Home() {
         let fullContent = ""
         let buffer = ""
 
-        while (true) {
+        let isReading = true
+        while (isReading) {
           const { done, value } = await reader.read()
           if (done) break
 
@@ -804,16 +805,16 @@ export default function Home() {
               ? { ...c, messages: updatedMessages, updatedAt: Date.now() }
               : c
           )
-          // 保存到 IndexedDB
           const conv = updated.find((c) => c.id === convId)
           if (conv) saveConversation(conv).catch(console.error)
           return updated
         })
 
-        // 发送通知
         if (settings.notificationsEnabled && fullContent) {
           const currentConv = conversations.find((c) => c.id === convId)
-          notificationManager.notifyConversationComplete(currentConv?.title || '新对话').catch(console.error)
+          const notificationTitle = t('chat.notificationComplete')
+          const notificationBody = t('chat.notificationBody', { title: currentConv?.title || t('chat.newChat') })
+          notificationManager.notifyConversationComplete(notificationTitle, notificationBody).catch(console.error)
         }
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") return
@@ -821,7 +822,7 @@ export default function Home() {
           const updated = [...prev]
           const lastIdx = updated.length - 1
           if (lastIdx >= 0 && updated[lastIdx].role === "assistant" && !updated[lastIdx].content) {
-            updated[lastIdx] = { ...updated[lastIdx], content: "抱歉，发生了错误，请稍后重试。" }
+            updated[lastIdx] = { ...updated[lastIdx], content: t('chat.requestError') }
           }
           return updated
         })
@@ -830,10 +831,10 @@ export default function Home() {
         abortControllerRef.current = null
       }
     },
-    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, settings.notificationsEnabled, programmingMode, deepThinkingMode, conversations]
+    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, settings.notificationsEnabled, programmingMode, deepThinkingMode, conversations, t]
   )
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       if (isLoading) stop()
@@ -844,7 +845,7 @@ export default function Home() {
   const handleNewConversation = () => {
     const newConv: Conversation = {
       id: generateId(),
-      title: "新对话",
+      title: t('chat.newChat'),
       messages: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -938,34 +939,36 @@ export default function Home() {
   }
 
   const suggestions = deepThinkingMode ? [
-    { icon: Brain, text: "为什么 0 不能作为除数" },
-    { icon: Brain, text: "如何理解量子计算的基本原理" },
-    { icon: Brain, text: "解释一下相对论的时间 dilation 效应" },
-    { icon: Brain, text: "什么是人工智能中的神经网络" },
+    { icon: Brain, text: t('suggestions.deepThinking.0') },
+    { icon: Brain, text: t('suggestions.deepThinking.1') },
+    { icon: Brain, text: t('suggestions.deepThinking.2') },
+    { icon: Brain, text: t('suggestions.deepThinking.3') },
   ] : programmingMode ? [
-    { icon: Code, text: "帮我写一个 Python 快速排序算法" },
-    { icon: Code, text: "用 React 实现一个待办事项列表" },
-    { icon: Code, text: "解释一下 JavaScript 的闭包概念" },
-    { icon: Code, text: "如何优化 React 应用的性能" },
+    { icon: Code, text: t('suggestions.programmingMode.0') },
+    { icon: Code, text: t('suggestions.programmingMode.1') },
+    { icon: Code, text: t('suggestions.programmingMode.2') },
+    { icon: Code, text: t('suggestions.programmingMode.3') },
   ] : [
-    { icon: MessageSquare, text: "请简要介绍一下你自己" },
-    { icon: Code, text: "帮我写一个 Python 快速排序算法" },
-    { icon: Sparkles, text: "给我讲一个有趣的故事" },
-    { icon: Zap, text: "解释一下什么是人工智能" },
+    { icon: MessageSquare, text: t('suggestions.default.0') },
+    { icon: Code, text: t('suggestions.default.1') },
+    { icon: Sparkles, text: t('suggestions.default.2') },
+    { icon: Zap, text: t('suggestions.default.3') },
   ]
 
   return (
     <div className="flex h-dvh bg-background">
       {/* Sidebar Toggle */}
       {!sidebarOpen && (
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setSidebarOpen(true)}
-          className="fixed left-4 top-4 z-50 h-10 w-10 rounded-xl bg-card shadow-sm hover:bg-secondary"
-        >
-          <PanelLeft className="h-5 w-5" />
-        </Button>
+        <div className="fixed left-4 top-4 z-50 flex gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSidebarOpen(true)}
+            className="h-10 w-10 rounded-xl bg-card shadow-sm hover:bg-secondary"
+          >
+            <PanelLeft className="h-5 w-5" />
+          </Button>
+        </div>
       )}
 
       {/* Sidebar */}
@@ -976,15 +979,17 @@ export default function Home() {
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
-          <h2 className="text-lg font-semibold text-sidebar-foreground">对话历史</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(false)}
-            className="h-9 w-9 text-sidebar-foreground hover:bg-sidebar-accent"
-          >
-            <PanelLeftClose className="h-5 w-5" />
-          </Button>
+          <h2 className="text-lg font-semibold text-sidebar-foreground">{t('chat.conversationHistory')}</h2>
+          <div className="flex gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(false)}
+              className="h-9 w-9 text-sidebar-foreground hover:bg-sidebar-accent"
+            >
+              <PanelLeftClose className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
         <div className="p-3">
           <Button
@@ -992,13 +997,13 @@ export default function Home() {
             className="w-full justify-start gap-2 rounded-xl bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
           >
             <Plus className="h-4 w-4" />
-            新建对话
+            {t('chat.newConversation')}
           </Button>
         </div>
         <ScrollArea className="flex-1 px-3">
           <div className="space-y-1 pb-4">
             {conversations.length === 0 ? (
-              <p className="px-3 py-8 text-center text-sm text-sidebar-foreground/50">暂无对话历史</p>
+              <p className="px-3 py-8 text-center text-sm text-sidebar-foreground/50">{t('chat.noConversations')}</p>
             ) : (
               conversations
                 .sort((a, b) => {
@@ -1062,14 +1067,14 @@ export default function Home() {
                 className="w-full justify-start gap-2 rounded-xl"
               >
                 <Trash className="h-4 w-4" />
-                删除选中 ({selectedConversations.size})
+                {t('chat.deleteSelected')} ({selectedConversations.size})
               </Button>
               <Button
                 onClick={toggleSelectionMode}
                 variant="outline"
                 className="w-full justify-start gap-2 rounded-xl border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                取消选择
+                {t('chat.cancelSelection')}
               </Button>
             </>
           ) : (
@@ -1078,7 +1083,7 @@ export default function Home() {
               className="w-full justify-start gap-2 rounded-xl hover:bg-sidebar-accent/50"
             >
               <SettingsIcon className="h-4 w-4" />
-              设置
+              {t('settings.title')}
             </Button>
           )}
         </div>
@@ -1101,7 +1106,7 @@ export default function Home() {
         >
           <ContextMenuItem onClick={handleRenameClick}>
             <Pencil className="mr-2 h-4 w-4" />
-            重命名
+            {t('chat.rename')}
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => {
@@ -1112,7 +1117,7 @@ export default function Home() {
             }}
           >
             <Pin className="mr-2 h-4 w-4" />
-            {conversations.find(c => c.id === contextMenu.conversationId)?.isPinned ? '取消置顶' : '置顶'}
+            {conversations.find(c => c.id === contextMenu.conversationId)?.isPinned ? t('chat.unpin') : t('chat.pin')}
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => {
@@ -1124,14 +1129,14 @@ export default function Home() {
             }}
           >
             <Download className="mr-2 h-4 w-4" />
-            导出
+            {t('chat.export')}
           </ContextMenuItem>
           <ContextMenuItem
             onClick={handleDeleteClick}
             className="text-destructive hover:text-destructive"
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            删除
+            {t('chat.delete')}
           </ContextMenuItem>
         </ContextMenu>
       )}
@@ -1142,6 +1147,12 @@ export default function Home() {
         currentName={renameDialog.currentName}
         onConfirm={handleRenameConfirm}
         onCancel={handleRenameCancel}
+        labels={{
+          title: t('chat.rename'),
+          placeholder: t('chat.enterNewName'),
+          confirm: t('common.confirm'),
+          cancel: t('common.cancel')
+        }}
       />
 
       {/* Main Content */}
@@ -1165,12 +1176,12 @@ export default function Home() {
               className="gap-2 text-muted-foreground hover:text-foreground"
             >
               <MessageSquare className="h-4 w-4" />
-              全部对话
+              {t('chat.conversationHistory')}
             </Button>
             {messages.length > 0 && (
               <Button variant="ghost" size="sm" onClick={handleClear} className="gap-2 text-muted-foreground hover:text-foreground">
                 <RotateCcw className="h-4 w-4" />
-                清空对话
+                {t('chat.clearChat')}
               </Button>
             )}
             {userProfile ? (
@@ -1245,9 +1256,9 @@ export default function Home() {
             <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20">
               <Bot className="h-10 w-10 text-primary" />
             </div>
-            <h1 className="mb-3 text-balance text-center text-3xl font-semibold text-foreground">你好，我是 AI 助手</h1>
+            <h1 className="mb-3 text-balance text-center text-3xl font-semibold text-foreground">{t('home.welcomeTitle')}</h1>
             <p className="mb-10 max-w-md text-balance text-center text-muted-foreground">
-              我可以帮你回答问题、写代码、创作内容，或者只是聊聊天
+              {t('home.welcomeSubtitle')}
             </p>
             <div className="grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
               {suggestions.map((s, i) => (

@@ -1,7 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-// Auto-generated version compatibility patch for next-on-pages
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const packageJsonPath = path.join(__dirname, 'node_modules', '@cloudflare', 'next-on-pages', 'package.json');
 
 try {
@@ -11,10 +14,9 @@ try {
     process.exit(1);
   }
 
-  let content = fs.readFileSync(packageJsonPath, 'utf8');
+  const content = fs.readFileSync(packageJsonPath, 'utf8');
   const packageJson = JSON.parse(content);
-  
-  // Modify the Next.js version constraint in peerDependencies
+
   if (packageJson.peerDependencies && packageJson.peerDependencies.next) {
     const originalVersion = packageJson.peerDependencies.next;
     packageJson.peerDependencies.next = '>=14.3.0';
@@ -24,8 +26,7 @@ try {
   } else {
     console.warn('Warning: peerDependencies.next not found in @cloudflare/next-on-pages package.json');
   }
-  
-  // Write the changes back to the file
+
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8');
   console.log('\n✅ Compatibility patch for @cloudflare/next-on-pages applied successfully');
 } catch (e) {

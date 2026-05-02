@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
+import { useI18n } from '@/lib/i18n'
 
 export default function Error({
   error,
@@ -11,6 +12,8 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const { t } = useI18n()
+
   useEffect(() => {
     console.error('Application error:', error)
   }, [error])
@@ -22,10 +25,10 @@ export default function Error({
       </div>
 
       <h1 className="mb-3 text-balance text-center text-3xl font-semibold text-foreground">
-        出了点问题
+        {t('error.title')}
       </h1>
       <p className="mb-10 max-w-md text-balance text-center text-muted-foreground">
-        抱歉，应用程序遇到了错误。请尝试刷新页面或返回首页。
+        {t('error.description')}
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3">
@@ -37,7 +40,7 @@ export default function Error({
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
             <RefreshCw className="h-5 w-5" />
           </div>
-          <span className="text-sm text-foreground">重试</span>
+          <span className="text-sm text-foreground">{t('error.retry')}</span>
         </button>
 
         <Link
@@ -47,13 +50,13 @@ export default function Error({
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
             <Home className="h-5 w-5" />
           </div>
-          <span className="text-sm text-foreground">返回首页</span>
+          <span className="text-sm text-foreground">{t('error.goHome')}</span>
         </Link>
       </div>
 
       {error.digest && (
         <p className="mt-8 text-xs text-muted-foreground">
-          错误代码：{error.digest}
+          {t('error.errorCode')}{error.digest}
         </p>
       )}
     </div>

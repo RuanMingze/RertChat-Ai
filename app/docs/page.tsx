@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Copy, Check, Terminal, BookOpen, Globe, Key, Activity, Code, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useI18n } from "@/lib/i18n"
 
 interface CodeBlockProps {
   code: string
@@ -48,15 +49,17 @@ interface EndpointProps {
   body?: object
   response?: object
   note?: string
+  t?: (key: string) => string
 }
 
-function Endpoint({ method, path, description, headers, body, response, note }: EndpointProps) {
+function Endpoint({ method, path, description, headers, body, response, note, t }: EndpointProps) {
   const methodColors: Record<string, string> = {
     GET: "bg-green-500/10 text-green-500 border-green-500/20",
     POST: "bg-blue-500/10 text-blue-500 border-blue-500/20",
     PUT: "bg-orange-500/10 text-orange-500 border-orange-500/20",
     DELETE: "bg-red-500/10 text-red-500 border-red-500/20",
   }
+  const translate = t || ((key: string) => key)
 
   return (
     <Card className="mb-6">
@@ -72,14 +75,14 @@ function Endpoint({ method, path, description, headers, body, response, note }: 
       <CardContent className="space-y-4">
         {headers && headers.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium mb-2">请求头</h4>
+            <h4 className="text-sm font-medium mb-2">{translate('docs.requestHeaders')}</h4>
             <div className="space-y-1">
               {headers.map((header, index) => (
                 <div key={index} className="flex items-center gap-2 text-sm">
                   <code className="text-primary bg-primary/10 px-2 py-0.5 rounded">{header.name}</code>
                   <span className="text-muted-foreground">:</span>
                   <code className="text-muted-foreground bg-muted px-2 py-0.5 rounded">{header.value}</code>
-                  {header.required && <Badge variant="secondary" className="text-xs">必填</Badge>}
+                  {header.required && <Badge variant="secondary" className="text-xs">{translate('docs.required')}</Badge>}
                 </div>
               ))}
             </div>
@@ -88,21 +91,21 @@ function Endpoint({ method, path, description, headers, body, response, note }: 
 
         {body && (
           <div>
-            <h4 className="text-sm font-medium mb-2">请求体</h4>
+            <h4 className="text-sm font-medium mb-2">{translate('docs.requestBody')}</h4>
             <CodeBlock code={JSON.stringify(body, null, 2)} language="json" />
           </div>
         )}
 
         {response && (
           <div>
-            <h4 className="text-sm font-medium mb-2">响应示例</h4>
+            <h4 className="text-sm font-medium mb-2">{translate('docs.responseExample')}</h4>
             <CodeBlock code={JSON.stringify(response, null, 2)} language="json" />
           </div>
         )}
 
         {note && (
           <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-            <strong>注意：</strong>{note}
+            <strong>{translate('docs.note')}：</strong>{note}
           </div>
         )}
       </CardContent>
@@ -110,8 +113,9 @@ function Endpoint({ method, path, description, headers, body, response, note }: 
   )
 }
 
-export default function ApiDocsPage() {
+export default function DocsPage() {
   const [activeTab, setActiveTab] = useState("overview")
+  const { t } = useI18n()
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,38 +123,34 @@ export default function ApiDocsPage() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">API 文档</h1>
+            <h1 className="text-3xl font-bold">{t('docs.title')}</h1>
           </div>
           <p className="text-muted-foreground">
-            RertChat 提供完整的 RESTful API，支持流式输出、多轮对话上下文
+            {t('docs.description')}
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[600px]">
+          <TabsList className="grid w-full grid-cols-3 lg:w-auto">
             <TabsTrigger value="overview" className="gap-2">
               <BookOpen className="h-4 w-4" />
-              概述
+              {t('docs.overview')}
             </TabsTrigger>
             <TabsTrigger value="chat" className="gap-2">
               <Terminal className="h-4 w-4" />
-              聊天 API
-            </TabsTrigger>
-            <TabsTrigger value="keys" className="gap-2">
-              <Key className="h-4 w-4" />
-              密钥管理
+              {t('docs.chatApi')}
             </TabsTrigger>
             <TabsTrigger value="status" className="gap-2">
               <Activity className="h-4 w-4" />
-              状态监控
+              {t('docs.status')}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>快速开始</CardTitle>
-                <CardDescription>使用 API 的基本步骤</CardDescription>
+                <CardTitle>{t('docs.quickStart')}</CardTitle>
+                <CardDescription>{t('docs.quickStartDescription')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-start gap-4">
@@ -158,9 +158,9 @@ export default function ApiDocsPage() {
                     1
                   </div>
                   <div>
-                    <h4 className="font-medium">获取 API Key</h4>
+                    <h4 className="font-medium">{t('docs.step1Title')}</h4>
                     <p className="text-sm text-muted-foreground">
-                      在设置页面或通过 API 创建您的个人 API Key
+                      {t('docs.step1Description')}
                     </p>
                   </div>
                 </div>
@@ -169,9 +169,9 @@ export default function ApiDocsPage() {
                     2
                   </div>
                   <div>
-                    <h4 className="font-medium">发送请求</h4>
+                    <h4 className="font-medium">{t('docs.step2Title')}</h4>
                     <p className="text-sm text-muted-foreground">
-                      使用 Bearer Token 认证，发送聊天请求
+                      {t('docs.step2Description')}
                     </p>
                   </div>
                 </div>
@@ -180,9 +180,9 @@ export default function ApiDocsPage() {
                     3
                   </div>
                   <div>
-                    <h4 className="font-medium">接收响应</h4>
+                    <h4 className="font-medium">{t('docs.step3Title')}</h4>
                     <p className="text-sm text-muted-foreground">
-                      支持流式（SSE）和非流式两种响应模式
+                      {t('docs.step3Description')}
                     </p>
                   </div>
                 </div>
@@ -191,8 +191,8 @@ export default function ApiDocsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>认证方式</CardTitle>
-                <CardDescription>API 认证说明</CardDescription>
+                <CardTitle>{t('docs.authentication')}</CardTitle>
+                <CardDescription>{t('docs.authenticationDescription')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="bg-muted/50 rounded-lg p-4">
@@ -201,25 +201,25 @@ export default function ApiDocsPage() {
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  所有 API 请求都需要在 Header 中包含 Authorization 字段，使用 Bearer Token 方式认证。
+                  {t('docs.authenticationDescription')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>基础 URL</CardTitle>
-                <CardDescription>API 端点地址</CardDescription>
+                <CardTitle>{t('docs.baseUrl')}</CardTitle>
+                <CardDescription>{t('docs.baseUrlDescription')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">生产环境</Badge>
+                    <Badge variant="outline">{t('docs.production')}</Badge>
                     <code className="text-sm">https://rertx.dpdns.org</code>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">本地开发</Badge>
-                    <code className="text-sm">http://localhost:3000</code>
+                    <Badge variant="outline">{t('docs.development')}</Badge>
+                    <code className="text-sm">http://apidev.rertx.dpdns.org</code>
                   </div>
                 </div>
               </CardContent>
@@ -227,8 +227,8 @@ export default function ApiDocsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>错误响应</CardTitle>
-                <CardDescription>标准错误格式</CardDescription>
+                <CardTitle>{t('docs.errorResponse')}</CardTitle>
+                <CardDescription>{t('docs.errorResponseDescription')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <CodeBlock
@@ -241,19 +241,19 @@ export default function ApiDocsPage() {
                 <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                   <div className="bg-muted/50 p-3 rounded-lg text-center">
                     <div className="text-lg font-semibold text-green-500">200</div>
-                    <div className="text-xs text-muted-foreground">成功</div>
+                    <div className="text-xs text-muted-foreground">{t('docs.success')}</div>
                   </div>
                   <div className="bg-muted/50 p-3 rounded-lg text-center">
                     <div className="text-lg font-semibold text-orange-500">400</div>
-                    <div className="text-xs text-muted-foreground">请求错误</div>
+                    <div className="text-xs text-muted-foreground">{t('docs.badRequest')}</div>
                   </div>
                   <div className="bg-muted/50 p-3 rounded-lg text-center">
                     <div className="text-lg font-semibold text-red-500">401</div>
-                    <div className="text-xs text-muted-foreground">认证失败</div>
+                    <div className="text-xs text-muted-foreground">{t('docs.unauthorized')}</div>
                   </div>
                   <div className="bg-muted/50 p-3 rounded-lg text-center">
                     <div className="text-lg font-semibold text-red-500">500</div>
-                    <div className="text-xs text-muted-foreground">服务器错误</div>
+                    <div className="text-xs text-muted-foreground">{t('docs.serverError')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -263,34 +263,13 @@ export default function ApiDocsPage() {
           <TabsContent value="chat" className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Terminal className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-semibold">聊天 API</h2>
+              <h2 className="text-xl font-semibold">{t('docs.chatApiTitle')}</h2>
             </div>
 
             <Endpoint
               method="POST"
-              path="/api/chat"
-              description="内部聊天接口，需要 INTERNAL_CHAT_SECRET 进行认证"
-              headers={[
-                { name: "Authorization", value: "Bearer INTERNAL_CHAT_SECRET", required: true },
-                { name: "Content-Type", value: "application/json", required: true },
-              ]}
-              body={{
-                messages: [
-                  { role: "user", content: "你好" }
-                ],
-                model: "@cf/qwen/qwen3-30b-a3b-fp8",
-                stream: true
-              }}
-              response={{
-                data: "流式响应内容..."
-              }}
-              note="此接口仅供前端内部使用，不对外开放"
-            />
-
-            <Endpoint
-              method="POST"
               path="/api/v1/chat"
-              description="对外公开的聊天 API 接口，需要有效的 API Key 进行认证"
+              description={t('docs.chatEndpointDescription')}
               headers={[
                 { name: "Authorization", value: "Bearer YOUR_API_KEY", required: true },
                 { name: "Content-Type", value: "application/json", required: true },
@@ -313,39 +292,40 @@ export default function ApiDocsPage() {
                   }
                 ]
               }}
-              note="支持流式输出（SSE）和非流式两种模式。通过设置 stream: true 开启流式输出"
+              note={t('docs.streamNote')}
+              t={t}
             />
 
             <Card className="bg-muted/30">
               <CardHeader>
-                <CardTitle className="text-base">请求参数说明</CardTitle>
+                <CardTitle className="text-base">{t('docs.requestParameters')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <code className="text-primary bg-primary/10 px-2 py-0.5 rounded text-sm">messages</code>
                     <div>
-                      <div className="text-sm font-medium">消息数组</div>
+                      <div className="text-sm font-medium">{t('docs.messages')}</div>
                       <div className="text-xs text-muted-foreground">
-                        包含对话历史，每条消息有 role（user/assistant/system）和 content 字段
+                        {t('docs.messagesDescription')}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <code className="text-primary bg-primary/10 px-2 py-0.5 rounded text-sm">model</code>
                     <div>
-                      <div className="text-sm font-medium">AI 模型</div>
+                      <div className="text-sm font-medium">{t('docs.model')}</div>
                       <div className="text-xs text-muted-foreground">
-                        默认为 @cf/qwen/qwen3-30b-a3b-fp8，支持其他 Cloudflare AI 模型
+                        {t('docs.modelDescription')}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <code className="text-primary bg-primary/10 px-2 py-0.5 rounded text-sm">stream</code>
                     <div>
-                      <div className="text-sm font-medium">流式输出</div>
+                      <div className="text-sm font-medium">{t('docs.stream')}</div>
                       <div className="text-xs text-muted-foreground">
-                        true 开启流式输出（Server-Sent Events），false 返回完整响应
+                        {t('docs.streamDescription')}
                       </div>
                     </div>
                   </div>
@@ -355,7 +335,7 @@ export default function ApiDocsPage() {
 
             <Card className="bg-muted/30">
               <CardHeader>
-                <CardTitle className="text-base">流式响应格式</CardTitle>
+                <CardTitle className="text-base">{t('docs.streamResponse')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CodeBlock
@@ -372,89 +352,37 @@ data: [DONE]`}
             </Card>
           </TabsContent>
 
-          <TabsContent value="keys" className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <Key className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-semibold">密钥管理 API</h2>
-            </div>
-
-            <Endpoint
-              method="GET"
-              path="/api/keys"
-              description="获取当前用户的所有 API Keys"
-              headers={[
-                { name: "Content-Type", value: "application/json", required: true },
-              ]}
-              response={[
-                {
-                  id: "user@example.com-1",
-                  user_email: "user@example.com",
-                  keys: "sk_xxxxxxxxxxxxxx"
-                }
-              ]}
-            />
-
-            <Endpoint
-              method="POST"
-              path="/api/keys"
-              description="为当前用户创建新的 API Key"
-              headers={[
-                { name: "Content-Type", value: "application/json", required: true },
-              ]}
-              body={{
-                email: "user@example.com"
-              }}
-              response={{
-                id: "user@example.com-2",
-                user_email: "user@example.com",
-                keys: "sk_yyyyyyyyyyyyyy"
-              }}
-              note="创建后请妥善保管，API Key 只会返回一次"
-            />
-
-            <Endpoint
-              method="DELETE"
-              path="/api/keys?id=user@example.com-1&email=user@example.com"
-              description="删除指定的 API Key"
-              headers={[
-                { name: "Content-Type", value: "application/json", required: true },
-              ]}
-              response={{
-                success: true
-              }}
-            />
-          </TabsContent>
-
           <TabsContent value="status" className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Activity className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-semibold">状态监控 API</h2>
+              <h2 className="text-xl font-semibold">{t('docs.statusApiTitle')}</h2>
             </div>
 
             <Endpoint
               method="GET"
               path="/api/dev-status"
-              description="检查开发服务器状态"
+              description={t('docs.statusEndpointDescription')}
               response={{
                 status: "working",
                 message: "开发服务器运行中"
               }}
-              note="用于前端显示开发服务器连接状态"
+              note={t('docs.statusNote')}
+              t={t}
             />
 
             <Card className="bg-muted/30">
               <CardHeader>
-                <CardTitle className="text-base">响应状态说明</CardTitle>
+                <CardTitle className="text-base">{t('docs.responseStatus')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Badge variant="outline" className="bg-green-500/10 text-green-500">working</Badge>
-                    <span className="text-sm">开发服务器正常运行</span>
+                    <Badge variant="outline" className="bg-green-500/10 text-green-500">{t('docs.working')}</Badge>
+                    <span className="text-sm">{t('docs.workingDescription')}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Badge variant="outline" className="bg-orange-500/10 text-orange-500">resting</Badge>
-                    <span className="text-sm">开发服务器已关闭或无法连接</span>
+                    <Badge variant="outline" className="bg-orange-500/10 text-orange-500">{t('docs.resting')}</Badge>
+                    <span className="text-sm">{t('docs.restingDescription')}</span>
                   </div>
                 </div>
               </CardContent>
@@ -465,10 +393,10 @@ data: [DONE]`}
         <div className="mt-12 pt-8 border-t">
           <div className="flex items-center justify-between">
             <div className="text-sm text-muted-foreground">
-              最后更新：2026-04-30
+              {t('docs.lastUpdated')}：2026-05-02
             </div>
             <Button variant="ghost" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              返回顶部
+              {t('docs.backToTop')}
             </Button>
           </div>
         </div>

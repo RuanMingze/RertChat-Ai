@@ -6,11 +6,12 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getSettings, saveSettings, getUserProfile, deleteUserProfile, type Settings, type UserProfile } from "@/lib/chat-db"
 import { useConfirm } from "@/components/confirm-dialog"
 import { cn } from "@/lib/utils"
+import { useI18n, locales, localeNames, Locale } from "@/lib/i18n"
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<Settings>({
@@ -28,6 +29,7 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
   const confirm = useConfirm()
+  const { locale, setLocale, t } = useI18n()
 
   useEffect(() => {
     loadSettings()
@@ -92,7 +94,7 @@ export default function SettingsPage() {
           <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-semibold">设置</h1>
+          <h1 className="text-2xl font-semibold">{t('settings.title')}</h1>
           <div className="ml-auto">
             {userProfile ? (
               <Button
@@ -102,7 +104,7 @@ export default function SettingsPage() {
                 className="gap-2"
               >
                 <LogOut className="h-4 w-4" />
-                退出登录
+                {t('settings.logout')}
               </Button>
             ) : (
               <Button
@@ -112,7 +114,7 @@ export default function SettingsPage() {
                 className="gap-2"
               >
                 <User className="h-4 w-4" />
-                登录
+                {t('settings.login')}
               </Button>
             )}
           </div>
@@ -122,14 +124,14 @@ export default function SettingsPage() {
           {/* AI 助手设置 */}
           <Card>
             <CardHeader>
-              <CardTitle>AI 助手设置</CardTitle>
-              <CardDescription>配置 AI 助手的行为和模型</CardDescription>
+              <CardTitle>{t('settings.aiSettings')}</CardTitle>
+              <CardDescription>{t('settings.aiSettingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* 流式输出 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="streaming" className="text-base">流式输出</Label>
+                  <Label htmlFor="streaming" className="text-base">{t('settings.streaming')}</Label>
                   <Switch
                     id="streaming"
                     checked={settings.streamingEnabled}
@@ -140,21 +142,21 @@ export default function SettingsPage() {
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  开启后，AI 会逐字输出回答，提供更流畅的体验
+                  {t('settings.streamingDescription')}
                 </p>
               </div>
 
               {/* AI 模型 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="ai-model" className="text-base">AI 模型</Label>
+                  <Label htmlFor="ai-model" className="text-base">{t('settings.aiModel')}</Label>
                   <a
                     href="https://dash.cloudflare.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-primary hover:underline flex items-center gap-1"
                   >
-                    查找模型
+                    {t('settings.findModel')}
                     <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
@@ -165,10 +167,10 @@ export default function SettingsPage() {
                     ...prev,
                     aiModel: e.target.value
                   }))}
-                  placeholder="输入 AI 模型名称，例如 @cf/qwen/qwen3-30b-a3b-fp8"
+                  placeholder={t('settings.modelPlaceholder')}
                 />
                 <p className="text-sm text-muted-foreground">
-                  默认使用 @cf/qwen/qwen3-30b-a3b-fp8
+                  {t('settings.defaultModel')}
                 </p>
               </div>
             </CardContent>
@@ -177,8 +179,8 @@ export default function SettingsPage() {
           {/* 外观设置 */}
           <Card>
             <CardHeader>
-              <CardTitle>外观设置</CardTitle>
-              <CardDescription>自定义界面主题</CardDescription>
+              <CardTitle>{t('settings.appearanceSettings')}</CardTitle>
+              <CardDescription>{t('settings.appearanceSettingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div
@@ -195,8 +197,8 @@ export default function SettingsPage() {
                     <Sun className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-base font-medium">浅色模式</div>
-                    <p className="text-sm text-muted-foreground">明亮的界面主题</p>
+                    <div className="text-base font-medium">{t('settings.lightMode')}</div>
+                    <p className="text-sm text-muted-foreground">{t('settings.lightModeDescription')}</p>
                   </div>
                 </div>
                 <div
@@ -223,8 +225,8 @@ export default function SettingsPage() {
                     <Moon className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-base font-medium">深色模式</div>
-                    <p className="text-sm text-muted-foreground">暗色的界面主题</p>
+                    <div className="text-base font-medium">{t('settings.darkMode')}</div>
+                    <p className="text-sm text-muted-foreground">{t('settings.darkModeDescription')}</p>
                   </div>
                 </div>
                 <div
@@ -239,11 +241,53 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
+          {/* 语言设置 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('settings.language') || '语言设置'}</CardTitle>
+              <CardDescription>{t('settings.languageDescription') || '选择界面显示语言'}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {locales.map((loc) => (
+                <div
+                  key={loc}
+                  onClick={() => setLocale(loc as Locale)}
+                  className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
+                      locale === loc
+                        ? "border-primary bg-primary/10"
+                        : "border-border"
+                    )}>
+                      <Globe className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-base font-medium">{localeNames[loc]}</div>
+                      <p className="text-sm text-muted-foreground">
+                        {loc === 'zh-CN' ? t('settings.zhInterface') : t('settings.enInterface')}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className={cn(
+                      "h-4 w-4 rounded-full border-2",
+                      locale === loc
+                        ? "border-primary bg-primary"
+                        : "border-muted-foreground"
+                    )}
+                  />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
           {/* 行为设置 */}
           <Card>
             <CardHeader>
-              <CardTitle>行为设置</CardTitle>
-              <CardDescription>配置应用的行为</CardDescription>
+              <CardTitle>{t('settings.behaviorSettings')}</CardTitle>
+              <CardDescription>{t('settings.behaviorSettingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -253,8 +297,8 @@ export default function SettingsPage() {
                       <MessageCircle className="h-5 w-5" />
                     </div>
                     <div>
-                      <Label htmlFor="auto-redirect" className="text-base">自动跳转到最近对话</Label>
-                      <p className="text-sm text-muted-foreground">打开页面时自动跳转到最近的一轮对话</p>
+                      <Label htmlFor="auto-redirect" className="text-base">{t('settings.autoRedirect')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.autoRedirectDescription')}</p>
                     </div>
                   </div>
                   <Switch
@@ -275,8 +319,8 @@ export default function SettingsPage() {
                       <Sun className="h-5 w-5" />
                     </div>
                     <div>
-                      <Label htmlFor="loading-screen" className="text-base">显示加载页面</Label>
-                      <p className="text-sm text-muted-foreground">打开页面时显示加载动画</p>
+                      <Label htmlFor="loading-screen" className="text-base">{t('settings.showLoadingScreen')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.showLoadingScreenDescription')}</p>
                     </div>
                   </div>
                   <Switch
@@ -295,8 +339,8 @@ export default function SettingsPage() {
           {/* 通知设置 */}
           <Card>
             <CardHeader>
-              <CardTitle>通知设置</CardTitle>
-              <CardDescription>配置应用通知和声音</CardDescription>
+              <CardTitle>{t('settings.notificationSettings')}</CardTitle>
+              <CardDescription>{t('settings.notificationSettingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -306,8 +350,8 @@ export default function SettingsPage() {
                       <Bell className="h-5 w-5" />
                     </div>
                     <div>
-                      <Label htmlFor="notifications" className="text-base">桌面通知</Label>
-                      <p className="text-sm text-muted-foreground">AI 回复完成时发送桌面通知</p>
+                      <Label htmlFor="notifications" className="text-base">{t('settings.desktopNotification')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.desktopNotificationDescription')}</p>
                     </div>
                   </div>
                   <Switch
@@ -337,8 +381,8 @@ export default function SettingsPage() {
                       <Volume2 className="h-5 w-5" />
                     </div>
                     <div>
-                      <Label htmlFor="sound" className="text-base">消息提示音</Label>
-                      <p className="text-sm text-muted-foreground">收到新消息时播放提示音</p>
+                      <Label htmlFor="sound" className="text-base">{t('settings.sound')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.soundDescription')}</p>
                     </div>
                   </div>
                   <Switch
@@ -359,8 +403,8 @@ export default function SettingsPage() {
                       <AlertTriangle className="h-5 w-5" />
                     </div>
                     <div>
-                      <Label htmlFor="ai-warning" className="text-base">AI 风险提示</Label>
-                      <p className="text-sm text-muted-foreground">在聊天框显示 AI 可能产生不准确信息的提醒</p>
+                      <Label htmlFor="ai-warning" className="text-base">{t('settings.showAIWarning')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.showAIWarningDescription')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -370,8 +414,8 @@ export default function SettingsPage() {
                         size="sm"
                         onClick={async () => {
                           const confirmed = await confirm(
-                            '关闭 AI 风险提示？',
-                            '关闭后，聊天框将不再显示提醒。\n\n建议保留此提醒，以避免因 AI 生成内容不准确而造成损失。'
+                            t('settings.turnOffAIWarning'),
+                            t('settings.turnOffAIWarningMessage')
                           )
                           if (confirmed) {
                             setSettings(prev => ({
@@ -381,7 +425,7 @@ export default function SettingsPage() {
                           }
                         }}
                       >
-                        关闭
+                        {t('settings.close')}
                       </Button>
                     ) : (
                       <Button
@@ -394,7 +438,7 @@ export default function SettingsPage() {
                           }))
                         }}
                       >
-                        启用
+                        {t('settings.enable')}
                       </Button>
                     )}
                   </div>
@@ -403,7 +447,7 @@ export default function SettingsPage() {
             </CardContent>
             <CardFooter className="flex justify-end">
               <Button onClick={handleSave} disabled={isSaving} size="lg">
-                {isSaving ? '保存中...' : '保存'}
+                {isSaving ? t('settings.saving') : t('common.save')}
               </Button>
             </CardFooter>
           </Card>

@@ -1,24 +1,33 @@
 import type { Metadata, Viewport } from 'next'
+import type { ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import LoadingPage from '@/components/loading/LoadingPage'
 import { ConfirmDialogProvider } from '@/components/confirm-dialog'
+import { I18nProvider } from '@/lib/i18n'
+import { getTranslation, type Locale } from '@/lib/i18n'
 
 const inter = Inter({ 
   subsets: ["latin"],
   variable: '--font-inter'
 })
 
-export const metadata: Metadata = {
-  title: 'RertChat - AI助手',
-  description: '基于 Cloudflare 的智能对话助手',
-  generator: 'Ruanm',
-  icons: {
-    icon: '/favicon.ico',
-  },
-  manifest: '/manifest.json',
+export async function generateMetadata(): Promise<Metadata> {
+  const locale: Locale = 'zh-CN'
+  const title = getTranslation(locale, 'meta.title')
+  const description = getTranslation(locale, 'meta.description')
+
+  return {
+    title,
+    description,
+    generator: 'Ruanm',
+    icons: {
+      icon: '/favicon.ico',
+    },
+    manifest: '/manifest.json',
+  }
 }
 
 export const viewport: Viewport = {
@@ -30,17 +39,19 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning className="dark">
+    <html suppressHydrationWarning className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
         <LoadingPage />
-        <ConfirmDialogProvider>
-          <ThemeProvider>
-            {children}
-          </ThemeProvider>
-        </ConfirmDialogProvider>
+        <I18nProvider>
+          <ConfirmDialogProvider>
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
+          </ConfirmDialogProvider>
+        </I18nProvider>
         <Analytics />
         <script
           dangerouslySetInnerHTML={{

@@ -66,7 +66,8 @@ export function useCustomChat(options: UseCustomChatOptions = {}) {
         const decoder = new TextDecoder()
         let fullContent = ""
 
-        while (true) {
+        let reading = true
+        while (reading) {
           const { done, value } = await reader.read()
           if (done) break
 
