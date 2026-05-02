@@ -100,7 +100,10 @@
     "turnOffAIWarning": "Turn off AI warning?",
     "turnOffAIWarningMessage": "After closing, the reminder will no longer be displayed in the chat.\n\nIt is recommended to keep this reminder to avoid losses caused by inaccurate AI-generated content.",
     "zhInterface": "Chinese Interface",
-    "enInterface": "English Interface"
+    "enInterface": "English Interface",
+    "links": "Related Links",
+    "faq": "FAQ",
+    "apiDocs": "API Documentation"
   },
   "modes": {
     "programmingMode": "Programming Mode",

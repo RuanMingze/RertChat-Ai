@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe, Info } from "lucide-react"
+import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe, Info, BookOpen, Code } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { getSettings, saveSettings, getUserProfile, deleteUserProfile, clearAllData, unregisterServiceWorker, clearAllCaches, type Settings, type UserProfile } from "@/lib/chat-db"
@@ -458,13 +458,27 @@ export default function SettingsPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>{t('about.title')}</CardTitle>
+              <CardTitle>{t('settings.links')}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
               <Button variant="outline" className="w-full" asChild>
                 <Link href="/about">
                   <Info className="mr-2 h-4 w-4" />
-                  {t('about.subtitle')}
+                  {t('about.title')}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/faq">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  {t('settings.faq')}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/docs">
+                  <Code className="mr-2 h-4 w-4" />
+                  {t('settings.apiDocs')}
                   <ExternalLink className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

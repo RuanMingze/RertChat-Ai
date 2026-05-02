@@ -104,7 +104,10 @@
     "turnOffAIWarning": "关闭 AI 风险提示？",
     "turnOffAIWarningMessage": "关闭后，聊天框将不再显示提醒。\n\n建议保留此提醒，以避免因 AI 生成内容不准确而造成损失。",
     "zhInterface": "中文界面",
-    "enInterface": "英文界面"
+    "enInterface": "英文界面",
+    "links": "相关链接",
+    "faq": "常见问题",
+    "apiDocs": "API 文档"
   },
   "modes": {
     "programmingMode": "编程模式",
