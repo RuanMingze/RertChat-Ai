@@ -8,7 +8,6 @@ const nextConfig = {
   },
   trailingSlash: true,
   devIndicators: false,
-  // 排除 packages 目录，不被 Next.js 编译
   outputFileTracingExcludes: {
     '*': ['./packages/**/*'],
   },
