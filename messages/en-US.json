@@ -1,4 +1,28 @@
 {
+  "meta": {
+    "title": "RertChat - AI Assistant",
+    "description": "Intelligent conversation assistant based on Cloudflare",
+    "home": "RertChat - AI Assistant",
+    "settings": "Settings - RertChat",
+    "about": "About - RertChat",
+    "faq": "FAQ - RertChat",
+    "keys": "API Keys - RertChat",
+    "keyboardShortcuts": "Keyboard Shortcuts - RertChat",
+    "appdev": "Development Tracking - RertChat",
+    "docs": "Documentation - RertChat",
+    "conversations": "All Conversations - RertChat"
+  },
+  "pageTitles": {
+    "home": "RertChat - AI Assistant",
+    "settings": "Settings - RertChat",
+    "about": "About - RertChat",
+    "faq": "FAQ - RertChat",
+    "keys": "API Keys - RertChat",
+    "keyboardShortcuts": "Keyboard Shortcuts - RertChat",
+    "appdev": "Development Tracking - RertChat",
+    "docs": "Documentation - RertChat",
+    "conversations": "All Conversations - RertChat"
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
@@ -136,10 +160,6 @@
   "language": {
     "zh-CN": "中文",
     "en-US": "English"
-  },
-  "meta": {
-    "title": "RertChat - AI Assistant",
-    "description": "Intelligent conversation assistant based on Cloudflare"
   },
   "home": {
     "welcomeTitle": "Hello, I'm your AI Assistant",

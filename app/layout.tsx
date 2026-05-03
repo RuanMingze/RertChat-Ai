@@ -7,27 +7,20 @@ import { ThemeProvider } from '@/components/theme-provider'
 import LoadingPage from '@/components/loading/LoadingPage'
 import { ConfirmDialogProvider } from '@/components/confirm-dialog'
 import { I18nProvider } from '@/lib/i18n'
-import { getTranslation, type Locale } from '@/lib/i18n'
+import { ClientLayout } from '@/components/ClientLayout'
 
 const inter = Inter({ 
   subsets: ["latin"],
   variable: '--font-inter'
 })
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale: Locale = 'zh-CN'
-  const title = getTranslation(locale, 'meta.title')
-  const description = getTranslation(locale, 'meta.description')
-
-  return {
-    title,
-    description,
-    generator: 'Ruanm',
-    icons: {
-      icon: '/favicon.ico',
-    },
-    manifest: '/manifest.json',
-  }
+export const metadata: Metadata = {
+  description: '基于 Cloudflare 的智能对话助手',
+  generator: 'Ruanm',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  manifest: '/manifest.json',
 }
 
 export const viewport: Viewport = {
@@ -48,7 +41,7 @@ export default function RootLayout({
         <I18nProvider>
           <ConfirmDialogProvider>
             <ThemeProvider>
-              {children}
+              <ClientLayout>{children}</ClientLayout>
             </ThemeProvider>
           </ConfirmDialogProvider>
         </I18nProvider>

@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Sparkles, Users, Shield, Zap, Github, Heart } from "lucide-react"
@@ -10,7 +11,9 @@ export default function AboutPage() {
   const { t } = useI18n()
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <PageTitle titleKey="meta.about" />
+      <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container flex h-16 items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
@@ -173,5 +176,6 @@ export default function AboutPage() {
         </div>
       </main>
     </div>
+    </>
   )
 }

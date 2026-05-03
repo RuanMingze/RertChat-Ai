@@ -1,5 +1,6 @@
 'use client'
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState, useEffect } from 'react'
 import { RefreshCw, Eye, Coffee, Loader2, Monitor } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
@@ -43,7 +44,9 @@ export default function AppDevPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center overflow-auto px-4 pb-4 bg-background">
+    <>
+      <PageTitle titleKey="meta.appdev" />
+      <div className="flex min-h-screen flex-col items-center justify-center overflow-auto px-4 pb-4 bg-background">
       <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20">
         <Monitor className="h-10 w-10 text-primary" />
       </div>
@@ -113,5 +116,6 @@ export default function AppDevPage() {
         </p>
       </div>
     </div>
+    </>
   )
 }

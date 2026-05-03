@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState, useEffect, useCallback, useMemo, useRef, type ChangeEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -261,7 +262,9 @@ export default function ConversationsPage() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <>
+      <PageTitle titleKey="meta.conversations" />
+      <div className="flex min-h-dvh flex-col bg-background">
       {/* Header */}
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card/50 px-4 backdrop-blur-sm">
         <div className="flex items-center gap-3">
@@ -516,5 +519,6 @@ export default function ConversationsPage() {
         {searchQuery && ` (${t('conversations.filteredCount', { count: filteredConversations.length })})`}
       </footer>
     </div>
+    </>
   )
 }

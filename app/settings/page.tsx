@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -92,7 +93,9 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex h-dvh bg-background">
+    <>
+      <PageTitle titleKey="meta.settings" />
+      <div className="flex h-dvh bg-background">
       <main className="flex flex-1 flex-col p-6">
         <div className="flex items-center gap-2 mb-6">
           <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
@@ -487,5 +490,6 @@ export default function SettingsPage() {
         </div>
       </main>
     </div>
+    </>
   )
 }

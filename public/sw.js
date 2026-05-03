@@ -5,7 +5,7 @@ const STATIC_PAGES = [
   '/faq/',
   '/keys/',
   '/conversations/',
-  '/api-docs/',
+  '/docs/',
   '/appdev/',
   '/appdev/view/',
 ];

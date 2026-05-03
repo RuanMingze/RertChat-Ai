@@ -1,5 +1,6 @@
 'use client'
 
+import { PageTitle } from "@/components/PageTitle"
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useI18n } from '@/lib/i18n'
@@ -8,7 +9,9 @@ export default function AppDevViewPage() {
   const { t } = useI18n()
 
   return (
-    <div className="fixed inset-0 bg-background">
+    <>
+      <PageTitle titleKey="meta.appdev" />
+      <div className="fixed inset-0 bg-background">
       <Link
         href="/appdev"
         className="absolute left-4 top-4 z-50 flex items-center gap-2 rounded-lg border border-border bg-background/80 px-3 py-2 text-sm backdrop-blur hover:bg-background transition-colors"
@@ -22,5 +25,6 @@ export default function AppDevViewPage() {
         title={t('appdev.title')}
       />
     </div>
+    </>
   )
 }

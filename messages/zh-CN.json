@@ -1,7 +1,27 @@
 {
   "meta": {
     "title": "RertChat - AI助手",
-    "description": "基于 Cloudflare 的智能对话助手"
+    "description": "基于 Cloudflare 的智能对话助手",
+    "home": "RertChat - AI助手",
+    "settings": "设置 - RertChat",
+    "about": "关于 - RertChat",
+    "faq": "常见问题 - RertChat",
+    "keys": "API Keys - RertChat",
+    "keyboardShortcuts": "键盘快捷键 - RertChat",
+    "appdev": "开发追踪 - RertChat",
+    "docs": "文档中心 - RertChat",
+    "conversations": "全部对话 - RertChat"
+  },
+  "pageTitles": {
+    "home": "RertChat - AI助手",
+    "settings": "设置 - RertChat",
+    "about": "关于 - RertChat",
+    "faq": "常见问题 - RertChat",
+    "keys": "API Keys - RertChat",
+    "keyboardShortcuts": "键盘快捷键 - RertChat",
+    "appdev": "开发追踪 - RertChat",
+    "docs": "文档中心 - RertChat",
+    "conversations": "全部对话 - RertChat"
   },
   "common": {
     "save": "保存",
@@ -140,10 +160,6 @@
   "language": {
     "zh-CN": "中文",
     "en-US": "English"
-  },
-  "meta": {
-    "title": "RertChat - AI助手",
-    "description": "基于 Cloudflare 的智能对话助手"
   },
   "home": {
     "welcomeTitle": "你好，我是 AI 助手",

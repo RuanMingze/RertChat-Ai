@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import React from "react"
@@ -174,7 +175,9 @@ export default function FAQPage() {
   })).filter((category) => category.faqs.length > 0 || !searchQuery)
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <>
+      <PageTitle titleKey="meta.faq" />
+      <div className="flex min-h-dvh flex-col bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-16 shrink-0 items-center justify-between px-4">
@@ -343,5 +346,6 @@ export default function FAQPage() {
         </main>
       </div>
     </div>
+    </>
   )
 }

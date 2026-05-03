@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -118,7 +119,9 @@ export default function DocsPage() {
   const { t } = useI18n()
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <PageTitle titleKey="meta.docs" />
+      <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -402,5 +405,6 @@ data: [DONE]`}
         </div>
       </div>
     </div>
+    </>
   )
 }

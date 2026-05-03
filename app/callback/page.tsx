@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { Suspense, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { saveUserProfile, type UserProfile } from "@/lib/chat-db"
@@ -38,7 +39,9 @@ function CallbackContent() {
   }, [searchParams, router])
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <>
+      <PageTitle titleKey="meta.home" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="text-center">
         <div className="mb-4 flex justify-center">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
@@ -47,6 +50,7 @@ function CallbackContent() {
         <p className="mt-2 text-muted-foreground">{t('callback.completingAuth')}</p>
       </div>
     </div>
+    </>
   )
 }
 
@@ -54,17 +58,19 @@ export default function CallbackPage() {
   const { t } = useI18n()
 
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="mb-4 flex justify-center">
-            <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+    <>
+      <Suspense fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-center">
+            <div className="mb-4 flex justify-center">
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            </div>
+            <h1 className="text-xl font-semibold">{t('callback.loading')}</h1>
           </div>
-          <h1 className="text-xl font-semibold">{t('callback.loading')}</h1>
         </div>
-      </div>
-    }>
-      <CallbackContent />
-    </Suspense>
+      }>
+        <CallbackContent />
+      </Suspense>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { useState, useRef, useEffect, useCallback, memo } from "react"
 import type { ChangeEvent, KeyboardEvent, MouseEvent } from "react"
 import React from "react"
@@ -64,6 +65,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+class MarkdownErrorBoundary extends React.Component<
+  { children: React.ReactNode; fallback?: string },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode; fallback?: string }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="text-sm text-muted-foreground p-2">
+          {this.props.fallback || "内容渲染失败"}
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 // Markdown 渲染组件
 const MarkdownContent = memo(function MarkdownContent({ content }: { content: string }) {
@@ -748,7 +774,10 @@ export default function Home() {
             if (!trimmed || !trimmed.startsWith("data:")) continue
 
             const data = trimmed.slice(5).trim()
-            if (data === "[DONE]") continue
+            if (data === "[DONE]") {
+              isReading = false
+              continue
+            }
 
             try {
               const json = JSON.parse(data)
@@ -767,6 +796,37 @@ export default function Home() {
             } catch {
               // Skip invalid JSON
             }
+          }
+        }
+
+        // 刷新解码器缓冲区，确保没有数据丢失
+        buffer += decoder.decode()
+        const remainingLines = buffer.split("\n")
+        buffer = remainingLines.pop() || ""
+
+        for (const line of remainingLines) {
+          const trimmed = line.trim()
+          if (!trimmed || !trimmed.startsWith("data:")) continue
+
+          const data = trimmed.slice(5).trim()
+          if (data === "[DONE]") continue
+
+          try {
+            const json = JSON.parse(data)
+            const delta = json.choices?.[0]?.delta?.content
+            if (delta) {
+              fullContent += delta
+              setMessages((prev) => {
+                const updated = [...prev]
+                const lastIdx = updated.length - 1
+                if (lastIdx >= 0 && updated[lastIdx].role === "assistant") {
+                  updated[lastIdx] = { ...updated[lastIdx], content: fullContent }
+                }
+                return updated
+              })
+            }
+          } catch {
+            // Skip invalid JSON
           }
         }
 
@@ -956,7 +1016,9 @@ export default function Home() {
   ]
 
   return (
-    <div className="flex h-dvh bg-background">
+    <>
+      <PageTitle titleKey="meta.home" />
+      <div className="flex h-dvh bg-background">
       {/* Sidebar Toggle */}
       {!sidebarOpen && (
         <div className="fixed left-4 top-4 z-50 flex gap-2">
@@ -1310,7 +1372,9 @@ export default function Home() {
                       ) : (
                         <div className="prose prose-sm prose-invert max-w-none break-words">
                           {message.content ? (
-                            <MarkdownContent content={message.content} />
+                            <MarkdownErrorBoundary fallback="内容渲染失败">
+                              <MarkdownContent content={message.content} />
+                            </MarkdownErrorBoundary>
                           ) : isLoading && index === messages.length - 1 ? (
                             <span className="inline-flex gap-1">
                               <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
@@ -1358,5 +1422,6 @@ export default function Home() {
         </div>
       </main>
     </div>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import { PageTitle } from "@/components/PageTitle"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Kbd } from "@/components/ui/kbd"
 import { Keyboard, ArrowLeft } from "lucide-react"
@@ -82,7 +83,9 @@ export default function KeyboardShortcutsPage() {
   }))
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <PageTitle titleKey="meta.keyboardShortcuts" />
+      <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container flex h-16 items-center gap-4">
           <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
@@ -122,5 +125,6 @@ export default function KeyboardShortcutsPage() {
         </Card>
       </main>
     </div>
+    </>
   )
 }
