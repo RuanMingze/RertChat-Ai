@@ -1296,7 +1296,7 @@ export default function Home() {
                   >
                     {message.role === "user" ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
                   </div>
-                  <div className={cn("group flex max-w-[85%] flex-col gap-1", message.role === "user" ? "items-end" : "items-start")}>
+                  <div className={cn("group flex max-w-[625.60px] flex-col gap-1", message.role === "user" ? "items-end" : "items-start")}>
                     <div
                       className={cn(
                         "rounded-2xl px-4 py-3 text-sm leading-relaxed",

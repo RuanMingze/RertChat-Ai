@@ -216,16 +216,6 @@ USING ("user-email" = current_setting('app.current_user_email', true));
 
 ### 第三步：配置环境变量
 
-复制 `.env.example` 文件为 `.env.local`：
-
-```bash
-# Windows
-copy .env.example .env.local
-
-# Linux/macOS
-cp .env.example .env.local
-```
-
 新建 `.env.local` 文件，填写以下配置：
 
 | 配置项                            | 说明                    | 获取方式                                          |
@@ -468,7 +458,6 @@ pnpm pages:dev
 
 响应：
 - **stream=true**：返回流式响应（Server-Sent Events）
-- **stream=false**：返回完整 JSON 响应
 
 目前暂不支持非流式响应。
 
