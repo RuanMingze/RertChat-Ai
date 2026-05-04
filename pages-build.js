@@ -85,15 +85,12 @@ function installGem(gemName) {
   console.log(`📦 安装 gem: ${gemName}`);
   
   const isWindows = process.platform === 'win32';
-  let result;
   
   if (isWindows) {
-    result = runCommand('gem', ['install', gemName]);
+    return runCommand('gem', ['install', gemName]).success;
   } else {
-    result = runCommand('sudo', ['gem', 'install', gemName]);
+    return runCommand('gem', ['install', gemName]).success;
   }
-  
-  return result.success;
 }
 
 function installJekyll() {
@@ -105,8 +102,7 @@ function installJekyll() {
   if (isWindows) {
     result = runCommand('gem', ['install', 'jekyll']);
   } else {
-    console.log('💡 需要管理员权限安装 Jekyll，请输入密码...');
-    result = runCommand('sudo', ['gem', 'install', 'jekyll']);
+    result = runCommand('gem', ['install', 'jekyll']);
   }
   
   if (result.success) {
@@ -114,11 +110,7 @@ function installJekyll() {
     return true;
   } else {
     console.error('❌ Jekyll 安装失败，请手动安装');
-    if (!isWindows) {
-      console.error('   手动安装命令: sudo gem install jekyll');
-    } else {
-      console.error('   手动安装命令: gem install jekyll');
-    }
+    console.error('   安装命令: gem install jekyll');
     return false;
   }
 }
