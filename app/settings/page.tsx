@@ -1,7 +1,7 @@
 "use client"
 
 import { PageTitle } from "@/components/PageTitle"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -30,25 +30,29 @@ export default function SettingsPage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [showMoreLanguages, setShowMoreLanguages] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
   const confirm = useConfirm()
   const { locale, setLocale, t } = useI18n()
 
   const primaryLocales: Locale[] = ['zh-CN', 'en-US']
   const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR']
-  const allLocales = [...primaryLocales, ...additionalLocales]
-  const sortedLocales = allLocales.sort((a, b) => {
-    if (a === locale) return -1
-    if (b === locale) return 1
-    const aIndex = allLocales.indexOf(a)
-    const bIndex = allLocales.indexOf(b)
-    return aIndex - bIndex
-  })
-  const displayedLocales = showMoreLanguages 
-    ? sortedLocales 
-    : sortedLocales.slice(0, primaryLocales.length)
+
+  const displayedLocales = useMemo(() => {
+    const allLocales = [...primaryLocales, ...additionalLocales]
+    if (!mounted) return showMoreLanguages ? allLocales : primaryLocales
+    const sorted = allLocales.sort((a, b) => {
+      if (a === locale) return -1
+      if (b === locale) return 1
+      const aIndex = allLocales.indexOf(a)
+      const bIndex = allLocales.indexOf(b)
+      return aIndex - bIndex
+    })
+    return showMoreLanguages ? sorted : sorted.slice(0, primaryLocales.length)
+  }, [mounted, showMoreLanguages])
 
   useEffect(() => {
+    setMounted(true)
     loadSettings()
   }, [])
 

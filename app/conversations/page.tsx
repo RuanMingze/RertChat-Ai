@@ -514,10 +514,12 @@ export default function ConversationsPage() {
       </ScrollArea>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/50 px-4 py-3 text-center text-xs text-muted-foreground">
-        {t('conversations.totalConversations', { count: conversations.length })}
-        {searchQuery && ` (${t('conversations.filteredCount', { count: filteredConversations.length })})`}
-      </footer>
+      {conversations.length > 0 && (
+        <footer className="border-t border-border bg-card/50 px-4 py-3 text-center text-xs text-muted-foreground">
+          {t('conversations.totalConversations', { count: conversations.length })}
+          {searchQuery && ` (${t('conversations.filteredCount', { count: filteredConversations.length })})`}
+        </footer>
+      )}
     </div>
     </>
   )

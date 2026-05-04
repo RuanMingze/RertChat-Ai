@@ -33,6 +33,29 @@ RertChat 是一个基于 Cloudflare AI Gateway 的智能对话助手，支持流
 
 查看更多模型：<https://developers.cloudflare.com/workers-ai/models/>
 
+## 国际化 (i18n)
+
+RertChat 支持多语言界面，目前支持以下语言：
+
+| 语言 | 代码 |
+|------|------|
+| 简体中文 | `zh-CN` |
+| 繁体中文 | `zh-TW` |
+| 英语 | `en-US` |
+| 日语 | `ja-JP` |
+| 韩语 | `ko-KR` |
+| 法语 | `fr-FR` |
+
+语言包位于 `/messages` 目录下，每个语言对应一个 JSON 文件。
+
+### 参与翻译
+
+我们使用 [Crowdin](https://crowdin.com/project/rertchat) 进行翻译管理。如果您希望参与翻译或提交新的语言包，欢迎通过以下方式：
+
+1. 访问 [Crowdin 项目页面](https://crowdin.com/project/rertchat) 登录账号
+2. 选择您想要翻译的语言
+3. 提交您的翻译建议
+
 ## 界面预览
 
 ![Screenshot](public/screenshot.png)
