@@ -6,6 +6,7 @@ import path from 'path';
 
 const BUILD_DIR = '.vercel/output/static';
 const JEKYLL_OUTPUT = '_site';
+const REQUIRED_GEMS = ['jekyll-sitemap', 'jekyll-feed'];
 
 function runCommand(command, args = [], options = {}) {
   console.log(`\n📦 执行命令: ${command} ${args.join(' ')}`);
@@ -71,13 +72,28 @@ function isMainModule() {
   return modulePath === mainPath;
 }
 
-function checkJekyllInstalled() {
+function checkGemInstalled(gemName) {
   try {
-    execSync('jekyll --version', { stdio: 'ignore', shell: process.platform === 'win32' });
+    execSync(`gem list -i ${gemName}`, { stdio: 'ignore', shell: process.platform === 'win32' });
     return true;
   } catch {
     return false;
   }
+}
+
+function installGem(gemName) {
+  console.log(`📦 安装 gem: ${gemName}`);
+  
+  const isWindows = process.platform === 'win32';
+  let result;
+  
+  if (isWindows) {
+    result = runCommand('gem', ['install', gemName]);
+  } else {
+    result = runCommand('sudo', ['gem', 'install', gemName]);
+  }
+  
+  return result.success;
 }
 
 function installJekyll() {
@@ -107,6 +123,36 @@ function installJekyll() {
   }
 }
 
+function checkAndInstallJekyllPlugins() {
+  console.log('\n🔍 检查 Jekyll 插件...');
+  let allInstalled = true;
+  
+  for (const gem of REQUIRED_GEMS) {
+    if (!checkGemInstalled(gem)) {
+      console.log(`⚠️ 插件 ${gem} 未安装`);
+      if (!installGem(gem)) {
+        console.error(`❌ 插件 ${gem} 安装失败`);
+        allInstalled = false;
+      } else {
+        console.log(`✅ 插件 ${gem} 安装成功`);
+      }
+    } else {
+      console.log(`✅ 插件 ${gem} 已安装`);
+    }
+  }
+  
+  return allInstalled;
+}
+
+function checkJekyllInstalled() {
+  try {
+    execSync('jekyll --version', { stdio: 'ignore', shell: process.platform === 'win32' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function main() {
   console.log('🚀 开始构建流程...');
   
@@ -129,20 +175,26 @@ function main() {
       console.log('✅ Jekyll 已安装');
     }
     
-    // 3. 运行 Jekyll 构建
-    console.log('\n============= Step 3: Jekyll 编译 =============');
+    // 3. 检查并安装 Jekyll 插件
+    console.log('\n============= Step 3: 检查 Jekyll 插件 =============');
+    if (!checkAndInstallJekyllPlugins()) {
+      process.exit(1);
+    }
+    
+    // 4. 运行 Jekyll 构建
+    console.log('\n============= Step 4: Jekyll 编译 =============');
     console.log('📝 使用 Jekyll 编译 Markdown 文件...');
     const jekyllResult = runCommand('jekyll', ['build', '--destination', JEKYLL_OUTPUT], { cwd: process.cwd() });
     if (!jekyllResult.success) {
       process.exit(1);
     }
     
-    // 4. 复制 Jekyll 输出到构建目录
-    console.log('\n============= Step 4: 复制文件 =============');
+    // 5. 复制 Jekyll 输出到构建目录
+    console.log('\n============= Step 5: 复制文件 =============');
     copyDirectory(JEKYLL_OUTPUT, BUILD_DIR);
     
-    // 5. 清理临时目录
-    console.log('\n============= Step 5: 清理 =============');
+    // 6. 清理临时目录
+    console.log('\n============= Step 6: 清理 =============');
     if (fs.existsSync(JEKYLL_OUTPUT)) {
       fs.rmSync(JEKYLL_OUTPUT, { recursive: true, force: true });
       console.log(`🗑️ 清理临时目录: ${JEKYLL_OUTPUT}`);
