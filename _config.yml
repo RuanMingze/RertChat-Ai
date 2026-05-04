@@ -1,0 +1,67 @@
+title: RertChat-Ai Documentation
+description: RertChat-Ai 项目文档
+baseurl: ""
+url: ""
+
+# 源文件配置
+source: .
+destination: _site
+include:
+  - "*.md"
+  - "*.markdown"
+exclude:
+  - node_modules
+  - .next
+  - .vercel
+  - .trae
+  - .git
+  - package.json
+  - pnpm-lock.yaml
+  - tsconfig.json
+  - next.config.js
+  - wrangler.toml
+  - pages-build.js
+  - dev.js
+  - start.js
+
+# 构建配置
+encoding: utf-8
+markdown: kramdown
+highlighter: rouge
+
+# 插件
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# 主题
+theme: minima
+
+# 导航链接
+header_pages:
+  - README.md
+  - CHANGELOG.md
+  - CONTRIBUTING.md
+
+# 作者信息
+author:
+  name: RertChat-Ai Team
+  email: support@example.com
+
+# 自定义变量
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

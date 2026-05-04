@@ -3,7 +3,7 @@
 所有更新日志按时间倒序排列。
 
 ## [v1.9.0] - 2026-05-04
-## 版本访问地址：https://rertchat-ai.pages.dev/
+## 版本访问地址：https://fe2e3aa1.rertchat-ai.pages.dev/
 
 ### 🌍 国际化扩展
 
