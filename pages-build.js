@@ -6,6 +6,9 @@ import path from 'path';
 
 const BUILD_DIR = '.vercel/output/static';
 const JEKYLL_OUTPUT = '_site';
+const PUBLIC_DIR = 'public';
+
+const MARKDOWN_FILES = ['README', 'CONTRIBUTING', 'SECURITY'];
 
 function runCommand(command, args = [], options = {}) {
   console.log(`\n📦 执行命令: ${command} ${args.join(' ')}`);
@@ -29,34 +32,13 @@ function runCommand(command, args = [], options = {}) {
   return { success: true };
 }
 
-function copyDirectory(src, dest) {
-  console.log(`\n📤 复制目录: ${src} -> ${dest}`);
-
-  if (!fs.existsSync(src)) {
-    console.warn(`⚠️ 源目录不存在: ${src}`);
-    return;
+function copyFile(src, dest) {
+  const destDir = path.dirname(dest);
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
   }
-
-  if (!fs.existsSync(dest)) {
-    fs.mkdirSync(dest, { recursive: true });
-  }
-
-  const files = fs.readdirSync(src);
-
-  files.forEach(file => {
-    const srcPath = path.join(src, file);
-    const destPath = path.join(dest, file);
-    const stat = fs.statSync(srcPath);
-
-    if (stat.isDirectory()) {
-      copyDirectory(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`  复制文件: ${file}`);
-    }
-  });
-
-  console.log(`✅ 复制完成`);
+  fs.copyFileSync(src, dest);
+  console.log(`  复制: ${path.basename(src)} -> ${dest}`);
 }
 
 function isMainModule() {
@@ -94,17 +76,41 @@ function installJekyll() {
   }
 }
 
+function copyMarkdownHtmlToPublic() {
+  console.log('\n📦 复制 Markdown 生成的 HTML 文件到 public 目录...');
+
+  if (!fs.existsSync(JEKYLL_OUTPUT)) {
+    console.warn(`⚠️ Jekyll 输出目录不存在: ${JEKYLL_OUTPUT}`);
+    return;
+  }
+
+  if (!fs.existsSync(PUBLIC_DIR)) {
+    fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+    console.log(`📁 创建目录: ${PUBLIC_DIR}`);
+  }
+
+  let copiedCount = 0;
+
+  for (const name of MARKDOWN_FILES) {
+    const srcHtml = path.join(JEKYLL_OUTPUT, `${name}.html`);
+    const destHtml = path.join(PUBLIC_DIR, `${name}.html`);
+
+    if (fs.existsSync(srcHtml)) {
+      copyFile(srcHtml, destHtml);
+      copiedCount++;
+    } else {
+      console.warn(`  ⚠️ 文件不存在: ${srcHtml}`);
+    }
+  }
+
+  console.log(`✅ 已复制 ${copiedCount} 个 HTML 文件到 ${PUBLIC_DIR}`);
+}
+
 function main() {
   console.log('🚀 开始构建流程...');
 
   try {
-    console.log('\n============= Step 1: Next.js 构建 =============');
-    const nextResult = runCommand('npx', ['@cloudflare/next-on-pages'], { cwd: process.cwd() });
-    if (!nextResult.success) {
-      process.exit(1);
-    }
-
-    console.log('\n============= Step 2: 检查 Jekyll =============');
+    console.log('\n============= Step 1: 检查 Jekyll =============');
     if (!checkJekyllInstalled()) {
       console.log('⚠️ Jekyll 未安装，自动安装中...');
       if (!installJekyll()) {
@@ -114,15 +120,21 @@ function main() {
       console.log('✅ Jekyll 已安装');
     }
 
-    console.log('\n============= Step 3: Jekyll 编译 Markdown =============');
-    console.log('📝 编译根目录的 .md 文件为 .html...');
+    console.log('\n============= Step 2: Jekyll 编译 Markdown =============');
+    console.log('📝 编译 Markdown 文件为 HTML...');
     const jekyllResult = runCommand('jekyll', ['build', '--destination', JEKYLL_OUTPUT], { cwd: process.cwd() });
     if (!jekyllResult.success) {
       process.exit(1);
     }
 
-    console.log('\n============= Step 4: 复制文件 =============');
-    copyDirectory(JEKYLL_OUTPUT, BUILD_DIR);
+    console.log('\n============= Step 3: 复制 HTML 到 public =============');
+    copyMarkdownHtmlToPublic();
+
+    console.log('\n============= Step 4: Next.js 构建 =============');
+    const nextResult = runCommand('npx', ['@cloudflare/next-on-pages'], { cwd: process.cwd() });
+    if (!nextResult.success) {
+      process.exit(1);
+    }
 
     console.log('\n============= Step 5: 清理 =============');
     if (fs.existsSync(JEKYLL_OUTPUT)) {
@@ -132,6 +144,7 @@ function main() {
 
     console.log('\n🎉 构建完成！');
     console.log(`📁 输出目录: ${BUILD_DIR}`);
+    console.log(`🔗 HTML 文件将作为静态资源访问`);
 
   } catch (error) {
     console.error('❌ 构建失败:', error.message);
@@ -143,4 +156,4 @@ if (isMainModule()) {
   main();
 }
 
-export { main, runCommand, copyDirectory };
+export { main, runCommand, copyMarkdownHtmlToPublic };
