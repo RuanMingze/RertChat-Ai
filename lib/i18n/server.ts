@@ -41,6 +41,82 @@ const messages: Record<Locale, Messages> = {
       info: 'Info',
     },
   },
+  'ja-JP': {
+    meta: {
+      title: 'RertChat - AIアシスタント',
+      description: 'Cloudflareベースのインテリジェント会話アシスタント',
+    },
+    common: {
+      save: '保存',
+      cancel: 'キャンセル',
+      confirm: '確認',
+      delete: '削除',
+      edit: '編集',
+      search: '検索',
+      loading: '読み込み中...',
+      error: 'エラー',
+      success: '成功',
+      warning: '警告',
+      info: '情報',
+    },
+  },
+  'ko-KR': {
+    meta: {
+      title: 'RertChat - AI 어시스턴트',
+      description: 'Cloudflare 기반의 지능형 대화 어시스턴트',
+    },
+    common: {
+      save: '저장',
+      cancel: '취소',
+      confirm: '확인',
+      delete: '삭제',
+      edit: '편집',
+      search: '검색',
+      loading: '로딩 중...',
+      error: '오류',
+      success: '성공',
+      warning: '경고',
+      info: '정보',
+    },
+  },
+  'fr-FR': {
+    meta: {
+      title: 'RertChat - Assistant IA',
+      description: 'Assistant conversationnel intelligent basé sur Cloudflare',
+    },
+    common: {
+      save: 'Enregistrer',
+      cancel: 'Annuler',
+      confirm: 'Confirmer',
+      delete: 'Supprimer',
+      edit: 'Modifier',
+      search: 'Rechercher',
+      loading: 'Chargement...',
+      error: 'Erreur',
+      success: 'Succès',
+      warning: 'Avertissement',
+      info: 'Information',
+    },
+  },
+  'zh-TW': {
+    meta: {
+      title: 'RertChat - AI 助手',
+      description: '基於 Cloudflare 的智慧對話助手',
+    },
+    common: {
+      save: '儲存',
+      cancel: '取消',
+      confirm: '確認',
+      delete: '刪除',
+      edit: '編輯',
+      search: '搜尋',
+      loading: '載入中...',
+      error: '錯誤',
+      success: '成功',
+      warning: '警告',
+      info: '資訊',
+    },
+  },
 }
 
 function getNestedValue(obj: Record<string, unknown>, path: string): string {

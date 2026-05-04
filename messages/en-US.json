@@ -127,7 +127,9 @@
     "enInterface": "English Interface",
     "links": "Related Links",
     "faq": "FAQ",
-    "apiDocs": "API Documentation"
+    "apiDocs": "API Documentation",
+    "showMoreLanguages": "Show more languages",
+    "showLessLanguages": "Show less"
   },
   "modes": {
     "programmingMode": "Programming Mode",
@@ -454,5 +456,10 @@
     "lastUpdated": "Last Updated",
     "backToTop": "Back to Top",
     "required": "Required"
+  },
+  "swUpdate": {
+    "newVersionAvailable": "A new version is available, update recommended",
+    "updateNow": "Update Now",
+    "dismiss": "Dismiss"
   }
 }

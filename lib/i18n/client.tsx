@@ -5,12 +5,20 @@ import type { ReactNode } from 'react';
 import { Locale, defaultLocale, isValidLocale } from './config';
 import zhCN from '../../messages/zh-CN.json';
 import enUS from '../../messages/en-US.json';
+import zhTW from '../../messages/zh-TW.json';
+import jaJP from '../../messages/ja-JP.json';
+import koKR from '../../messages/ko-KR.json';
+import frFR from '../../messages/fr-FR.json';
 
 type Messages = typeof zhCN;
 
 const messages: Record<Locale, Messages> = {
   'zh-CN': zhCN,
   'en-US': enUS,
+  'zh-TW': zhTW,
+  'ja-JP': jaJP,
+  'ko-KR': koKR,
+  'fr-FR': frFR,
 };
 
 interface I18nContextType {

@@ -29,9 +29,24 @@ export default function SettingsPage() {
   })
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [showMoreLanguages, setShowMoreLanguages] = useState(false)
   const router = useRouter()
   const confirm = useConfirm()
   const { locale, setLocale, t } = useI18n()
+
+  const primaryLocales: Locale[] = ['zh-CN', 'en-US']
+  const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR']
+  const allLocales = [...primaryLocales, ...additionalLocales]
+  const sortedLocales = allLocales.sort((a, b) => {
+    if (a === locale) return -1
+    if (b === locale) return 1
+    const aIndex = allLocales.indexOf(a)
+    const bIndex = allLocales.indexOf(b)
+    return aIndex - bIndex
+  })
+  const displayedLocales = showMoreLanguages 
+    ? sortedLocales 
+    : sortedLocales.slice(0, primaryLocales.length)
 
   useEffect(() => {
     loadSettings()
@@ -255,7 +270,7 @@ export default function SettingsPage() {
               <CardDescription>{t('settings.languageDescription') || '选择界面显示语言'}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {locales.map((loc) => (
+              {displayedLocales.map((loc) => (
                 <div
                   key={loc}
                   onClick={() => setLocale(loc as Locale)}
@@ -273,7 +288,7 @@ export default function SettingsPage() {
                     <div>
                       <div className="text-base font-medium">{localeNames[loc]}</div>
                       <p className="text-sm text-muted-foreground">
-                        {loc === 'zh-CN' ? t('settings.zhInterface') : t('settings.enInterface')}
+                        {loc === 'zh-CN' ? t('settings.zhInterface') : loc === 'en-US' ? t('settings.enInterface') : localeNames[loc]}
                       </p>
                     </div>
                   </div>
@@ -287,6 +302,26 @@ export default function SettingsPage() {
                   />
                 </div>
               ))}
+              {!showMoreLanguages && (
+                <Button
+                  variant="ghost"
+                  className="w-full justify-center text-muted-foreground hover:text-foreground"
+                  onClick={() => setShowMoreLanguages(true)}
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  <span className="text-sm">{t('settings.showMoreLanguages') || '显示更多语言'}</span>
+                </Button>
+              )}
+              {showMoreLanguages && (
+                <Button
+                  variant="ghost"
+                  className="w-full justify-center text-muted-foreground hover:text-foreground"
+                  onClick={() => setShowMoreLanguages(false)}
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  <span className="text-sm">{t('settings.showLessLanguages') || '收起'}</span>
+                </Button>
+              )}
             </CardContent>
           </Card>
 
