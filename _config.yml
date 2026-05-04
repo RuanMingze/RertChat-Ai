@@ -1,14 +1,13 @@
-title: RertChat-Ai Documentation
+title: RertChat-Ai
 description: RertChat-Ai 项目文档
-baseurl: ""
-url: ""
 
-# 源文件配置
 source: .
 destination: _site
+
 include:
   - "*.md"
   - "*.markdown"
+
 exclude:
   - node_modules
   - .next
@@ -24,41 +23,7 @@ exclude:
   - dev.js
   - start.js
   - _config.yml
-
-# 构建配置
-encoding: utf-8
-markdown: kramdown
-highlighter: rouge
-
-# 插件
-plugins:
-  - jekyll-sitemap
-  - jekyll-feed
-
-# 导航链接
-header_pages:
-  - README.md
   - CHANGELOG.md
+  - update.md
 
-# 作者信息
-author:
-  name: RuanMingze
-  email: support@ruanmgjx.dpdns.org
-
-# 自定义变量
-collections:
-  docs:
-    output: true
-    permalink: /docs/:path/
-
-defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "page"
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
+encoding: utf-8

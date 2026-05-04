@@ -1,3 +1,7 @@
+---
+layout: null
+title: README
+---
 # RertChat
 
 [![GitHub Stars](https://img.shields.io/github/stars/RuanMingze/RertChat-Ai?style=social)](https://github.com/RuanMingze/RertChat-Ai)
