@@ -23,6 +23,7 @@ exclude:
   - pages-build.js
   - dev.js
   - start.js
+  - _config.yml
 
 # 构建配置
 encoding: utf-8
@@ -34,19 +35,15 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
 
-# 主题
-theme: minima
-
 # 导航链接
 header_pages:
   - README.md
   - CHANGELOG.md
-  - CONTRIBUTING.md
 
 # 作者信息
 author:
-  name: RertChat-Ai Team
-  email: support@example.com
+  name: RuanMingze
+  email: support@ruanmgjx.dpdns.org
 
 # 自定义变量
 collections:
