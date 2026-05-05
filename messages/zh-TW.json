@@ -34,7 +34,8 @@
     "error": "錯誤",
     "success": "成功",
     "warning": "警告",
-    "info": "資訊"
+    "info": "資訊",
+    "noResults": "未找到匹配的語言"
   },
   "chat": {
     "newConversation": "新建對話",
@@ -129,7 +130,9 @@
     "faq": "常見問題",
     "apiDocs": "API 文件",
     "showMoreLanguages": "顯示更多語言",
-    "showLessLanguages": "收起"
+    "showLessLanguages": "收起",
+    "disclaimer": "免責聲明",
+    "flagDisclaimer": "中國國旗圖案來源於中華人民共和國中央人民政府門戶網站（www.gov.cn），僅用於標識語言區域，使用完全合法。"
   },
   "modes": {
     "programmingMode": "程式設計模式",

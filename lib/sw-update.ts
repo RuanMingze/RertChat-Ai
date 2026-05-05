@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+
+const DISMISS_KEY = 'sw-update-dismissed';
 
 export interface ServiceWorkerUpdateState {
   hasUpdate: boolean;
@@ -16,7 +18,30 @@ export function useServiceWorkerUpdate(): ServiceWorkerUpdateState & {
   const [hasUpdate, setHasUpdate] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissedWorkerUrl, setDismissedWorkerUrlState] = useState<string | null>(null);
+  const initialized = useRef(false);
+  const hasShownUpdate = useRef(false);
+
+  const getDismissedWorkerUrl = useCallback(() => {
+    try {
+      return localStorage.getItem(DISMISS_KEY) || null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const setDismissedWorkerUrl = useCallback((url: string | null) => {
+    try {
+      if (url) {
+        localStorage.setItem(DISMISS_KEY, url);
+      } else {
+        localStorage.removeItem(DISMISS_KEY);
+      }
+      setDismissedWorkerUrlState(url);
+    } catch (error) {
+      console.error('Failed to save dismissed worker URL:', error);
+    }
+  }, []);
 
   const checkForUpdate = useCallback(async () => {
     if (!('serviceWorker' in navigator)) return;
@@ -38,22 +63,36 @@ export function useServiceWorkerUpdate(): ServiceWorkerUpdateState & {
   const applyUpdate = useCallback(() => {
     if (!registration?.waiting) return;
 
+    setDismissedWorkerUrl(null);
+    
     registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
+    const handleControllerChange = () => {
+      navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange);
       window.location.reload();
-    });
-  }, [registration]);
+    };
+    
+    navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange);
+  }, [registration, setDismissedWorkerUrl]);
 
   const dismissUpdate = useCallback(() => {
-    setDismissed(true);
+    if (registration?.waiting) {
+      setDismissedWorkerUrl(registration.waiting.scriptURL);
+    }
     setHasUpdate(false);
-  }, []);
+    hasShownUpdate.current = true;
+  }, [registration, setDismissedWorkerUrl]);
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 
     let checkInterval: ReturnType<typeof setInterval> | null = null;
+    let updateFoundHandler: ((event: Event) => void) | null = null;
+
+    const shouldShowUpdate = (waitingWorker: ServiceWorker) => {
+      const dismissed = localStorage.getItem(DISMISS_KEY);
+      return !dismissed || dismissed !== waitingWorker.scriptURL;
+    };
 
     const handleUpdateFound = (reg: ServiceWorkerRegistration) => {
       const newWorker = reg.installing;
@@ -61,26 +100,41 @@ export function useServiceWorkerUpdate(): ServiceWorkerUpdateState & {
 
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          if (!dismissed) {
-            setHasUpdate(true);
+          if (shouldShowUpdate(newWorker)) {
+            requestAnimationFrame(() => {
+              setHasUpdate(true);
+              hasShownUpdate.current = true;
+            });
           }
         }
       });
     };
 
     const initServiceWorker = async () => {
+      if (initialized.current) return;
+      initialized.current = true;
+
+      const storedDismissed = localStorage.getItem(DISMISS_KEY);
+      setDismissedWorkerUrlState(storedDismissed);
+
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (reg) {
           setRegistration(reg);
 
           if (reg.waiting) {
-            if (!dismissed) {
-              setHasUpdate(true);
+            if (shouldShowUpdate(reg.waiting)) {
+              setTimeout(() => {
+                if (!hasShownUpdate.current) {
+                  setHasUpdate(true);
+                  hasShownUpdate.current = true;
+                }
+              }, 1000);
             }
           }
 
-          reg.addEventListener('updatefound', () => handleUpdateFound(reg));
+          updateFoundHandler = () => handleUpdateFound(reg);
+          reg.addEventListener('updatefound', updateFoundHandler);
         }
 
         checkInterval = setInterval(
@@ -103,8 +157,11 @@ export function useServiceWorkerUpdate(): ServiceWorkerUpdateState & {
       if (checkInterval) {
         clearInterval(checkInterval);
       }
+      if (updateFoundHandler && registration) {
+        registration.removeEventListener('updatefound', updateFoundHandler);
+      }
     };
-  }, [dismissed]);
+  }, [registration]);
 
   return {
     hasUpdate,

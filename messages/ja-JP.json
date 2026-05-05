@@ -34,7 +34,8 @@
     "error": "エラー",
     "success": "成功",
     "warning": "警告",
-    "info": "情報"
+    "info": "情報",
+    "noResults": "言語が見つかりません"
   },
   "chat": {
     "newConversation": "新規会話",
@@ -129,7 +130,9 @@
     "faq": "よくある質問",
     "apiDocs": "APIドキュメント",
     "showMoreLanguages": "他の言語を表示",
-    "showLessLanguages": "閉じる"
+    "showLessLanguages": "閉じる",
+    "disclaimer": "法的免責事項",
+    "flagDisclaimer": "中国国旗の图案は中華人民共和国国務院ポータルサイト（www.gov.cn）から取得したものであり、言語領域の識別のみに使用されています。使用は完全に合法です。"
   },
   "modes": {
     "programmingMode": "プログラミングモード",

@@ -10,6 +10,7 @@ node_modules/
 
 # TypeScript ignores
 next-env.d.ts
+tsconfig.tsbuildinfo
 
 # log ignores
 .log
@@ -27,3 +28,6 @@ next-env.d.ts
 # Other projects ignores
 workers/
 packages/
+
+# pem file ignores
+*.pem

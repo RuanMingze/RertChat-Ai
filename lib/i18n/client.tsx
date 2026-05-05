@@ -9,6 +9,20 @@ import zhTW from '../../messages/zh-TW.json';
 import jaJP from '../../messages/ja-JP.json';
 import koKR from '../../messages/ko-KR.json';
 import frFR from '../../messages/fr-FR.json';
+import deDE from '../../messages/de-DE.json';
+import esES from '../../messages/es-ES.json';
+import itIT from '../../messages/it-IT.json';
+import ptBR from '../../messages/pt-BR.json';
+import ruRU from '../../messages/ru-RU.json';
+import arSA from '../../messages/ar-SA.json';
+import hiIN from '../../messages/hi-IN.json';
+import thTH from '../../messages/th-TH.json';
+import viVN from '../../messages/vi-VN.json';
+import idID from '../../messages/id-ID.json';
+import msMY from '../../messages/ms-MY.json';
+import trTR from '../../messages/tr-TR.json';
+import plPL from '../../messages/pl-PL.json';
+import nlNL from '../../messages/nl-NL.json';
 
 type Messages = typeof zhCN;
 
@@ -19,6 +33,20 @@ const messages: Record<Locale, Messages> = {
   'ja-JP': jaJP,
   'ko-KR': koKR,
   'fr-FR': frFR,
+  'de-DE': deDE,
+  'es-ES': esES,
+  'it-IT': itIT,
+  'pt-BR': ptBR,
+  'ru-RU': ruRU,
+  'ar-SA': arSA,
+  'hi-IN': hiIN,
+  'th-TH': thTH,
+  'vi-VN': viVN,
+  'id-ID': idID,
+  'ms-MY': msMY,
+  'tr-TR': trTR,
+  'pl-PL': plPL,
+  'nl-NL': nlNL,
 };
 
 interface I18nContextType {

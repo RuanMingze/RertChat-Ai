@@ -34,7 +34,8 @@
     "error": "Erreur",
     "success": "Succès",
     "warning": "Avertissement",
-    "info": "Information"
+    "info": "Information",
+    "noResults": "Aucune langue trouvée"
   },
   "chat": {
     "newConversation": "Nouvelle conversation",
@@ -129,7 +130,9 @@
     "faq": "FAQ",
     "apiDocs": "Documentation API",
     "showMoreLanguages": "Afficher plus de langues",
-    "showLessLanguages": "Réduire"
+    "showLessLanguages": "Réduire",
+    "disclaimer": "Clause de non-responsabilité",
+    "flagDisclaimer": "Le motif du drapeau chinois provient du portail officiel du Conseil des Affair es de l'État de la République populaire de Chine (www.gov.cn), et est utilisé uniquement pour identifier les régions linguistiques. Son utilisation est entièrement légale."
   },
   "modes": {
     "programmingMode": "Mode programmation",

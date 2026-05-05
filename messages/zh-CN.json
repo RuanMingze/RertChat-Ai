@@ -34,7 +34,8 @@
     "error": "错误",
     "success": "成功",
     "warning": "警告",
-    "info": "信息"
+    "info": "信息",
+    "noResults": "未找到匹配的语言"
   },
   "chat": {
     "newConversation": "新建对话",
@@ -129,7 +130,9 @@
     "faq": "常见问题",
     "apiDocs": "API 文档",
     "showMoreLanguages": "显示更多语言",
-    "showLessLanguages": "收起"
+    "showLessLanguages": "收起",
+    "disclaimer": "免责声明",
+    "flagDisclaimer": "中国国旗图案来源于中华人民共和国中央人民政府门户网站（www.gov.cn），仅用于标识语言区域，未作任何修改、变形或商业使用，使用完全合法。"
   },
   "modes": {
     "programmingMode": "编程模式",

@@ -36,7 +36,7 @@ export default function SettingsPage() {
   const { locale, setLocale, t } = useI18n()
 
   const primaryLocales: Locale[] = ['zh-CN', 'en-US']
-  const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR']
+  const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR', 'de-DE', 'es-ES', 'it-IT', 'pt-BR', 'ru-RU', 'ar-SA', 'hi-IN', 'th-TH', 'vi-VN', 'id-ID', 'ms-MY', 'tr-TR', 'pl-PL', 'nl-NL']
 
   const displayedLocales = useMemo(() => {
     const allLocales = [...primaryLocales, ...additionalLocales]
@@ -274,58 +274,52 @@ export default function SettingsPage() {
               <CardDescription>{t('settings.languageDescription') || '选择界面显示语言'}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {displayedLocales.map((loc) => (
-                <div
-                  key={loc}
-                  onClick={() => setLocale(loc as Locale)}
-                  className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
-                      locale === loc
-                        ? "border-primary bg-primary/10"
-                        : "border-border"
-                    )}>
-                      <Globe className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="text-base font-medium">{localeNames[loc]}</div>
-                      <p className="text-sm text-muted-foreground">
-                        {loc === 'zh-CN' ? t('settings.zhInterface') : loc === 'en-US' ? t('settings.enInterface') : localeNames[loc]}
-                      </p>
-                    </div>
-                  </div>
+              {(() => {
+                const displayList = [...primaryLocales]
+                if (!primaryLocales.includes(locale)) {
+                  displayList.unshift(locale)
+                }
+                return displayList.map((loc) => (
                   <div
-                    className={cn(
-                      "h-4 w-4 rounded-full border-2",
-                      locale === loc
-                        ? "border-primary bg-primary"
-                        : "border-muted-foreground"
-                    )}
-                  />
-                </div>
-              ))}
-              {!showMoreLanguages && (
-                <Button
-                  variant="ghost"
-                  className="w-full justify-center text-muted-foreground hover:text-foreground"
-                  onClick={() => setShowMoreLanguages(true)}
-                >
-                  <Globe className="h-4 w-4 mr-2" />
-                  <span className="text-sm">{t('settings.showMoreLanguages') || '显示更多语言'}</span>
-                </Button>
-              )}
-              {showMoreLanguages && (
-                <Button
-                  variant="ghost"
-                  className="w-full justify-center text-muted-foreground hover:text-foreground"
-                  onClick={() => setShowMoreLanguages(false)}
-                >
-                  <Globe className="h-4 w-4 mr-2" />
-                  <span className="text-sm">{t('settings.showLessLanguages') || '收起'}</span>
-                </Button>
-              )}
+                    key={loc}
+                    onClick={() => setLocale(loc as Locale)}
+                    className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
+                        locale === loc
+                          ? "border-primary bg-primary/10"
+                          : "border-border"
+                      )}>
+                        <Globe className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <div className="text-base font-medium">{localeNames[loc]}</div>
+                        <p className="text-sm text-muted-foreground">
+                          {loc === 'zh-CN' ? t('settings.zhInterface') : loc === 'en-US' ? t('settings.enInterface') : localeNames[loc]}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className={cn(
+                        "h-4 w-4 rounded-full border-2",
+                        locale === loc
+                          ? "border-primary bg-primary"
+                          : "border-muted-foreground"
+                      )}
+                    />
+                  </div>
+                ))
+              })()}
+              <Button
+                variant="ghost"
+                className="w-full justify-center text-muted-foreground hover:text-foreground"
+                onClick={() => router.push('/settings/language')}
+              >
+                <Globe className="h-4 w-4 mr-2" />
+                <span className="text-sm">{t('settings.showMoreLanguages') || '显示更多语言'}</span>
+              </Button>
             </CardContent>
           </Card>
 

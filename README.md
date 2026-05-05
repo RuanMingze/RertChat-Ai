@@ -49,8 +49,31 @@ RertChat 支持多语言界面，目前支持以下语言：
 | 日语 | `ja-JP` |
 | 韩语 | `ko-KR` |
 | 法语 | `fr-FR` |
+| 德语 | `de-DE` |
+| 西班牙语 | `es-ES` |
+| 意大利语 | `it-IT` |
+| 葡萄牙语 | `pt-BR` |
+| 俄语 | `ru-RU` |
+| 阿拉伯语 | `ar-SA` |
+| 印地语 | `hi-IN` |
+| 泰语 | `th-TH` |
+| 越南语 | `vi-VN` |
+| 印尼语 | `id-ID` |
+| 马来语 | `ms-MY` |
+| 土耳其语 | `tr-TR` |
+| 波兰语 | `pl-PL` |
+| 荷兰语 | `nl-NL` |
 
 语言包位于 `/messages` 目录下，每个语言对应一个 JSON 文件。
+
+### 切换语言
+
+用户可以通过以下方式切换界面语言：
+
+1. **设置页面**：点击页面右上角的用户头像或设置图标，进入设置页面
+2. **语言选项**：在设置页面中找到"语言"选项，可以切换中文和英文，点击“显示更多语言”进入所有语言页面
+3. **选择语言**：在所有语言页面中，浏览或搜索找到你想要的语言，点击对应的语言卡片即可切换
+4. **即时生效**：语言切换后立即生效，无需刷新页面
 
 ### 参与翻译
 
@@ -537,3 +560,9 @@ USING ("user-email" = current_setting('app.current_user_email', true));
 - [shadcn/ui](https://ui.shadcn.com/) - UI 组件库
 - [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless 运行
 - [Cloudflare AI](https://www.cloudflare.com/) - AI 模型支持
+
+---
+
+## 免责声明
+
+中国国旗图案来源于中华人民共和国中央人民政府门户网站（www.gov.cn），仅用于标识语言区域，未作任何修改、变形或商业使用，使用完全合法。

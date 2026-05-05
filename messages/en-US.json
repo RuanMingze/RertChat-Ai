@@ -34,7 +34,8 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
-    "info": "Info"
+    "info": "Info",
+    "noResults": "No languages found"
   },
   "chat": {
     "newConversation": "New Conversation",
@@ -129,7 +130,9 @@
     "faq": "FAQ",
     "apiDocs": "API Documentation",
     "showMoreLanguages": "Show more languages",
-    "showLessLanguages": "Show less"
+    "showLessLanguages": "Show less",
+    "disclaimer": "Disclaimer",
+    "flagDisclaimer": "The Chinese national flag pattern is sourced from the official website of the State Council of the People Republic of China (www.gov.cn), and is used solely to identify language regions. Its use is completely legal."
   },
   "modes": {
     "programmingMode": "Programming Mode",
