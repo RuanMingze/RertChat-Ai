@@ -113,7 +113,10 @@ export function ChatSidebar({
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
-          <h2 className="text-lg font-semibold text-sidebar-foreground">对话历史</h2>
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-sidebar-foreground" />
+            <h2 className="hidden sm:block text-lg font-semibold text-sidebar-foreground">对话历史</h2>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -127,10 +130,10 @@ export function ChatSidebar({
         <div className="p-3">
           <Button
             onClick={onNew}
-            className="w-full justify-start gap-2 rounded-xl bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+            className="w-full justify-center gap-2 rounded-xl bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
           >
             <Plus className="h-4 w-4" />
-            新建对话
+            <span className="hidden sm:inline">新建对话</span>
           </Button>
         </div>
 

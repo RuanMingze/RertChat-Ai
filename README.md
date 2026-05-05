@@ -1,7 +1,3 @@
----
-layout: null
-title: README
----
 # RertChat
 
 [![GitHub Stars](https://img.shields.io/github/stars/RuanMingze/RertChat-Ai?style=social)](https://github.com/RuanMingze/RertChat-Ai)
@@ -26,6 +22,27 @@ RertChat 是一个基于 Cloudflare AI Gateway 的智能对话助手，支持流
 - **无强制登录**：可立即开始对话，无需注册
 - **模型切换**：随时切换不同的 AI 模型
 - **主题切换**：支持浅色/深色模式
+
+## 界面预览
+### Windows PC
+
+![Screenshot](public/screenshot.png)
+
+![Screenshot2](public/screenshot2.png)
+
+### iPad Pro
+
+![Screenshot3](public/screenshot3.png)
+
+![Screenshot4](public/screenshot4.png)
+
+### iPhone 14 Pro Max
+
+![Screenshot5](public/screenshot5.png)
+
+![Screenshot6](public/screenshot6.png)
+
+> 注意：设置页面长截图拍摄使用了GoFullPage扩展，移动端截图拍摄使用了Microsoft Edge DevTools的设备仿真功能
 
 ## 支持的 AI 模型
 
@@ -82,12 +99,6 @@ RertChat 支持多语言界面，目前支持以下语言：
 1. 访问 [Crowdin 项目页面](https://crowdin.com/project/rertchat) 登录账号
 2. 选择您想要翻译的语言
 3. 提交您的翻译建议
-
-## 界面预览
-
-![Screenshot](public/screenshot.png)
-
-![Screenshot2](public/screenshot2.png)
 
 ## PWA 与 Service Worker
 
