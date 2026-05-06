@@ -620,6 +620,7 @@ export default function SettingsPage() {
                   <Link href="/settings/update">
                     <RefreshCw className="mr-2 h-4 w-4" />
                     {t('settings.updateSettings')}
+                    <ExternalLink className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </CardContent>
