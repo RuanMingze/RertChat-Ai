@@ -98,6 +98,10 @@
     "languageDescription": "Selecteer de taal voor de weergave in de interface",
     "showLoadingScreen": "Laadscherm Weergeven",
     "showLoadingScreenDescription": "Toon een laadanimatie bij het openen van de pagina",
+    "traditionalNavigation": "Gebruik traditionele conversatienavigatie",
+    "traditionalNavigationDescription": "URL niet bijwerken bij het wisselen van gesprek",
+    "unsavedChanges": "U hebt niet-opgeslagen wijzigingen",
+    "unsavedChangesHint": "Sla uw wijzigingen op, anders gaan ze verloren wanneer u de pagina verlaat",
     "aiSettings": "AI-assistent Instellingen",
     "aiSettingsDescription": "Configureer het gedrag en het model van de AI-assistent",
     "appearanceSettings": "Uiterlijk Instellingen",
@@ -419,8 +423,7 @@
     "copied": "API-sleutel is gekopieerd",
     "copyKey": "Sleutel Kopiëren",
     "keyActions": "Acties",
-    "edit": "Bewerken",
-    "delete": "Verwijderen"
+    "edit": "Bewerken"
   },
   "docs": {
     "title": "Documentatie",

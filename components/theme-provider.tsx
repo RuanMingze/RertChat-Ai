@@ -1,10 +1,11 @@
 "use client"
 
+import React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useTheme as useNextTheme } from "next-themes"
 import { getSettings, saveSettings, type Settings } from "@/lib/chat-db"
 
-type Theme = "light" | "dark"
+type Theme = "light" | "dark" | "system"
 
 interface ThemeContextType {
   theme: Theme
@@ -14,10 +15,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { theme: nextTheme, setTheme: setNextTheme, resolvedTheme } = useNextTheme({
-    defaultTheme: "dark",
-    enableSystem: false,
-  })
+  const { theme: nextTheme, setTheme: setNextTheme, resolvedTheme } = useNextTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {

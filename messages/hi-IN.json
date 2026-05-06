@@ -98,6 +98,10 @@
     "languageDescription": "इंटरफ़ेस प्रदर्शन भाषा चुनें",
     "showLoadingScreen": "लोडिंग स्क्रीन दिखाएं",
     "showLoadingScreenDescription": "पृष्ठ खोलते समय लोडिंग एनिमेशन दिखाएं",
+    "traditionalNavigation": "पारंपरिक वार्तालाप नेविगेशन का उपयोग करें",
+    "traditionalNavigationDescription": "वार्तालाप बदलते समय URL अपडेट न करें",
+    "unsavedChanges": "आपके पास सहेजे न गए परिवर्तन हैं",
+    "unsavedChangesHint": "कृपया अपने परिवर्तन सहेजें, अन्यथा पृष्ठ छोड़ने पर वे खो जाएंगे",
     "aiSettings": "AI सहायक सेटिंग्स",
     "aiSettingsDescription": "AI सहायक व्यवहार और मॉडल कॉन्फ़िगर करें",
     "appearanceSettings": "दिखावट सेटिंग्स",
@@ -105,7 +109,9 @@
     "lightMode": "लाइट मोड",
     "lightModeDescription": "उज्ज्वल इंटरफ़ेस थीम",
     "darkMode": "डार्क मोड",
-    "darkModeDescription": "डार्क इंटरफ़ेस थीम",
+    "darkModeDescription": "डार्क इंटरफेस थीम",
+    "systemMode": "सिस्टम थीम",
+    "systemModeDescription": "डार्क/लाइट मोड के बीच स्वचालित रूप से स्विच करने के लिए सिस्टम का पालन करें",
     "behaviorSettings": "व्यवहार सेटिंग्स",
     "behaviorSettingsDescription": "एप्लिकेशन व्यवहार कॉन्फ़िगर करें",
     "notificationSettings": "सूचना सेटिंग्स",
@@ -419,8 +425,7 @@
     "copied": "API कुंजी कॉपी की गई",
     "copyKey": "कुंजी कॉपी करें",
     "keyActions": "कार्रवाई",
-    "edit": "संपादित करें",
-    "delete": "हटाएं"
+    "edit": "संपादित करें"
   },
   "docs": {
     "title": "दस्तावेज़ीकरण",

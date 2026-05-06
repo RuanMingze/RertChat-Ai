@@ -98,6 +98,10 @@
     "languageDescription": "Arayüzde görüntülenecek dili seçin",
     "showLoadingScreen": "Yükleme Ekranını Göster",
     "showLoadingScreenDescription": "Sayfa açıldığında yükleme animasyonu göster",
+    "traditionalNavigation": "Geleneksel konuşma navigasyonunu kullan",
+    "traditionalNavigationDescription": "Konuşma değiştirirken URL'yi güncelleme",
+    "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+    "unsavedChangesHint": "Lütfen değişikliklerinizi kaydedin, aksi takdirde sayfadan çıkarken kaybolacak",
     "aiSettings": "AI Asistan Ayarları",
     "aiSettingsDescription": "AI asistanın davranışını ve modelini yapılandırın",
     "appearanceSettings": "Görünüm Ayarları",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Açık arayüz teması",
     "darkMode": "Koyu Mod",
     "darkModeDescription": "Koyu arayüz teması",
+    "systemMode": "Sistem Teması",
+    "systemModeDescription": "Koyu/açık mod arasında otomatik geçiş yapmak için sisteme izleyin",
     "behaviorSettings": "Davranış Ayarları",
     "behaviorSettingsDescription": "Uygulamanın davranışını yapılandırın",
     "notificationSettings": "Bildirim Ayarları",
@@ -419,8 +425,7 @@
     "copied": "API anahtarı kopyalandı",
     "copyKey": "Anahtarı Kopyala",
     "keyActions": "İşlemler",
-    "edit": "Düzenle",
-    "delete": "Sil"
+    "edit": "Düzenle"
   },
   "docs": {
     "title": "Dokümanlar",

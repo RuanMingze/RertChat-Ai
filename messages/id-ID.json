@@ -98,6 +98,10 @@
     "languageDescription": "Pilih bahasa untuk ditampilkan di antarmuka",
     "showLoadingScreen": "Tampilkan Layar Pemuatan",
     "showLoadingScreenDescription": "Tampilkan animasi pemuatan saat membuka halaman",
+    "traditionalNavigation": "Gunakan navigasi percakapan tradisional",
+    "traditionalNavigationDescription": "Jangan perbarui URL saat beralih percakapan",
+    "unsavedChanges": "Anda memiliki perubahan yang belum disimpan",
+    "unsavedChangesHint": "Silakan simpan perubahan Anda, jika tidak akan hilang ketika Anda meninggalkan halaman",
     "aiSettings": "Pengaturan Asisten AI",
     "aiSettingsDescription": "Konfigurasikan perilaku dan model asisten AI",
     "appearanceSettings": "Pengaturan Tampilan",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Tema antarmuka terang",
     "darkMode": "Mode Gelap",
     "darkModeDescription": "Tema antarmuka gelap",
+    "systemMode": "Tema Sistem",
+    "systemModeDescription": "Ikuti sistem untuk beralih otomatis antara mode gelap/terang",
     "behaviorSettings": "Pengaturan Perilaku",
     "behaviorSettingsDescription": "Konfigurasikan perilaku aplikasi",
     "notificationSettings": "Pengaturan Notifikasi",
@@ -419,8 +425,7 @@
     "copied": "API key telah disalin",
     "copyKey": "Salin Key",
     "keyActions": "Tindakan",
-    "edit": "Edit",
-    "delete": "Hapus"
+    "edit": "Edit"
   },
   "docs": {
     "title": "Dokumentasi",

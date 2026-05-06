@@ -98,6 +98,10 @@
     "languageDescription": "Wybierz język do wyświetlania w interfejsie",
     "showLoadingScreen": "Pokaż ekran ładowania",
     "showLoadingScreenDescription": "Pokaż animację ładowania podczas otwierania strony",
+    "traditionalNavigation": "Używaj tradycyjnej nawigacji rozmowy",
+    "traditionalNavigationDescription": "Nie aktualizuj URL podczas przełączania rozmowy",
+    "unsavedChanges": "Masz niezapisane zmiany",
+    "unsavedChangesHint": "Zapisz swoje zmiany, w przeciwnym razie zostaną utracone po opuszczeniu strony",
     "aiSettings": "Ustawienia asystenta AI",
     "aiSettingsDescription": "Skonfiguruj zachowanie i model asystenta AI",
     "appearanceSettings": "Ustawienia wyglądu",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Jasny motyw interfejsu",
     "darkMode": "Tryb ciemny",
     "darkModeDescription": "Ciemny motyw interfejsu",
+    "systemMode": "Motyw systemowy",
+    "systemModeDescription": "Postępuj zgodnie z systemem, aby automatycznie przełączać się między trybem ciemnym/jasnym",
     "behaviorSettings": "Ustawienia zachowania",
     "behaviorSettingsDescription": "Skonfiguruj zachowanie aplikacji",
     "notificationSettings": "Ustawienia powiadomień",
@@ -419,8 +425,7 @@
     "copied": "Klucz API został skopiowany",
     "copyKey": "Kopiuj klucz",
     "keyActions": "Działania",
-    "edit": "Edytuj",
-    "delete": "Usuń"
+    "edit": "Edytuj"
   },
   "docs": {
     "title": "Dokumentacja",

@@ -98,6 +98,10 @@
     "languageDescription": "เลือกภาษาสำหรับแสดงในอินเทอร์เฟซ",
     "showLoadingScreen": "แสดงหน้าจอโหลด",
     "showLoadingScreenDescription": "แสดงภาพเคลื่อนไหวการโหลดเมื่อเปิดหน้า",
+    "traditionalNavigation": "ใช้การนำทางการสนทนาแบบดั้งเดิม",
+    "traditionalNavigationDescription": "ไม่อัปเดต URL เมื่อสลับการสนทนา",
+    "unsavedChanges": "คุณมีการเปลี่ยนแปลงที่ยังไม่บันทึก",
+    "unsavedChangesHint": "กรุณาบันทึกการเปลี่ยนแปลงของคุณ มิฉะนั้นจะหายไปเมื่อคุณออกจากหน้า",
     "aiSettings": "การตั้งค่าผู้ช่วย AI",
     "aiSettingsDescription": "กำหนดค่าพฤติกรรมและโมเดลของผู้ช่วย AI",
     "appearanceSettings": "การตั้งค่าลักษณะที่ปรากฏ",
@@ -105,7 +109,9 @@
     "lightMode": "โหมดสว่าง",
     "lightModeDescription": "ธีมอินเทอร์เฟซสว่าง",
     "darkMode": "โหมดมืด",
-    "darkModeDescription": "ธีมอินเทอร์เฟซมืด",
+    "darkModeDescription": "ธีมอินเทอร์เฟซโหมดมืด",
+    "systemMode": "ธีมระบบ",
+    "systemModeDescription": "ติดตามระบบเพื่อเปลี่ยนโหมดมืด/สว่างอัตโนมัติ",
     "behaviorSettings": "การตั้งค่าพฤติกรรม",
     "behaviorSettingsDescription": "กำหนดค่าพฤติกรรมของแอป",
     "notificationSettings": "การตั้งค่าการแจ้งเตือน",
@@ -419,8 +425,7 @@
     "copied": "API key ถูกคัดลอก",
     "copyKey": "คัดลอก Key",
     "keyActions": "การดำเนินการ",
-    "edit": "แก้ไข",
-    "delete": "ลบ"
+    "edit": "แก้ไข"
   },
   "docs": {
     "title": "เอกสาร",

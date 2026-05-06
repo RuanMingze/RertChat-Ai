@@ -4,7 +4,7 @@ import { PageTitle } from "@/components/PageTitle"
 import { useState, useRef, useEffect, useCallback, memo } from "react"
 import type { ChangeEvent, KeyboardEvent, MouseEvent } from "react"
 import React from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
@@ -21,6 +21,7 @@ import {
   getUserProfile,
   renameConversation as renameConversationInDB,
   pinConversation,
+  generateShortId,
   type Conversation,
   type Message,
   type Settings,
@@ -444,6 +445,7 @@ export default function Home() {
     id: 'default',
     streamingEnabled: true,
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
+    useTraditionalNavigation: true,
     showLoadingScreen: true,
     notificationsEnabled: true,
     soundEnabled: false,
@@ -542,12 +544,17 @@ export default function Home() {
         return
       }
 
-      const importedConversations = importData.conversations.map((conv: Conversation) => ({
-        ...conv,
-        id: crypto.randomUUID(),
-        createdAt: conv.createdAt || Date.now(),
-        updatedAt: Date.now()
-      }))
+      // 为每个导入的对话生成6位数ID
+      const importedConversations: Conversation[] = []
+      for (const conv of importData.conversations) {
+        const shortId = await generateShortId()
+        importedConversations.push({
+          ...conv,
+          id: shortId,
+          createdAt: conv.createdAt || Date.now(),
+          updatedAt: Date.now()
+        })
+      }
 
       for (const conv of importedConversations) {
         await saveConversation(conv)
@@ -645,7 +652,8 @@ export default function Home() {
   // 从 URL 获取对话 ID
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const conversationId = urlParams.get('conversationId')
+    // 支持 chat 和 conversationId 两种参数
+    const conversationId = urlParams.get('chat') || urlParams.get('conversationId')
     
     // 并行加载设置和对话数据
     Promise.all([
@@ -667,6 +675,7 @@ export default function Home() {
         let targetConv: Conversation | undefined
         if (conversationId) {
           targetConv = convs.find(c => c.id === conversationId)
+          // 如果通过URL参数找不到对话，不自动选择
         } else if (loadedSettings.autoRedirectToRecent && convs.length > 0) {
           // 只有在 autoRedirectToRecent 为 true 时才自动选择最近的对话
           const sortedConvs = [...convs].sort((a, b) => b.updatedAt - a.updatedAt)
@@ -677,11 +686,17 @@ export default function Home() {
         if (targetConv) {
           setCurrentConversationId(targetConv.id)
           setMessages(targetConv.messages)
+          
+          // 如果使用新的导航方式且没有URL参数，则更新URL
+          if (!loadedSettings.useTraditionalNavigation && !conversationId && targetConv) {
+            router.push(`/?chat=${targetConv.id}`)
+          }
         }
         
         // 添加设置日志
         console.log('Settings loaded:', loadedSettings)
         console.log('Auto redirect to recent:', loadedSettings.autoRedirectToRecent)
+        console.log('Use traditional navigation:', loadedSettings.useTraditionalNavigation)
         
         setDbReady(true)
       })
@@ -689,7 +704,22 @@ export default function Home() {
         console.error("Failed to load data:", err)
         setDbReady(true)
       })
-  }, [])
+  }, [router])
+
+  // 使用useSearchParams监听URL参数变化（客户端导航时触发）
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (!dbReady) return
+    
+    const chatId = searchParams.get('chat')
+    if (chatId && chatId !== currentConversationId) {
+      const conv = conversations.find(c => c.id === chatId)
+      if (conv) {
+        setCurrentConversationId(conv.id)
+        setMessages(conv.messages)
+      }
+    }
+  }, [searchParams, dbReady, conversations, currentConversationId])
 
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
@@ -716,8 +746,10 @@ export default function Home() {
       let convId = currentConversationId
       let newConv: Conversation | null = null
       if (!convId) {
+        // 使用6位数ID
+        const shortId = await generateShortId()
         newConv = {
-          id: generateId(),
+          id: shortId,
           title: content.slice(0, 30) + (content.length > 30 ? "..." : ""),
           messages: [],
           createdAt: Date.now(),
@@ -729,6 +761,12 @@ export default function Home() {
         convId = newConv.id
         // 保存新对话到 IndexedDB
         saveConversation(newConv).catch(console.error)
+        // 根据设置决定是否更新URL
+        if (!settings.useTraditionalNavigation) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('chat', shortId)
+          window.history.pushState({ path: url.toString() }, '', url.toString())
+        }
       }
 
       const userMessage: Message = { id: generateId(), role: "user", content }
@@ -902,28 +940,44 @@ export default function Home() {
     }
   }
 
-  const handleNewConversation = () => {
+  const handleNewConversation = async () => {
+    // 使用6位数ID
+    const shortId = await generateShortId()
     const newConv: Conversation = {
-      id: generateId(),
+      id: shortId,
       title: t('chat.newChat'),
       messages: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
       isPinned: false
     }
+    // 保存新对话到 IndexedDB
+    await saveConversation(newConv)
+    // 更新本地状态，确保URL变化后能找到新对话
     setConversations((prev) => [newConv, ...prev])
     setCurrentConversationId(newConv.id)
     setMessages([])
     setSidebarOpen(false)
-    saveConversation(newConv).catch(console.error)
+    // 根据设置决定是否更新URL
+    if (!settings.useTraditionalNavigation) {
+      router.push(`/?chat=${shortId}`)
+    }
   }
 
   const handleSelectConversation = (id: string) => {
     const conv = conversations.find((c) => c.id === id)
     if (conv) {
-      setCurrentConversationId(id)
-      setMessages(conv.messages)
-      setSidebarOpen(false)
+      // 根据设置决定是否更新URL
+      if (settings.useTraditionalNavigation) {
+        // 传统方式：直接切换状态，不更新URL
+        setCurrentConversationId(conv.id)
+        setMessages(conv.messages)
+        setSidebarOpen(false)
+      } else {
+        // 新方式：更新URL，触发路由监听
+        router.push(`/?chat=${id}`)
+        setSidebarOpen(false)
+      }
     }
   }
 

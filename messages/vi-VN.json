@@ -98,6 +98,10 @@
     "languageDescription": "Chọn ngôn ngữ để hiển thị trong giao diện",
     "showLoadingScreen": "Hiển thị màn hình tải",
     "showLoadingScreenDescription": "Hiển thị hoạt ảnh tải khi mở trang",
+    "traditionalNavigation": "Sử dụng điều hướng hội thoại truyền thống",
+    "traditionalNavigationDescription": "Không cập nhật URL khi chuyển đổi hội thoại",
+    "unsavedChanges": "Bạn có thay đổi chưa lưu",
+    "unsavedChangesHint": "Vui lòng lưu các thay đổi của bạn, nếu không chúng sẽ bị mất khi bạn rời khỏi trang",
     "aiSettings": "Cài đặt trợ lý AI",
     "aiSettingsDescription": "Định cấu hình hành vi và mô hình của trợ lý AI",
     "appearanceSettings": "Cài đặt giao diện",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Giao diện sáng của ứng dụng",
     "darkMode": "Chế độ tối",
     "darkModeDescription": "Giao diện tối của ứng dụng",
+    "systemMode": "Chủ đề hệ thống",
+    "systemModeDescription": "Theo dõi hệ thống để tự động chuyển đổi giữa chế độ tối/sáng",
     "behaviorSettings": "Cài đặt hành vi",
     "behaviorSettingsDescription": "Định cấu hình hành vi của ứng dụng",
     "notificationSettings": "Cài đặt thông báo",
@@ -419,8 +425,7 @@
     "copied": "API key đã được sao chép",
     "copyKey": "Sao chép Key",
     "keyActions": "Thao tác",
-    "edit": "Sửa",
-    "delete": "Xóa"
+    "edit": "Sửa"
   },
   "docs": {
     "title": "Tài liệu",

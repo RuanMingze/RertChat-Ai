@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sun, Moon, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe, Info, BookOpen, Code } from "lucide-react"
+import { ArrowLeft, Sun, Moon, Monitor, ExternalLink, MessageCircle, LogOut, User, Bell, Volume2, AlertTriangle, Globe, Info, BookOpen, Code, Navigation, Link2, RefreshCw, Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { getSettings, saveSettings, getUserProfile, deleteUserProfile, clearAllData, unregisterServiceWorker, clearAllCaches, type Settings, type UserProfile } from "@/lib/chat-db"
@@ -24,9 +24,11 @@ export default function SettingsPage() {
     autoRedirectToRecent: true,
     showLoadingScreen: true,
     notificationsEnabled: false,
+    useTraditionalNavigation: true,
     soundEnabled: true,
     showAIWarning: true
   })
+  const [originalSettings, setOriginalSettings] = useState<Settings | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [showMoreLanguages, setShowMoreLanguages] = useState(false)
@@ -34,6 +36,8 @@ export default function SettingsPage() {
   const router = useRouter()
   const confirm = useConfirm()
   const { locale, setLocale, t } = useI18n()
+
+  const hasChanges = originalSettings && JSON.stringify(settings) !== JSON.stringify(originalSettings)
 
   const primaryLocales: Locale[] = ['zh-CN', 'en-US']
   const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR', 'de-DE', 'es-ES', 'it-IT', 'pt-BR', 'ru-RU', 'ar-SA', 'hi-IN', 'th-TH', 'vi-VN', 'id-ID', 'ms-MY', 'tr-TR', 'pl-PL', 'nl-NL']
@@ -60,10 +64,9 @@ export default function SettingsPage() {
     try {
       const loadedSettings = await getSettings()
       setSettings(loadedSettings)
+      setOriginalSettings(loadedSettings)
       // 同步应用主题到 DOM
-      const root = window.document.documentElement
-      root.classList.remove("light", "dark")
-      root.classList.add(loadedSettings.theme)
+      applyTheme(loadedSettings.theme)
       
       // 加载用户资料
       const profile = await getUserProfile()
@@ -73,20 +76,29 @@ export default function SettingsPage() {
     }
   }
 
-  const handleThemeChange = (newTheme: 'light' | 'dark') => {
-    setSettings(prev => ({ ...prev, theme: newTheme }))
-    // 直接操作 DOM 切换主题
+  const applyTheme = (theme: 'light' | 'dark' | 'system') => {
     const root = window.document.documentElement
     root.classList.remove("light", "dark")
-    root.classList.add(newTheme)
+    
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      root.classList.add(systemTheme)
+    } else {
+      root.classList.add(theme)
+    }
+  }
+
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
+    setSettings(prev => ({ ...prev, theme: newTheme }))
+    applyTheme(newTheme)
   }
 
   const handleSave = async () => {
     try {
       setIsSaving(true)
       await saveSettings(settings)
-      // 保存成功后返回主页
-      router.push('/')
+      // 保存成功后更新原始设置，隐藏保存提示
+      setOriginalSettings(settings)
     } catch (error) {
       console.error('Failed to save settings:', error)
     } finally {
@@ -264,6 +276,34 @@ export default function SettingsPage() {
                   )}
                 />
               </div>
+
+              <div
+                onClick={() => handleThemeChange('system')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-accent transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-colors",
+                    settings.theme === 'system'
+                      ? "border-primary bg-primary/10"
+                      : "border-border"
+                  )}>
+                    <Monitor className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-base font-medium">{t('settings.systemMode')}</div>
+                    <p className="text-sm text-muted-foreground">{t('settings.systemModeDescription')}</p>
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "h-4 w-4 rounded-full border-2",
+                    settings.theme === 'system'
+                      ? "border-primary bg-primary"
+                      : "border-muted-foreground"
+                  )}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -334,7 +374,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                      <MessageCircle className="h-5 w-5" />
+                      <RefreshCw className="h-5 w-5" />
                     </div>
                     <div>
                       <Label htmlFor="auto-redirect" className="text-base">{t('settings.autoRedirect')}</Label>
@@ -356,7 +396,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                      <Sun className="h-5 w-5" />
+                      <Loader className="h-5 w-5" />
                     </div>
                     <div>
                       <Label htmlFor="loading-screen" className="text-base">{t('settings.showLoadingScreen')}</Label>
@@ -369,6 +409,28 @@ export default function SettingsPage() {
                     onCheckedChange={(checked) => setSettings(prev => ({
                       ...prev,
                       showLoadingScreen: checked
+                    }))}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                      <Navigation className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <Label htmlFor="traditional-nav" className="text-base">{t('settings.traditionalNavigation')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.traditionalNavigationDescription')}</p>
+                    </div>
+                  </div>
+                  <Switch
+                    id="traditional-nav"
+                    checked={settings.useTraditionalNavigation}
+                    onCheckedChange={(checked) => setSettings(prev => ({
+                      ...prev,
+                      useTraditionalNavigation: checked
                     }))}
                   />
                 </div>
@@ -485,12 +547,48 @@ export default function SettingsPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button onClick={handleSave} disabled={isSaving} size="lg">
-                {isSaving ? t('settings.saving') : t('common.save')}
-              </Button>
-            </CardFooter>
           </Card>
+
+          {hasChanges && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+              <div className="bg-background border-2 border-warning/50 rounded-2xl p-5 shadow-2xl min-w-[400px]">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/20">
+                    <AlertTriangle className="h-6 w-6 text-warning" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-lg font-medium text-foreground">
+                      {t('settings.unsavedChanges') || '您有未保存的更改'}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {t('settings.unsavedChangesHint') || '请保存更改，否则将在离开页面时丢失'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (originalSettings) {
+                          setSettings(originalSettings)
+                        }
+                      }}
+                    >
+                      {t('common.cancel') || '取消'}
+                    </Button>
+                    <Button
+                      onClick={handleSave}
+                      disabled={isSaving}
+                      size="sm"
+                      className="bg-warning hover:bg-warning/90 text-warning-foreground"
+                    >
+                      {isSaving ? t('settings.saving') : t('common.save')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <Card>
             <CardHeader>

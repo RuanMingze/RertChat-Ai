@@ -98,7 +98,11 @@
     "languageDescription": "Escolha o idioma de exibição da interface",
     "showLoadingScreen": "Mostrar tela de carregamento",
     "showLoadingScreenDescription": "Mostrar animação de carregamento ao abrir a página",
-    "aiSettings": "Configurações do Assistente de IA",
+    "traditionalNavigation": "Usar navegação de conversa tradicional",
+    "traditionalNavigationDescription": "Não atualizar URL ao trocar de conversa",
+    "unsavedChanges": "Você tem alterações não salvas",
+    "unsavedChangesHint": "Por favor salve suas alterações, caso contrário serão perdidas ao sair da página",
+    "aiSettings": "Configurações do Assistente AI",
     "aiSettingsDescription": "Configure o comportamento e o modelo do assistente de IA",
     "appearanceSettings": "Configurações de Aparência",
     "appearanceSettingsDescription": "Personalize o tema da interface",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Tema de interface claro",
     "darkMode": "Modo Escuro",
     "darkModeDescription": "Tema de interface escuro",
+    "systemMode": "Tema do Sistema",
+    "systemModeDescription": "Seguir o sistema para alternar automaticamente entre modo escuro/claro",
     "behaviorSettings": "Configurações de Comportamento",
     "behaviorSettingsDescription": "Configure o comportamento do aplicativo",
     "notificationSettings": "Configurações de Notificações",
@@ -419,8 +425,7 @@
     "copied": "Chave de API copiada",
     "copyKey": "Copiar Chave",
     "keyActions": "Ações",
-    "edit": "Editar",
-    "delete": "Excluir"
+    "edit": "Editar"
   },
   "docs": {
     "title": "Documentação",

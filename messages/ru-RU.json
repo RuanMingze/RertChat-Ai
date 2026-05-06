@@ -98,7 +98,11 @@
     "languageDescription": "Выберите язык отображения интерфейса",
     "showLoadingScreen": "Показывать экран загрузки",
     "showLoadingScreenDescription": "Показывать анимацию загрузки при открытии страницы",
-    "aiSettings": "Настройки ИИ Ассистента",
+    "traditionalNavigation": "Использовать традиционную навигацию по беседам",
+    "traditionalNavigationDescription": "Не обновлять URL при переключении беседы",
+    "unsavedChanges": "У вас есть несохраненные изменения",
+    "unsavedChangesHint": "Пожалуйста, сохраните изменения, иначе они будут потеряны при выходе с страницы",
+    "aiSettings": "Настройки AI-ассистента",
     "aiSettingsDescription": "Настройте поведение и модель ИИ ассистента",
     "appearanceSettings": "Настройки Внешнего Вида",
     "appearanceSettingsDescription": "Настройте тему интерфейса",
@@ -106,6 +110,8 @@
     "lightModeDescription": "Светлая тема интерфейса",
     "darkMode": "Тёмный Режим",
     "darkModeDescription": "Тёмная тема интерфейса",
+    "systemMode": "Тема Системы",
+    "systemModeDescription": "Следовать системным настройкам для автоматического переключения между тёмным/светлым режимом",
     "behaviorSettings": "Настройки Поведения",
     "behaviorSettingsDescription": "Настройте поведение приложения",
     "notificationSettings": "Настройки Уведомлений",
@@ -419,8 +425,7 @@
     "copied": "API ключ скопирован",
     "copyKey": "Копировать Ключ",
     "keyActions": "Действия",
-    "edit": "Редактировать",
-    "delete": "Удалить"
+    "edit": "Редактировать"
   },
   "docs": {
     "title": "Документация",

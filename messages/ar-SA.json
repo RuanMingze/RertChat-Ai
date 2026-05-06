@@ -98,6 +98,10 @@
     "languageDescription": "اختر لغة عرض الواجهة",
     "showLoadingScreen": "إظهار شاشة التحميل",
     "showLoadingScreenDescription": "إظهار رسوم متحركة للتحميل عند فتح الصفحة",
+    "traditionalNavigation": "استخدام التنقل التقليدي للمحادثات",
+    "traditionalNavigationDescription": "عدم تحديث URL عند تبديل المحادثة",
+    "unsavedChanges": "لديك تغييرات غير محفوظة",
+    "unsavedChangesHint": "يرجى حفظ التغييرات، وإلا ستُفقد عند مغادرة الصفحة",
     "aiSettings": "إعدادات مساعد الذكاء الاصطناعي",
     "aiSettingsDescription": "تكوين سلوك ونموذج مساعد الذكاء الاصطناعي",
     "appearanceSettings": "إعدادات المظهر",
@@ -106,6 +110,8 @@
     "lightModeDescription": "مظهر واجهة مشرق",
     "darkMode": "الوضع الداكن",
     "darkModeDescription": "مظهر واجهة داكن",
+    "systemMode": "موضوع النظام",
+    "systemModeDescription": "اتبع النظام لتبديل تلقائي بين الوضع الداكن/المضيء",
     "behaviorSettings": "إعدادات السلوك",
     "behaviorSettingsDescription": "تكوين سلوك التطبيق",
     "notificationSettings": "إعدادات الإشعارات",
@@ -419,8 +425,7 @@
     "copied": "تم نسخ مفتاح API",
     "copyKey": "نسخ المفتاح",
     "keyActions": "الإجراءات",
-    "edit": "تعديل",
-    "delete": "حذف"
+    "edit": "تعديل"
   },
   "docs": {
     "title": "الوثائق",

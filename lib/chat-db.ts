@@ -25,12 +25,13 @@ export interface Settings {
   id: string
   streamingEnabled: boolean
   aiModel: string
-  theme: 'light' | 'dark'
+  theme: 'light' | 'dark' | 'system'
   autoRedirectToRecent: boolean
   showLoadingScreen: boolean
   notificationsEnabled: boolean
   soundEnabled: boolean
   showAIWarning: boolean
+  useTraditionalNavigation: boolean
 }
 
 export interface UserProfile {
@@ -226,7 +227,9 @@ export async function getSettings(): Promise<Settings> {
             autoRedirectToRecent: false,
             showLoadingScreen: true,
             notificationsEnabled: false,
-            soundEnabled: false
+            soundEnabled: false,
+            showAIWarning: true,
+            useTraditionalNavigation: false
           }
           resolve(defaultSettings)
         }
@@ -242,7 +245,8 @@ export async function getSettings(): Promise<Settings> {
               showLoadingScreen: true,
               notificationsEnabled: false,
               soundEnabled: false,
-              showAIWarning: true
+              showAIWarning: true,
+              useTraditionalNavigation: false
             }
             resolve({ ...defaultSettings, ...request.result } as Settings)
           } else {
@@ -256,7 +260,8 @@ export async function getSettings(): Promise<Settings> {
               showLoadingScreen: true,
               notificationsEnabled: false,
               soundEnabled: false,
-              showAIWarning: true
+              showAIWarning: true,
+              useTraditionalNavigation: false
             }
             const saveRequest = store.put(defaultSettings)
             saveRequest.onerror = () => {
@@ -273,6 +278,7 @@ export async function getSettings(): Promise<Settings> {
           streamingEnabled: true,
           aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
           theme: 'dark',
+          useTraditionalNavigation: false,
           autoRedirectToRecent: false,
           showLoadingScreen: true,
           notificationsEnabled: false,
@@ -289,10 +295,12 @@ export async function getSettings(): Promise<Settings> {
       streamingEnabled: true,
       aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
       theme: 'dark',
+      useTraditionalNavigation: false,
       autoRedirectToRecent: false,
       showLoadingScreen: true,
       notificationsEnabled: false,
-      soundEnabled: false
+      soundEnabled: false,
+      showAIWarning: true
     }
     }
   }
@@ -389,4 +397,43 @@ export async function clearAllCaches(): Promise<void> {
     const cacheNames = await caches.keys()
     await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)))
   }
+}
+
+// 生成6位数唯一ID
+export async function generateShortId(): Promise<string> {
+  const db = await getDB()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readonly')
+    const store = transaction.objectStore(STORE_NAME)
+    const request = store.getAll()
+
+    request.onerror = () => {
+      // 如果数据库操作失败，使用随机6位数
+      resolve(generateRandomShortId())
+    }
+
+    request.onsuccess = () => {
+      const conversations = request.result as Conversation[]
+      const existingIds = new Set(conversations.map(c => c.id))
+      
+      // 生成唯一的6位数ID
+      let newId: string
+      let attempts = 0
+      const maxAttempts = 1000
+      
+      do {
+        newId = generateRandomShortId()
+        attempts++
+      } while (existingIds.has(newId) && attempts < maxAttempts)
+      
+      resolve(newId)
+    }
+  })
+}
+
+// 生成随机6位数ID
+function generateRandomShortId(): string {
+  const min = 100000
+  const max = 999999
+  return Math.floor(Math.random() * (max - min + 1) + min).toString()
 }
