@@ -610,14 +610,20 @@ export default function SettingsPage() {
                 </Link>
               </Button>
               <Button variant="outline" className="w-full" asChild>
-                <Link href="/docs">
-                  <Code className="mr-2 h-4 w-4" />
-                  {t('settings.apiDocs')}
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+                  <Link href="/docs">
+                    <Code className="mr-2 h-4 w-4" />
+                    {t('settings.apiDocs')}
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="/settings/update">
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    {t('settings.updateSettings')}
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
         </div>
       </main>
     </div>
