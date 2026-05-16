@@ -3,8 +3,10 @@ import { spawn } from "child_process";
 import { existsSync } from "fs";
 import { join } from "path";
 
-const orange = "\x1b[33m";
+const green = "\x1b[38;5;122m";
+const orange = "\x1b[38;5;214m";
 const reset = "\x1b[0m";
+const red = "\x1b[31m";
 
 console.log(orange + figlet.textSync("RertChat", {
   font: "Standard",
@@ -21,7 +23,7 @@ const KEY_FILE = join(CERT_DIR, "localhost+2-key.pem");
 const env = { ...process.env };
 
 if (existsSync(CERT_FILE) && existsSync(KEY_FILE)) {
-  console.log("\n  使用 HTTPS 模式启动开发服务器...\n");
+  console.log(green + "\n  使用 HTTPS 模式启动开发服务器...\n" + reset);
 
   env.NODE_EXTRA_CA_CERTS = CERT_FILE;
 
@@ -36,7 +38,7 @@ if (existsSync(CERT_FILE) && existsSync(KEY_FILE)) {
     process.exit(code);
   });
 } else {
-  console.log("\n  找不到 SSL 证书，使用 HTTP 模式启动开发服务器...\n");
+  console.log(red + "\n  找不到 SSL 证书，使用 HTTP 模式启动开发服务器...\n" + reset);
 
   const certHint = `
   请先生成 SSL 证书:
@@ -46,7 +48,7 @@ if (existsSync(CERT_FILE) && existsSync(KEY_FILE)) {
   4. 重新运行: pnpm dev
   `;
 
-  console.log(certHint);
+  console.log(red + certHint + reset);
 
   const dev = spawn("npx", ["next", "dev"], {
     stdio: "inherit",

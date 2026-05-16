@@ -1,7 +1,8 @@
 import figlet from "figlet";
 
-const orange = "\x1b[33m";
+const orange = "\x1b[38;5;214m";
 const reset = "\x1b[0m";
+const green = "\x1b[38;5;122m";
 
 console.log(orange + figlet.textSync("RertChat", {
   font: "Standard",
@@ -11,11 +12,9 @@ console.log(orange + figlet.textSync("RertChat", {
   whitespaceBreak: true
 }) + reset);
 
-console.log("\n  正在编译项目...\n");
+console.log(green + "\n  正在编译项目...\n" + reset);
 
 import { spawn } from "child_process";
-
-process.env.NEXT_FONT_GOOGLE_MIRROR = "https://fonts.googleapis.cn";
 
 const build = spawn("npx", ["next", "build"], {
   stdio: "inherit",
@@ -26,7 +25,7 @@ const build = spawn("npx", ["next", "build"], {
 
 build.on("close", (code) => {
   if (code === 0) {
-    console.log("\n  编译完成，正在启动生产服务器...\n");
+    console.log(green + "\n  编译完成，正在启动生产服务器...\n" + reset);
 
     const start = spawn("npx", ["next", "start"], {
       stdio: "inherit",
