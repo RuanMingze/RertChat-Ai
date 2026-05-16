@@ -14,6 +14,7 @@ tsconfig.tsbuildinfo
 
 # log ignores
 .log
+debug.log
 
 # Wrangler
 .wrangler/
@@ -28,6 +29,7 @@ tsconfig.tsbuildinfo
 # Other projects ignores
 workers/
 packages/
+backend/
 
 # pem file ignores
 *.pem

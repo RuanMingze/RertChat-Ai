@@ -2,8 +2,35 @@
 
 所有更新日志按时间倒序排列。
 
-## [v2.0.0] - 2026-05-06
+## [v2.0.8] - 2026-05-15
 ## 版本访问地址：https://rertchat-ai.pages.dev/
+
+### 🔄 API密钥管理重构
+
+- **从 Supabase 迁移到 Cloudflare D1 + Workers**
+  - 创建独立的 Cloudflare Workers 后端处理 API 密钥操作
+  - 使用 Cloudflare D1 SQLite 数据库替代 Supabase
+  - 所有 API 密钥操作（创建、查询、删除、轮转）通过 Workers 后端完成
+  - Workers 后端使用环境变量/机密配置存储敏感信息（WORKERS_API_KEY）
+  - 移除 Supabase 相关依赖
+
+- **API路由统一**
+  - 前端 API 路由转发请求到 Workers 后端
+  - 添加 Authorization 头传递 WORKERS_API_KEY 进行认证
+  - 完善 CORS 配置，支持跨域访问
+
+### 🗑️ 移除流式输出设置
+
+- **删除"关闭流式输出"选项**
+  - 移除设置页面中的流式输出开关
+  - 移除 streamingEnabled 相关代码
+  - 由于后端 Gateway 始终返回流式响应，关闭流式输出后无法正确处理
+  - 为保证功能稳定性，移除了该设置选项
+
+---
+
+## [v2.0.0] - 2026-05-06
+## 版本访问地址：https://38f58afa.rertchat-ai.pages.dev/
 
 ### ✨ 对话URL分享机制
 

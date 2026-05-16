@@ -16,14 +16,13 @@
 - **Vercel Primary**: <https://www.rertx.dpdns.org>
 - **Vercel Backup**: <https://rertx.vercel.app>
 
-RertChat is an AI chat assistant based on Cloudflare AI Gateway, supporting streaming output, multi-turn conversation context, PWA offline access, and more.
+RertChat is an AI chat assistant based on Cloudflare AI Gateway, supporting multi-turn conversation context, PWA offline access, and more.
 
 ![Banner](public/banner.png)
 
 ## Features
 
-- **Smart Chat**: AI conversation powered by Cloudflare AI Gateway
-- **Streaming Output**: AI responses displayed word by word
+- **Smart Conversation**: AI chat assistant based on Cloudflare AI Gateway
 - **Multi-turn Conversation**: Context memory support
 - **No Forced Login**: Start chatting immediately without registration
 - **Model Switching**: Switch between different AI models anytime
@@ -177,6 +176,12 @@ A: Please check your network connection and ensure API key configuration is corr
 **Q: What if the page displays incorrectly?**
 
 A: Try clearing browser cache and reloading the page. If the issue persists, please submit an Issue.
+
+**Q：What if I encounter access difficulties or have no browser?**
+
+A：In rare cases, when you encounter access difficulties or have no browser, please scan the following QR code with your phone's camera to access RertChat:
+
+![QR Code](public/qrcode.png)
 
 **For more detailed help and the complete FAQ, visit**: <https://rertx.dpdns.org/faq>
 
@@ -575,15 +580,12 @@ Request Body:
 {
   "message": "Hello",
   "history": [],
-  "model": "@cf/qwen/qwen3-30b-a3b-fp8",
-  "stream": true
+  "model": "@cf/qwen/qwen3-30b-a3b-fp8"
 }
 ```
 
 Response:
-- **stream=true**: Returns streaming response (Server-Sent Events)
-
-Non-streaming response is not currently supported.
+Returns streaming response (Server-Sent Events)
 
 ### Complete Documentation
 

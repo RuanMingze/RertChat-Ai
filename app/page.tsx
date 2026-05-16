@@ -351,8 +351,7 @@ function buildMessagesWithContext(
 async function sendRequestWithRetry(
   messages: { role: string; content: string }[],
   signal: AbortSignal,
-  model: string,
-  streaming: boolean
+  model: string
 ): Promise<Response> {
   const response = await fetch("/api/chat", {
     method: "POST",
@@ -362,7 +361,7 @@ async function sendRequestWithRetry(
     body: JSON.stringify({
       messages,
       model: model,
-      stream: streaming,
+      stream: true,
     }),
     signal,
   })
@@ -380,7 +379,6 @@ async function sendWithContextFallback(
   currentMessage: Message,
   signal: AbortSignal,
   model: string,
-  streaming: boolean,
   programmingMode: boolean,
   deepThinkingMode: boolean,
   t: (key: string) => string
@@ -417,7 +415,7 @@ async function sendWithContextFallback(
       
       const finalMessages = systemMessages.length > 0 ? [...systemMessages, ...messages] : messages
       
-      const response = await sendRequestWithRetry(finalMessages, signal, model, streaming)
+      const response = await sendRequestWithRetry(finalMessages, signal, model)
       return response
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") {
@@ -443,7 +441,6 @@ export default function Home() {
   const [dbReady, setDbReady] = useState(false)
   const [settings, setSettings] = useState<Settings>({
     id: 'default',
-    streamingEnabled: true,
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     useTraditionalNavigation: true,
     showLoadingScreen: true,
@@ -785,7 +782,6 @@ export default function Home() {
           userMessage,
           abortControllerRef.current.signal,
           settings.aiModel,
-          settings.streamingEnabled,
           programmingMode,
           deepThinkingMode,
           t
@@ -929,7 +925,7 @@ export default function Home() {
         abortControllerRef.current = null
       }
     },
-    [currentConversationId, messages, isLoading, settings.aiModel, settings.streamingEnabled, settings.notificationsEnabled, programmingMode, deepThinkingMode, conversations, t]
+    [currentConversationId, messages, isLoading, settings.aiModel, settings.notificationsEnabled, programmingMode, deepThinkingMode, conversations, t]
   )
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {

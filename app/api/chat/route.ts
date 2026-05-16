@@ -7,16 +7,16 @@ export async function POST(request: NextRequest) {
   
   try {
     const body = await request.json()
-    const { messages, model = '@cf/qwen/qwen3-30b-a3b-fp8', stream = true } = body
+    const { messages, model = '@cf/qwen/qwen3-30b-a3b-fp8' } = body
     
-    // 转发请求到 Workers 服务器
     const workersUrl = process.env.CHAT_SERVER_URL || 'https://chatapi.rertx.dpdns.org'
-    const internalSecret = process.env.INTERNAL_CHAT_SECRET || 'internal-chat-secret-key'
+    const internalSecret = process.env.INTERNAL_CHAT_SECRET
+    
     console.log('🟢 [API Chat] Forwarding to Workers:', workersUrl)
     
     const fetchBody = JSON.stringify({
       messages,
-      stream,
+      stream: true,
     })
 
     const response = await fetch(
@@ -36,13 +36,13 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('🔴 [API Chat] Workers API error:', errorText)
+      console.error('🔴 [API Chat] Error response parsed:', JSON.parse(errorText).error || errorText)
       return NextResponse.json(
-        { error: `Workers API error: ${response.status}` },
+        { error: `Workers API error: ${response.status} - ${JSON.parse(errorText).error || errorText}` },
         { status: response.status }
       )
     }
 
-    // 返回流式响应
     return new Response(response.body, {
       headers: {
         'Content-Type': 'text/event-stream',

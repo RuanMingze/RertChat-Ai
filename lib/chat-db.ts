@@ -23,7 +23,6 @@ export interface Conversation {
 
 export interface Settings {
   id: string
-  streamingEnabled: boolean
   aiModel: string
   theme: 'light' | 'dark' | 'system'
   autoRedirectToRecent: boolean
@@ -221,7 +220,6 @@ export async function getSettings(): Promise<Settings> {
           // 发生错误时返回默认值
           const defaultSettings: Settings = {
             id: 'default',
-            streamingEnabled: true,
             aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
             theme: 'dark',
             autoRedirectToRecent: false,
@@ -238,7 +236,6 @@ export async function getSettings(): Promise<Settings> {
             // 合并默认值，确保新字段存在
             const defaultSettings: Settings = {
               id: 'default',
-              streamingEnabled: true,
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false,
@@ -253,7 +250,6 @@ export async function getSettings(): Promise<Settings> {
             // 如果没有设置，创建默认值并保存
             const defaultSettings: Settings = {
               id: 'default',
-              streamingEnabled: true,
               aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
               theme: 'dark',
               autoRedirectToRecent: false,
@@ -275,15 +271,14 @@ export async function getSettings(): Promise<Settings> {
         // 任何错误都返回默认值
         const defaultSettings: Settings = {
           id: 'default',
-          streamingEnabled: true,
           aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
           theme: 'dark',
-          useTraditionalNavigation: false,
           autoRedirectToRecent: false,
           showLoadingScreen: true,
           notificationsEnabled: false,
           soundEnabled: false,
-          showAIWarning: true
+          showAIWarning: true,
+          useTraditionalNavigation: false
         }
         resolve(defaultSettings)
       }
@@ -292,15 +287,14 @@ export async function getSettings(): Promise<Settings> {
     // 数据库连接失败时返回默认值
     return {
       id: 'default',
-      streamingEnabled: true,
       aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
       theme: 'dark',
-      useTraditionalNavigation: false,
       autoRedirectToRecent: false,
       showLoadingScreen: true,
       notificationsEnabled: false,
       soundEnabled: false,
-      showAIWarning: true
+      showAIWarning: true,
+      useTraditionalNavigation: false
     }
     }
   }

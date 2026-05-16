@@ -85,11 +85,16 @@ export default function UpdatePage() {
         if (trimmedLine.startsWith('##')) continue
         if (trimmedLine.startsWith('###')) continue
         
-        const emojiMatch = trimmedLine.match(/^[-*]?\s*(\p{Emoji})\s+(.+)$/u)
+        const emojiMatch = trimmedLine.match(/^[-*]?\s*(\S)(.+)$/)
         if (emojiMatch) {
-          const item = emojiMatch[2].trim()
-          if (item && item.length > 0 && !item.match(/^\d{4}-\d{2}-\d{2}/)) {
-            changelogItems.push(`${emojiMatch[1]} ${item}`)
+          const firstChar = emojiMatch[1]
+          const firstCharCode = firstChar.codePointAt(0) || 0
+          const isEmojiChar = firstCharCode > 127
+          if (isEmojiChar) {
+            const item = (`${firstChar}${emojiMatch[2]}`).trim()
+            if (item && item.length > 0 && !item.match(/^\d{4}-\d{2}-\d{2}/)) {
+              changelogItems.push(item)
+            }
           }
         }
       }

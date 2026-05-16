@@ -18,7 +18,7 @@ import { useI18n, locales, localeNames, Locale } from "@/lib/i18n"
 export default function SettingsPage() {
   const [settings, setSettings] = useState<Settings>({
     id: 'default',
-    streamingEnabled: true,
+
     aiModel: '@cf/qwen/qwen3-30b-a3b-fp8',
     theme: 'dark',
     autoRedirectToRecent: true,
@@ -166,24 +166,6 @@ export default function SettingsPage() {
               <CardDescription>{t('settings.aiSettingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* 流式输出 */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="streaming" className="text-base">{t('settings.streaming')}</Label>
-                  <Switch
-                    id="streaming"
-                    checked={settings.streamingEnabled}
-                    onCheckedChange={(checked) => setSettings(prev => ({
-                      ...prev,
-                      streamingEnabled: checked
-                    }))}
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {t('settings.streamingDescription')}
-                </p>
-              </div>
-
               {/* AI 模型 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
