@@ -21,6 +21,25 @@ RertChat 是一个基于 Cloudflare AI Gateway 的智能对话助手，支持多
 
 ![Banner](public/banner.png)
 
+## CLI 工具
+
+项目已发布独立的 CLI 版本，方便在命令行中使用 RertChat 功能。
+
+**代码仓库**：<https://www.npmjs.com/package/rertcli?activeTab=code>
+
+### 安装命令
+
+```bash
+# npm
+npm install -g rertcli@latest
+
+# pnpm
+pnpm add -g rertcli@latest
+
+# yarn
+yarn global add rertcli@latest
+```
+
 ## 功能特性
 
 - **智能对话**：基于 Cloudflare AI Gateway 的智能对话功能
