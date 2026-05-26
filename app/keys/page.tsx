@@ -70,8 +70,10 @@ export default function KeysPage() {
       const profile = await getUserProfile()
       
       if (!profile) {
-        // 未登录，重定向到 OAuth 登录页，登录后跳转到 keys 页面
-        const authUrl = "https://ruanm.pages.dev/oauth/authorize?client_id=1sa77wzm5h4gcat8f3hq22jlii54gsyb&redirect_uri=https://rertx.dpdns.org/callback&response_type=code&scope=read write"
+        const clientId = process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID
+        const redirectUri = window.location.origin + "/callback"
+        const scope = "read write"
+        const authUrl = `${process.env.NEXT_PUBLIC_OAUTH_AUTHORIZE_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`
         window.location.href = authUrl
         return
       }

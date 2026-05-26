@@ -311,7 +311,7 @@ export default function FAQPage() {
                       <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                     <a
-                      href="mailto:support@ruanmgjx.dpdns.org"
+                      href="mailto:support@ruanftrix.cn"
                       className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-secondary/50 transition-colors group"
                     >
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">

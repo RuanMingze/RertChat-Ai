@@ -159,7 +159,7 @@ export default function AboutPage() {
           <section className="flex flex-col items-center justify-center py-12">
             <div className="flex items-center gap-8">
               <img
-                src="https://ruanmgjx.dpdns.org/logo.png"
+                src="https://ruanftrix.cn/logo.png"
                 alt="Ruanm Logo"
                 className="rounded-xl object-cover"
                 style={{ width: 160, height: 160 }}
