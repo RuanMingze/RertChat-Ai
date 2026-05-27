@@ -37,7 +37,7 @@ function CallbackContent() {
 
         const accessToken = tokenData.access_token
 
-        const userResponse = await fetch("https://ruanftrix.cn/oauth/userinfo", {
+        const userResponse = await fetch("https://www.ruanftrix.cn/oauth/userinfo", {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
 

@@ -2,7 +2,7 @@ export const runtime = 'edge'
 
 import { NextRequest, NextResponse } from 'next/server'
 
-const OAUTH_TOKEN_URL = 'https://ruanftrix.cn/oauth/token'
+const OAUTH_TOKEN_URL = 'https://www.ruanftrix.cn/oauth/token'
 
 export async function POST(request: NextRequest) {
   try {
