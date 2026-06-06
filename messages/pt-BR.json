@@ -76,7 +76,13 @@
     "aiWarning": "A IA pode produzir informações imprecisas, por favor verifique cuidadosamente conteúdos importantes",
     "requestError": "Desculpe, ocorreu um erro, por favor tente novamente mais tarde.",
     "notificationComplete": "Conversa Concluída",
-    "notificationBody": "\"{title}\" gerou uma resposta completa"
+    "notificationBody": "\"{title}\" gerou uma resposta completa",
+    "editMessage": "Editar mensagem",
+    "deleteMessage": "Excluir mensagem",
+    "deleteMessageTitle": "Excluir mensagem",
+    "deleteMessageConfirm": "Tem certeza de que deseja excluir esta mensagem?\nIsso também excluirá todas as respostas após esta mensagem.",
+    "editMessageHint": "Após editar, pressione Ctrl/Cmd + Enter ou clique em Reenviar",
+    "resend": "Reenviar"
   },
   "settings": {
     "title": "Configurações",

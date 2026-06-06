@@ -76,7 +76,13 @@
     "aiWarning": "L'IA peut produire des informations inexactes, veuillez vérifier attentivement le contenu important",
     "requestError": "Désolé, une erreur s'est produite, veuillez réessayer plus tard.",
     "notificationComplete": "Conversation terminée",
-    "notificationBody": "\"{title}\" a généré une réponse complète"
+    "notificationBody": "\"{title}\" a généré une réponse complète",
+    "editMessage": "Modifier le message",
+    "deleteMessage": "Supprimer le message",
+    "deleteMessageTitle": "Supprimer le message",
+    "deleteMessageConfirm": "Êtes-vous sûr de vouloir supprimer ce message ?\nCela supprimera également toutes les réponses après ce message.",
+    "editMessageHint": "Appuyez sur Ctrl/Cmd + Enter ou cliquez sur Renvoyer après modification",
+    "resend": "Renvoyer"
   },
   "settings": {
     "title": "Paramètres",

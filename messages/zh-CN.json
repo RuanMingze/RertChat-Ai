@@ -76,7 +76,13 @@
     "aiWarning": "AI 可能会产生不准确的信息，请仔细核实重要内容",
     "requestError": "抱歉，发生了错误，请稍后重试。",
     "notificationComplete": "对话完成",
-    "notificationBody": "“{title}” 已生成完整回复"
+    "notificationBody": "{title} 已生成完整回复",
+    "editMessage": "编辑消息",
+    "deleteMessage": "删除消息",
+    "deleteMessageTitle": "删除消息",
+    "deleteMessageConfirm": "确定要删除这条消息吗？\n这将同时删除该消息之后的所有回复。",
+    "editMessageHint": "编辑后按 Ctrl/Cmd + Enter 或点击重新发送",
+    "resend": "重新发送"
   },
   "settings": {
     "title": "设置",

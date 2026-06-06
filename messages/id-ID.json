@@ -76,7 +76,13 @@
     "aiWarning": "AI mungkin menghasilkan informasi yang tidak akurat, harap periksa konten penting dengan hati-hati",
     "requestError": "Maaf, terjadi kesalahan, silakan coba lagi nanti",
     "notificationComplete": "Percakapan selesai",
-    "notificationBody": "\"{title}\" telah membuat jawaban lengkap"
+    "notificationBody": "\"{title}\" telah membuat jawaban lengkap",
+    "editMessage": "Edit pesan",
+    "deleteMessage": "Hapus pesan",
+    "deleteMessageTitle": "Hapus pesan",
+    "deleteMessageConfirm": "Apakah Anda yakin ingin menghapus pesan ini?\nIni juga akan menghapus semua jawaban setelah pesan ini.",
+    "editMessageHint": "Setelah mengedit, tekan Ctrl/Cmd + Enter atau klik Kirim ulang",
+    "resend": "Kirim ulang"
   },
   "settings": {
     "title": "Pengaturan",

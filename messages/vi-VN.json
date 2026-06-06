@@ -76,7 +76,13 @@
     "aiWarning": "AI có thể tạo ra thông tin không chính xác, vui lòng kiểm tra cẩn thận các nội dung quan trọng",
     "requestError": "Xin lỗi, đã xảy ra lỗi, vui lòng thử lại sau",
     "notificationComplete": "Cuộc trò chuyện hoàn thành",
-    "notificationBody": "\"{title}\" đã tạo xong câu trả lời"
+    "notificationBody": "\"{title}\" đã tạo xong câu trả lời",
+    "editMessage": "Chỉnh sửa tin nhắn",
+    "deleteMessage": "Xóa tin nhắn",
+    "deleteMessageTitle": "Xóa tin nhắn",
+    "deleteMessageConfirm": "Bạn có chắc chắn muốn xóa tin nhắn này không?\nThao tác này cũng sẽ xóa tất cả các câu trả lời sau tin nhắn này.",
+    "editMessageHint": "Sau khi chỉnh sửa, nhấn Ctrl/Cmd + Enter hoặc nhấp Gửi lại",
+    "resend": "Gửi lại"
   },
   "settings": {
     "title": "Cài đặt",

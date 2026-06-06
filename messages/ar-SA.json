@@ -76,7 +76,13 @@
     "aiWarning": "قد ينتج الذكاء الاصطناعي معلومات غير دقيقة، يرجى التحقق بعناية من المحتوى المهم",
     "requestError": "عذراً، حدث خطأ، يرجى المحاولة مرة أخرى لاحقاً.",
     "notificationComplete": "اكتملت المحادثة",
-    "notificationBody": "تم إنشاء إجابة كاملة لـ \"{title}\""
+    "notificationBody": "تم إنشاء إجابة كاملة لـ \"{title}\"",
+    "editMessage": "تعديل الرسالة",
+    "deleteMessage": "حذف الرسالة",
+    "deleteMessageTitle": "حذف الرسالة",
+    "deleteMessageConfirm": "هل أنت متأكد أنك تريد حذف هذه الرسالة؟\nسيؤدي هذا أيضًا إلى حذف جميع الردود بعد هذه الرسالة.",
+    "editMessageHint": "بعد التعديل، اضغط Ctrl/Cmd + Enter أو انقر على إعادة الإرسال",
+    "resend": "إعادة الإرسال"
   },
   "settings": {
     "title": "الإعدادات",

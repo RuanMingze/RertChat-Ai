@@ -76,7 +76,13 @@
     "aiWarning": "AIは不正確な情報を生成する可能性があります。重要な内容は必ず確認してください。",
     "requestError": "申し訳ありませんが、エラーが発生しました。しばらくしてから再試行してください。",
     "notificationComplete": "会話完了",
-    "notificationBody": "「{title}」の完全な応答が生成されました"
+    "notificationBody": "「{title}」の完全な応答が生成されました",
+    "editMessage": "メッセージを編集",
+    "deleteMessage": "メッセージを削除",
+    "deleteMessageTitle": "メッセージを削除",
+    "deleteMessageConfirm": "このメッセージを削除してもよろしいですか？\nこのメッセージ以降のすべての応答も削除されます。",
+    "editMessageHint": "編集後、Ctrl/Cmd + Enter を押すか、再送信をクリックしてください",
+    "resend": "再送信"
   },
   "settings": {
     "title": "設定",

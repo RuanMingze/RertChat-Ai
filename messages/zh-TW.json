@@ -76,7 +76,13 @@
     "aiWarning": "AI 可能會產生不準確的資訊，請仔細核實重要內容",
     "requestError": "抱歉，發生了錯誤，請稍後重試。",
     "notificationComplete": "對話完成",
-    "notificationBody": "「{title}」 已生成完整回覆"
+    "notificationBody": "「{title}」 已生成完整回覆",
+    "editMessage": "編輯訊息",
+    "deleteMessage": "刪除訊息",
+    "deleteMessageTitle": "刪除訊息",
+    "deleteMessageConfirm": "確定要刪除這則訊息嗎？\n這將同時刪除該訊息之後的所有回覆。",
+    "editMessageHint": "編輯後按 Ctrl/Cmd + Enter 或點擊重新發送",
+    "resend": "重新發送"
   },
   "settings": {
     "title": "設定",

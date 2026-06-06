@@ -76,7 +76,13 @@
     "aiWarning": "AI yanlış bilgiler üretebilir, lütfen önemli içerikleri dikkatlice kontrol edin",
     "requestError": "Üzgünüz, bir hata oluştu, lütfen daha sonra tekrar deneyin",
     "notificationComplete": "Konuşma tamamlandı",
-    "notificationBody": "\"{title}\" tam bir yanıt oluşturdu"
+    "notificationBody": "\"{title}\" tam bir yanıt oluşturdu",
+    "editMessage": "Mesajı düzenle",
+    "deleteMessage": "Mesajı sil",
+    "deleteMessageTitle": "Mesajı sil",
+    "deleteMessageConfirm": "Bu mesajı silmek istediğinizden emin misiniz?\nBu, bu mesajdan sonraki tüm yanıtları da silecektir.",
+    "editMessageHint": "Düzenledikten sonra Ctrl/Cmd + Enter tuşuna basın veya Yeniden Gönder'e tıklayın",
+    "resend": "Yeniden gönder"
   },
   "settings": {
     "title": "Ayarlar",

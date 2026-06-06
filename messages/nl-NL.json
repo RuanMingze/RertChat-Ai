@@ -76,7 +76,13 @@
     "aiWarning": "AI kan onjuiste informatie genereren, controleer belangrijke inhoud zorgvuldig",
     "requestError": "Sorry, er is een fout opgetreden, probeer het later opnieuw",
     "notificationComplete": "Gesprek voltooid",
-    "notificationBody": "\"{title}\" heeft een complete reactie gegenereerd"
+    "notificationBody": "\"{title}\" heeft een complete reactie gegenereerd",
+    "editMessage": "Bericht bewerken",
+    "deleteMessage": "Bericht verwijderen",
+    "deleteMessageTitle": "Bericht verwijderen",
+    "deleteMessageConfirm": "Weet u zeker dat u dit bericht wilt verwijderen?\nDit zal ook alle antwoorden na dit bericht verwijderen.",
+    "editMessageHint": "Druk na bewerken op Ctrl/Cmd + Enter of klik op Opnieuw verzenden",
+    "resend": "Opnieuw verzenden"
   },
   "settings": {
     "title": "Instellingen",

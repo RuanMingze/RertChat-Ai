@@ -76,7 +76,13 @@
     "aiWarning": "AI mungkin menghasilkan maklumat yang tidak tepat, sila semak kandungan penting dengan teliti",
     "requestError": "Maaf, berlaku ralat, sila cuba lagi kemudian",
     "notificationComplete": "Perbualan selesai",
-    "notificationBody": "\"{title}\" telah menjana jawapan lengkap"
+    "notificationBody": "\"{title}\" telah menjana jawapan lengkap",
+    "editMessage": "Edit mesej",
+    "deleteMessage": "Padam mesej",
+    "deleteMessageTitle": "Padam mesej",
+    "deleteMessageConfirm": "Adakah anda pasti mahu memadam mesej ini?\nIni juga akan memadam semua jawapan selepas mesej ini.",
+    "editMessageHint": "Selepas edit, tekan Ctrl/Cmd + Enter atau klik Hantar semula",
+    "resend": "Hantar semula"
   },
   "settings": {
     "title": "Tetapan",

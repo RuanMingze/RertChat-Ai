@@ -76,7 +76,13 @@
     "aiWarning": "AI może generować nieprawidłowe informacje, proszę uważnie sprawdzać ważne treści",
     "requestError": "Przepraszamy, wystąpił błąd, spróbuj ponownie później",
     "notificationComplete": "Konwersacja zakończona",
-    "notificationBody": "\"{title}\" wygenerował pełną odpowiedź"
+    "notificationBody": "\"{title}\" wygenerował pełną odpowiedź",
+    "editMessage": "Edytuj wiadomość",
+    "deleteMessage": "Usuń wiadomość",
+    "deleteMessageTitle": "Usuń wiadomość",
+    "deleteMessageConfirm": "Czy na pewno chcesz usunąć tę wiadomość?\nSpowoduje to również usunięcie wszystkich odpowiedzi po tej wiadomości.",
+    "editMessageHint": "Po edycji naciśnij Ctrl/Cmd + Enter lub kliknij Wyślij ponownie",
+    "resend": "Wyślij ponownie"
   },
   "settings": {
     "title": "Ustawienia",

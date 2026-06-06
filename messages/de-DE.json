@@ -76,7 +76,13 @@
     "aiWarning": "KI kann ungenaue Informationen produzieren, bitte überprüfen Sie wichtige Inhalte sorgfältig",
     "requestError": "Entschuldigung, ein Fehler ist aufgetreten, bitte versuchen Sie es später erneut.",
     "notificationComplete": "Unterhaltung abgeschlossen",
-    "notificationBody": "\"{title}\" hat eine vollständige Antwort generiert"
+    "notificationBody": "\"{title}\" hat eine vollständige Antwort generiert",
+    "editMessage": "Nachricht bearbeiten",
+    "deleteMessage": "Nachricht löschen",
+    "deleteMessageTitle": "Nachricht löschen",
+    "deleteMessageConfirm": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?\nDies löscht auch alle Antworten nach dieser Nachricht.",
+    "editMessageHint": "Drücken Sie Strg/Cmd + Enter oder klicken Sie auf Erneut senden nach der Bearbeitung",
+    "resend": "Erneut senden"
   },
   "settings": {
     "title": "Einstellungen",

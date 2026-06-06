@@ -76,7 +76,13 @@
     "aiWarning": "AI may produce inaccurate information, please verify important content carefully",
     "requestError": "Sorry, an error occurred, please try again later.",
     "notificationComplete": "Conversation Complete",
-    "notificationBody": "\"{title}\" has generated a complete response"
+    "notificationBody": "\"{title}\" has generated a complete response",
+    "editMessage": "Edit Message",
+    "deleteMessage": "Delete Message",
+    "deleteMessageTitle": "Delete Message",
+    "deleteMessageConfirm": "Are you sure you want to delete this message?\nThis will also delete all responses after this message.",
+    "editMessageHint": "Press Ctrl/Cmd + Enter or click Resend after editing",
+    "resend": "Resend"
   },
   "settings": {
     "title": "Settings",

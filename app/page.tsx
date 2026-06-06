@@ -461,6 +461,28 @@ export default function Home() {
     conversationId: string | null
   }>({ x: 0, y: 0, conversationId: null })
   
+  // 消息右键菜单状态
+  const [messageContextMenu, setMessageContextMenu] = useState<{
+    x: number
+    y: number
+    messageIndex: number | null
+  }>({ x: 0, y: 0, messageIndex: null })
+  
+  // 编辑消息对话框状态
+  const [editMessageDialog, setEditMessageDialog] = useState<{
+    isOpen: boolean
+    messageIndex: number | null
+    originalContent: string
+  }>({ isOpen: false, messageIndex: null, originalContent: "" })
+  
+  // 确认对话框状态
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean
+    title: string
+    message: string
+    onConfirm: (() => void) | null
+  }>({ isOpen: false, title: "", message: "", onConfirm: null })
+  
   // 重命名对话框状态
   const [renameDialog, setRenameDialog] = useState<{
     isOpen: boolean
@@ -737,7 +759,7 @@ export default function Home() {
   }, [])
 
   const sendMessage = useCallback(
-    async (content: string) => {
+    async (content: string, baseMessages?: Message[]) => {
       if (!content.trim() || isLoading) return
 
       let convId = currentConversationId
@@ -769,7 +791,18 @@ export default function Home() {
       const userMessage: Message = { id: generateId(), role: "user", content }
       const assistantMessage: Message = { id: generateId(), role: "assistant", content: "" }
 
-      const newMessages = [...messages, userMessage, assistantMessage]
+      // 使用传入的 baseMessages 或当前的 messages 状态
+      const messagesToUse = baseMessages || messages
+      
+      let newMessages: Message[]
+      if (baseMessages) {
+        // 编辑场景：消息已经在 baseMessages 中，只需添加空的助手消息
+        newMessages = [...messagesToUse, assistantMessage]
+      } else {
+        // 正常发送场景：添加用户消息和助手消息
+        newMessages = [...messagesToUse, userMessage, assistantMessage]
+      }
+      
       setMessages(newMessages)
       setInput("")
       setIsLoading(true)
@@ -778,7 +811,7 @@ export default function Home() {
 
       try {
         const response = await sendWithContextFallback(
-          messages,
+          messagesToUse,
           userMessage,
           abortControllerRef.current.signal,
           settings.aiModel,
@@ -892,7 +925,15 @@ export default function Home() {
         }
 
         // 更新对话并保存到 IndexedDB
-        const updatedMessages = [...messages, userMessage, { ...assistantMessage, content: fullContent }]
+        const finalMessagesToUse = baseMessages || messages
+        let updatedMessages: Message[]
+        if (baseMessages) {
+          // 编辑场景：用户消息已经在 baseMessages 中，只需添加完整的助手回复
+          updatedMessages = [...finalMessagesToUse, { ...assistantMessage, content: fullContent }]
+        } else {
+          // 正常场景：添加用户消息和完整的助手回复
+          updatedMessages = [...finalMessagesToUse, userMessage, { ...assistantMessage, content: fullContent }]
+        }
         setConversations((prev) => {
           const updated = prev.map((c) =>
             c.id === convId
@@ -1002,6 +1043,107 @@ export default function Home() {
       y: e.clientY,
       conversationId: conversation.id,
     })
+  }
+
+  // 消息右键菜单处理
+  const handleMessageContextMenu = (e: React.MouseEvent, messageIndex: number) => {
+    e.preventDefault()
+    setMessageContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      messageIndex,
+    })
+  }
+
+  // 编辑消息
+  const handleEditMessage = () => {
+    if (messageContextMenu.messageIndex === null) return
+    const message = messages[messageContextMenu.messageIndex]
+    if (!message) return
+    
+    setEditMessageDialog({
+      isOpen: true,
+      messageIndex: messageContextMenu.messageIndex,
+      originalContent: message.content,
+    })
+    setMessageContextMenu({ x: 0, y: 0, messageIndex: null })
+  }
+
+  // 确认编辑消息
+  const handleEditMessageConfirm = (newContent: string) => {
+    if (editMessageDialog.messageIndex === null) return
+    
+    const editIndex = editMessageDialog.messageIndex
+    const message = messages[editIndex]
+    if (!message) return
+    
+    // 删除该消息之后的所有消息（包括AI回复）
+    const updatedMessages = messages.slice(0, editIndex)
+    
+    // 更新消息内容
+    const editedMessage: Message = {
+      ...message,
+      content: newContent,
+    }
+    updatedMessages.push(editedMessage)
+    
+    // 更新状态
+    setMessages(updatedMessages)
+    
+    // 更新对话
+    if (currentConversationId) {
+      setConversations((prev) => {
+        const updated = prev.map((c) =>
+          c.id === currentConversationId
+            ? { ...c, messages: updatedMessages, updatedAt: Date.now() }
+            : c
+        )
+        const conv = updated.find((c) => c.id === currentConversationId)
+        if (conv) saveConversation(conv).catch(console.error)
+        return updated
+      })
+    }
+    
+    // 关闭对话框
+    setEditMessageDialog({ isOpen: false, messageIndex: null, originalContent: "" })
+    
+    // 停止当前正在进行的AI回复
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    setIsLoading(false)
+    
+    // 重新发送消息（传递更新后的消息作为基础）
+    sendMessage(newContent, updatedMessages)
+  }
+
+  // 删除消息
+  const handleDeleteMessage = async () => {
+    if (messageContextMenu.messageIndex === null) return
+    
+    const deleteIndex = messageContextMenu.messageIndex
+    
+    // 删除该消息及之后所有消息
+    const updatedMessages = messages.slice(0, deleteIndex)
+    
+    // 更新状态
+    setMessages(updatedMessages)
+    
+    // 更新对话
+    if (currentConversationId) {
+      setConversations((prev) => {
+        const updated = prev.map((c) =>
+          c.id === currentConversationId
+            ? { ...c, messages: updatedMessages, updatedAt: Date.now() }
+            : c
+        )
+        const conv = updated.find((c) => c.id === currentConversationId)
+        if (conv) saveConversation(conv).catch(console.error)
+        return updated
+      })
+    }
+    
+    setMessageContextMenu({ x: 0, y: 0, messageIndex: null })
   }
 
   const handleRenameClick = () => {
@@ -1267,6 +1409,117 @@ export default function Home() {
         }}
       />
 
+      {/* Message Context Menu */}
+      {messageContextMenu.messageIndex !== null && (
+        <ContextMenu
+          x={messageContextMenu.x}
+          y={messageContextMenu.y}
+          onClose={() => setMessageContextMenu({ x: 0, y: 0, messageIndex: null })}
+        >
+          <ContextMenuItem onClick={handleEditMessage}>
+            <Pencil className="mr-2 h-4 w-4" />
+            {t('chat.editMessage')}
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => {
+              // 使用自定义确认对话框
+              setConfirmDialog({
+                isOpen: true,
+                title: t('chat.deleteMessageTitle'),
+                message: t('chat.deleteMessageConfirm'),
+                onConfirm: handleDeleteMessage,
+              })
+            }}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            {t('chat.deleteMessage')}
+          </ContextMenuItem>
+        </ContextMenu>
+      )}
+
+      {/* Edit Message Dialog */}
+      {editMessageDialog.isOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+            onClick={() => setEditMessageDialog({ isOpen: false, messageIndex: null, originalContent: "" })}
+          />
+          <div className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-background p-6 shadow-lg">
+            <h3 className="mb-4 text-lg font-semibold text-foreground">{t('chat.editMessage')}</h3>
+            <textarea
+              className="w-full min-h-[120px] rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              defaultValue={editMessageDialog.originalContent}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault()
+                  handleEditMessageConfirm(e.currentTarget.value)
+                }
+              }}
+              id="edit-message-textarea"
+            />
+            <p className="mt-2 text-xs text-muted-foreground">{t('chat.editMessageHint')}</p>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setEditMessageDialog({ isOpen: false, messageIndex: null, originalContent: "" })}
+                className="min-w-[80px]"
+              >
+                {t('common.cancel')}
+              </Button>
+              <Button
+                variant="default"
+                onClick={() => {
+                  const textarea = document.getElementById("edit-message-textarea") as HTMLTextAreaElement
+                  if (textarea) {
+                    handleEditMessageConfirm(textarea.value)
+                  }
+                }}
+                className="min-w-[80px]"
+              >
+                {t('chat.resend')}
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Confirm Dialog for Delete Message */}
+      {confirmDialog.isOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+            onClick={() => setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null })}
+          />
+          <div className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-background p-6 shadow-lg">
+            <h3 className="mb-2 text-lg font-semibold text-foreground">{confirmDialog.title}</h3>
+            <p className="mb-6 text-sm text-muted-foreground whitespace-pre-wrap">{confirmDialog.message}</p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null })}
+                className="min-w-[80px]"
+              >
+                {t('common.cancel')}
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  if (confirmDialog.onConfirm) {
+                    confirmDialog.onConfirm()
+                  }
+                  setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null })
+                }}
+                className="min-w-[80px]"
+              >
+                {t('common.confirm')}
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Main Content */}
       <main className={cn("relative flex flex-1 flex-col overflow-hidden transition-all duration-300", sidebarOpen ? "md:ml-72" : "ml-0")}>
         {/* Header */}
@@ -1397,6 +1650,11 @@ export default function Home() {
                 <div
                   key={message.id}
                   className={cn("flex gap-4 py-6", message.role === "user" ? "flex-row-reverse" : "flex-row")}
+                  onContextMenu={(e) => {
+                    if (message.role === "user") {
+                      handleMessageContextMenu(e, index)
+                    }
+                  }}
                 >
                   <div
                     className={cn(
@@ -1406,7 +1664,19 @@ export default function Home() {
                         : "bg-secondary text-secondary-foreground"
                     )}
                   >
-                    {message.role === "user" ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
+                    {message.role === "user" ? (
+                      userProfile && userProfile.avatar_url ? (
+                        <img
+                          src={userProfile.avatar_url}
+                          alt={userProfile.name}
+                          className="h-9 w-9 rounded-full object-cover"
+                        />
+                      ) : (
+                        <User className="h-5 w-5" />
+                      )
+                    ) : (
+                      <Bot className="h-5 w-5" />
+                    )}
                   </div>
                   <div className={cn("group flex max-w-[625.60px] flex-col gap-1", message.role === "user" ? "items-end" : "items-start")}>
                     <div
