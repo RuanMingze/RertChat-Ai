@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Konuşma değiştirirken URL'yi güncelleme",
     "unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
     "unsavedChangesHint": "Lütfen değişikliklerinizi kaydedin, aksi takdirde sayfadan çıkarken kaybolacak",
+    "autoSaveNextTime": "Bir dahaki sefere otomatik kaydet",
+    "autoSaving": "Otomatik kaydediliyor...",
+    "cancelAutoSave": "Otomatik kaydetmeyi iptal et",
     "aiSettings": "AI Asistan Ayarları",
     "aiSettingsDescription": "AI asistanın davranışını ve modelini yapılandırın",
     "appearanceSettings": "Görünüm Ayarları",
@@ -354,7 +357,8 @@
     "description": "Üzgünüz, uygulama bir hata ile karşılaştı, lütfen sayfayı yenileyin veya ana sayfaya dönün",
     "retry": "Tekrar Dene",
     "goHome": "Ana Sayfaya Git",
-    "errorCode": "Hata Kodu: "
+    "errorCode": "Hata Kodu: ",
+    "errorDetails": "Hata Detayları"
   },
   "notFound": {
     "title": "Sayfa Bulunamadı",

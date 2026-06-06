@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Não atualizar URL ao trocar de conversa",
     "unsavedChanges": "Você tem alterações não salvas",
     "unsavedChangesHint": "Por favor salve suas alterações, caso contrário serão perdidas ao sair da página",
+    "autoSaveNextTime": "Salvar automaticamente na próxima vez",
+    "autoSaving": "Salvando automaticamente...",
+    "cancelAutoSave": "Cancelar salvamento automático",
     "aiSettings": "Configurações do Assistente AI",
     "aiSettingsDescription": "Configure o comportamento e o modelo do assistente de IA",
     "appearanceSettings": "Configurações de Aparência",
@@ -354,7 +357,8 @@
     "description": "Desculpe, o aplicativo encontrou um erro. Por favor, tente atualizar a página ou volte à página inicial.",
     "retry": "Tentar Novamente",
     "goHome": "Ir para Início",
-    "errorCode": "Código de erro: "
+    "errorCode": "Código de erro: ",
+    "errorDetails": "Detalhes do erro"
   },
   "notFound": {
     "title": "Página Não Encontrada",

@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "대화 전환 시 URL 업데이트 안 함",
     "unsavedChanges": "저장되지 않은 변경 사항이 있습니다",
     "unsavedChangesHint": "변경 사항을 저장하세요. 그렇지 않으면 페이지를 떠날 때 손실됩니다",
+    "autoSaveNextTime": "다음에 자동 저장",
+    "autoSaving": "자동 저장 중...",
+    "cancelAutoSave": "자동 저장 취소",
     "aiSettings": "AI 비서 설정",
     "aiSettingsDescription": "AI 어시스턴트의 동작과 모델 구성",
     "appearanceSettings": "외관 설정",
@@ -357,7 +360,8 @@
     "description": "죄송합니다. 애플리케이션에서 오류가 발생했습니다. 페이지를 새로고침하거나 홈으로 돌아가세요.",
     "retry": "다시 시도",
     "goHome": "홈으로 이동",
-    "errorCode": "오류 코드: "
+    "errorCode": "오류 코드: ",
+    "errorDetails": "오류 세부 정보"
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",

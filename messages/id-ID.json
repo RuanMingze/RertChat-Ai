@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Jangan perbarui URL saat beralih percakapan",
     "unsavedChanges": "Anda memiliki perubahan yang belum disimpan",
     "unsavedChangesHint": "Silakan simpan perubahan Anda, jika tidak akan hilang ketika Anda meninggalkan halaman",
+    "autoSaveNextTime": "Simpan otomatis lain kali",
+    "autoSaving": "Menyimpan otomatis...",
+    "cancelAutoSave": "Batalkan penyimpanan otomatis",
     "aiSettings": "Pengaturan Asisten AI",
     "aiSettingsDescription": "Konfigurasikan perilaku dan model asisten AI",
     "appearanceSettings": "Pengaturan Tampilan",
@@ -354,7 +357,8 @@
     "description": "Maaf, aplikasi mengalami kesalahan, silakan coba segarkan halaman atau kembali ke halaman beranda",
     "retry": "Coba Lagi",
     "goHome": "Ke Beranda",
-    "errorCode": "Kode Kesalahan: "
+    "errorCode": "Kode Kesalahan: ",
+    "errorDetails": "Detail Kesalahan"
   },
   "notFound": {
     "title": "Halaman Tidak Ditemukan",

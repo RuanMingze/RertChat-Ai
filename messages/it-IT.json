@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Non aggiornare URL quando cambi conversazione",
     "unsavedChanges": "Hai modifiche non salvate",
     "unsavedChangesHint": "Salva le tue modifiche, altrimenti verranno perse quando lascerai la pagina",
+    "autoSaveNextTime": "Salva automaticamente la prossima volta",
+    "autoSaving": "Salvataggio automatico...",
+    "cancelAutoSave": "Annulla salvataggio automatico",
     "aiSettings": "Impostazioni Assistente AI",
     "aiSettingsDescription": "Configura il comportamento e il modello dell'assistente AI",
     "appearanceSettings": "Impostazioni Aspetto",
@@ -354,7 +357,8 @@
     "description": "Siamo spiacenti, l'applicazione ha riscontrato un errore. Per favore prova ad aggiornare la pagina o torna alla home page.",
     "retry": "Riprova",
     "goHome": "Vai alla Home",
-    "errorCode": "Codice errore: "
+    "errorCode": "Codice errore: ",
+    "errorDetails": "Dettagli errore"
   },
   "notFound": {
     "title": "Pagina Non Trovata",

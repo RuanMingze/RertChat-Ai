@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "切换对话时不更新URL地址",
     "unsavedChanges": "您有未保存的更改",
     "unsavedChangesHint": "请保存更改，否则将在离开页面时丢失",
+    "autoSaveNextTime": "下次自动保存",
+    "autoSaving": "正在自动保存...",
+    "cancelAutoSave": "取消自动保存",
     "aiSettings": "AI 助手设置",
     "aiSettingsDescription": "配置 AI 助手的行为和模型",
     "appearanceSettings": "外观设置",
@@ -354,7 +357,8 @@
     "description": "抱歉，应用程序遇到了错误。请尝试刷新页面或返回首页。",
     "retry": "重试",
     "goHome": "返回首页",
-    "errorCode": "错误代码："
+    "errorCode": "错误代码：",
+    "errorDetails": "错误详情"
   },
   "notFound": {
     "title": "页面未找到",

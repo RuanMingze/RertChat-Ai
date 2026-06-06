@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Không cập nhật URL khi chuyển đổi hội thoại",
     "unsavedChanges": "Bạn có thay đổi chưa lưu",
     "unsavedChangesHint": "Vui lòng lưu các thay đổi của bạn, nếu không chúng sẽ bị mất khi bạn rời khỏi trang",
+    "autoSaveNextTime": "Tự động lưu lần sau",
+    "autoSaving": "Đang tự động lưu...",
+    "cancelAutoSave": "Hủy tự động lưu",
     "aiSettings": "Cài đặt trợ lý AI",
     "aiSettingsDescription": "Định cấu hình hành vi và mô hình của trợ lý AI",
     "appearanceSettings": "Cài đặt giao diện",
@@ -354,7 +357,8 @@
     "description": "Xin lỗi, ứng dụng gặp lỗi, vui lòng thử làm mới trang hoặc quay lại trang chủ",
     "retry": "Thử lại",
     "goHome": "Đi tới trang chủ",
-    "errorCode": "Mã lỗi: "
+    "errorCode": "Mã lỗi: ",
+    "errorDetails": "Chi tiết lỗi"
   },
   "notFound": {
     "title": "Không tìm thấy trang",

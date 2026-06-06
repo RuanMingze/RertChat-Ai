@@ -54,11 +54,20 @@ export default function Error({
         </Link>
       </div>
 
-      {error.digest && (
-        <p className="mt-8 text-xs text-muted-foreground">
-          {t('error.errorCode')}{error.digest}
-        </p>
-      )}
+      {/* 显示错误详情 */}
+      <div className="mt-8 max-w-2xl w-full">
+        <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4">
+          <h3 className="text-sm font-medium text-red-500 mb-2">{t('error.errorDetails') || '错误详情'}</h3>
+          <p className="text-xs text-muted-foreground font-mono break-all">
+            {error.message || error.toString()}
+          </p>
+          {error.digest && (
+            <p className="text-xs text-muted-foreground font-mono mt-2">
+              {t('error.errorCode')}{error.digest}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

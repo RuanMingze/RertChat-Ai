@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Nie aktualizuj URL podczas przełączania rozmowy",
     "unsavedChanges": "Masz niezapisane zmiany",
     "unsavedChangesHint": "Zapisz swoje zmiany, w przeciwnym razie zostaną utracone po opuszczeniu strony",
+    "autoSaveNextTime": "Zapisz automatycznie następnym razem",
+    "autoSaving": "Automatyczne zapisywanie...",
+    "cancelAutoSave": "Anuluj automatyczne zapisywanie",
     "aiSettings": "Ustawienia asystenta AI",
     "aiSettingsDescription": "Skonfiguruj zachowanie i model asystenta AI",
     "appearanceSettings": "Ustawienia wyglądu",
@@ -354,7 +357,8 @@
     "description": "Przepraszamy, aplikacja napotkała błąd, proszę odświeżyć stronę lub wrócić do strony głównej",
     "retry": "Spróbuj ponownie",
     "goHome": "Wróć do strony głównej",
-    "errorCode": "Kod błędu: "
+    "errorCode": "Kod błędu: ",
+    "errorDetails": "Szczegóły błędu"
   },
   "notFound": {
     "title": "Strona nie znaleziona",

@@ -1,7 +1,6 @@
 const CACHE_NAME = 'static-cache-v1';
 const STATIC_PAGES = [
   '/',
-  '/settings/',
   '/faq/',
   '/keys/',
   '/conversations/',

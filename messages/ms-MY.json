@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Jangan kemas kini URL apabila bertukar perbualan",
     "unsavedChanges": "Anda mempunyai perubahan yang belum disimpan",
     "unsavedChangesHint": "Sila simpan perubahan anda, jika tidak ia akan hilang apabila anda meninggalkan halaman",
+    "autoSaveNextTime": "Simpan automatik lain kali",
+    "autoSaving": "Menyimpan secara automatik...",
+    "cancelAutoSave": "Batalkan penyimpanan automatik",
     "aiSettings": "Tetapan Pembantu AI",
     "aiSettingsDescription": "Konfigurasikan tingkah laku dan model pembantu AI",
     "appearanceSettings": "Tetapan Penampilan",
@@ -354,7 +357,8 @@
     "description": "Maaf, aplikasi mengalami ralat, sila cuba menyegarkan halaman atau kembali ke halaman utama",
     "retry": "Cuba Lagi",
     "goHome": "Ke Utama",
-    "errorCode": "Kod Ralat: "
+    "errorCode": "Kod Ralat: ",
+    "errorDetails": "Butiran Ralat"
   },
   "notFound": {
     "title": "Halaman Tidak Ditemui",

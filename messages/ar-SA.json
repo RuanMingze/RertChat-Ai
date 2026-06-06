@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "عدم تحديث URL عند تبديل المحادثة",
     "unsavedChanges": "لديك تغييرات غير محفوظة",
     "unsavedChangesHint": "يرجى حفظ التغييرات، وإلا ستُفقد عند مغادرة الصفحة",
+    "autoSaveNextTime": "حفظ تلقائي في المرة القادمة",
+    "autoSaving": "جاري الحفظ التلقائي...",
+    "cancelAutoSave": "إلغاء الحفظ التلقائي",
     "aiSettings": "إعدادات مساعد الذكاء الاصطناعي",
     "aiSettingsDescription": "تكوين سلوك ونموذج مساعد الذكاء الاصطناعي",
     "appearanceSettings": "إعدادات المظهر",
@@ -354,7 +357,8 @@
     "description": "عذراً، واجه التطبيق خطأ. يرجى محاولة تحديث الصفحة أو العودة إلى الصفحة الرئيسية.",
     "retry": "إعادة المحاولة",
     "goHome": "الذهاب إلى الرئيسية",
-    "errorCode": "رمز الخطأ: "
+    "errorCode": "رمز الخطأ: ",
+    "errorDetails": "تفاصيل الخطأ"
   },
   "notFound": {
     "title": "الصفحة غير موجودة",

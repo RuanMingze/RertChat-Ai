@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Do not update URL when switching conversations",
     "unsavedChanges": "You have unsaved changes",
     "unsavedChangesHint": "Please save your changes, otherwise they will be lost when you leave the page",
+    "autoSaveNextTime": "Auto save next time",
+    "autoSaving": "Auto saving...",
+    "cancelAutoSave": "Cancel auto save",
     "aiSettings": "AI Assistant Settings",
     "aiSettingsDescription": "Configure AI assistant behavior and model",
     "appearanceSettings": "Appearance Settings",
@@ -354,7 +357,8 @@
     "description": "Sorry, the application encountered an error. Please try refreshing the page or returning to the home page.",
     "retry": "Retry",
     "goHome": "Go Home",
-    "errorCode": "Error code: "
+    "errorCode": "Error code: ",
+    "errorDetails": "Error Details"
   },
   "notFound": {
     "title": "Page Not Found",

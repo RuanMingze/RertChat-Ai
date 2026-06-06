@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "URL niet bijwerken bij het wisselen van gesprek",
     "unsavedChanges": "U hebt niet-opgeslagen wijzigingen",
     "unsavedChangesHint": "Sla uw wijzigingen op, anders gaan ze verloren wanneer u de pagina verlaat",
+    "autoSaveNextTime": "Automatisch opslaan volgende keer",
+    "autoSaving": "Automatisch opslaan...",
+    "cancelAutoSave": "Automatisch opslaan annuleren",
     "aiSettings": "AI-assistent Instellingen",
     "aiSettingsDescription": "Configureer het gedrag en het model van de AI-assistent",
     "appearanceSettings": "Uiterlijk Instellingen",
@@ -352,7 +355,8 @@
     "description": "Sorry, de app heeft een fout opgelopen, probeer de pagina te vernieuwen of ga terug naar de startpagina",
     "retry": "Opnieuw Proberen",
     "goHome": "Naar de Startpagina",
-    "errorCode": "Foutcode: "
+    "errorCode": "Foutcode: ",
+    "errorDetails": "Foutdetails"
   },
   "notFound": {
     "title": "Pagina Niet Gevonden",

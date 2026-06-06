@@ -643,6 +643,19 @@ export default function Home() {
     }
   }, [conversations, selectedConversations.size])
 
+  // 应用主题到 DOM
+  const applyTheme = (theme: 'light' | 'dark' | 'system') => {
+    const root = window.document.documentElement
+    root.classList.remove("light", "dark")
+    
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      root.classList.add(systemTheme)
+    } else {
+      root.classList.add(theme)
+    }
+  }
+
   // 批量删除选中的对话
   const handleBatchDelete = useCallback(async () => {
     if (selectedConversations.size === 0) return
@@ -681,6 +694,9 @@ export default function Home() {
       getUserProfile()
     ])
       .then(([loadedSettings, convs, profile]) => {
+        // 应用主题到 DOM
+        applyTheme(loadedSettings.theme)
+        
         // 更新设置
         setSettings(loadedSettings)
         

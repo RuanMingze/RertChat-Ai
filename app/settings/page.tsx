@@ -33,11 +33,27 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [showMoreLanguages, setShowMoreLanguages] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(false)
   const router = useRouter()
   const confirm = useConfirm()
   const { locale, setLocale, t } = useI18n()
 
+  useEffect(() => {
+    // 从 localStorage 读取自动保存设置
+    const savedAutoSave = localStorage.getItem('settings_auto_save')
+    if (savedAutoSave === 'true') {
+      setAutoSaveEnabled(true)
+    }
+  }, [])
+
   const hasChanges = originalSettings && JSON.stringify(settings) !== JSON.stringify(originalSettings)
+
+  // 当自动保存启用且有更改时，自动保存设置
+  useEffect(() => {
+    if (autoSaveEnabled && hasChanges) {
+      handleSave()
+    }
+  }, [autoSaveEnabled, hasChanges])
 
   const primaryLocales: Locale[] = ['zh-CN', 'en-US']
   const additionalLocales: Locale[] = ['zh-TW', 'ja-JP', 'ko-KR', 'fr-FR', 'de-DE', 'es-ES', 'it-IT', 'pt-BR', 'ru-RU', 'ar-SA', 'hi-IN', 'th-TH', 'vi-VN', 'id-ID', 'ms-MY', 'tr-TR', 'pl-PL', 'nl-NL']
@@ -534,11 +550,11 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          {hasChanges && (
+          {hasChanges && !autoSaveEnabled && (
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
               <div className="bg-background border-2 border-warning/50 rounded-2xl p-5 shadow-2xl min-w-[400px]">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/20">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-warning/20">
                     <AlertTriangle className="h-6 w-6 text-warning" />
                   </div>
                   <div className="flex-1">
@@ -548,6 +564,24 @@ export default function SettingsPage() {
                     <p className="text-sm text-muted-foreground mt-1">
                       {t('settings.unsavedChangesHint') || '请保存更改，否则将在离开页面时丢失'}
                     </p>
+                    <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={autoSaveEnabled}
+                        onChange={(e) => {
+                          const checked = e.target.checked
+                          setAutoSaveEnabled(checked)
+                          localStorage.setItem('settings_auto_save', checked.toString())
+                          if (checked) {
+                            handleSave()
+                          }
+                        }}
+                        className="h-4 w-4 rounded border-warning text-warning focus:ring-warning"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        {t('settings.autoSaveNextTime') || '下次自动保存'}
+                      </span>
+                    </label>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -571,6 +605,29 @@ export default function SettingsPage() {
                     </Button>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+          
+          {hasChanges && autoSaveEnabled && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+              <div className="bg-background border-2 border-warning/50 rounded-2xl p-4 shadow-2xl flex items-center gap-4">
+                <div className="flex items-center gap-2 flex-1">
+                  <span className="text-sm text-muted-foreground">
+                    {t('settings.autoSaving') || '正在自动保存...'}
+                  </span>
+                </div>
+                <Button
+                  onClick={() => {
+                    setAutoSaveEnabled(false)
+                    localStorage.setItem('settings_auto_save', 'false')
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  {t('settings.cancelAutoSave') || '取消自动保存'}
+                </Button>
               </div>
             </div>
           )}

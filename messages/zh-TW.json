@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "切換對話時不更新URL地址",
     "unsavedChanges": "您有未儲存的更改",
     "unsavedChangesHint": "請儲存更改，否則將在離開頁面時遺失",
+    "autoSaveNextTime": "下次自動儲存",
+    "autoSaving": "正在自動儲存...",
+    "cancelAutoSave": "取消自動儲存",
     "aiSettings": "AI 助手設定",
     "aiSettingsDescription": "設定 AI 助手的行為和模型",
     "appearanceSettings": "外觀設定",
@@ -355,7 +358,8 @@
     "description": "抱歉，應用程式遇到了錯誤。請嘗試重新整理頁面或返回首頁。",
     "retry": "重試",
     "goHome": "返回首頁",
-    "errorCode": "錯誤代碼："
+    "errorCode": "錯誤代碼：",
+    "errorDetails": "錯誤詳情"
   },
   "notFound": {
     "title": "頁面未找到",

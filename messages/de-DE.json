@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "URL beim Gesprächswechsel nicht aktualisieren",
     "unsavedChanges": "Sie haben nicht gespeicherte Änderungen",
     "unsavedChangesHint": "Bitte speichern Sie Ihre Änderungen, sonst gehen sie beim Verlassen der Seite verloren",
+    "autoSaveNextTime": "Beim nächsten Mal automatisch speichern",
+    "autoSaving": "Automatisch speichern...",
+    "cancelAutoSave": "Automatisches Speichern abbrechen",
     "aiSettings": "KI-Assistent-Einstellungen",
     "aiSettingsDescription": "Verhalten und Modell des KI-Assistenten konfigurieren",
     "appearanceSettings": "Darstellungseinstellungen",
@@ -360,7 +363,8 @@
     "description": "Entschuldigung, die Anwendung ist auf einen Fehler gestoßen. Bitte versuchen Sie, die Seite zu aktualisieren, oder kehren Sie zur Startseite zurück.",
     "retry": "Erneut versuchen",
     "goHome": "Zur Startseite",
-    "errorCode": "Fehlercode: "
+    "errorCode": "Fehlercode: ",
+    "errorDetails": "Fehlerdetails"
   },
   "notFound": {
     "title": "Seite nicht gefunden",

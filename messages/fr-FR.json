@@ -108,6 +108,9 @@
     "traditionalNavigationDescription": "Ne pas mettre à jour l'URL lors du changement de conversation",
     "unsavedChanges": "Vous avez des modifications non enregistrées",
     "unsavedChangesHint": "Veuillez enregistrer vos modifications, sinon elles seront perdues lorsque vous quitterez la page",
+    "autoSaveNextTime": "Enregistrer automatiquement la prochaine fois",
+    "autoSaving": "Enregistrement automatique...",
+    "cancelAutoSave": "Annuler l'enregistrement automatique",
     "aiSettings": "Paramètres de l'assistant IA",
     "aiSettingsDescription": "Configurer le comportement et le modèle de l'assistant IA",
     "appearanceSettings": "Paramètres d'apparence",
@@ -357,7 +360,8 @@
     "description": "Désolé, l'application a rencontré une erreur. Veuillez essayer de actualiser la page ou de retourner à la page d'accueil.",
     "retry": "Réessayer",
     "goHome": "Aller à l'accueil",
-    "errorCode": "Code d'erreur: "
+    "errorCode": "Code d'erreur: ",
+    "errorDetails": "Détails de l'erreur"
   },
   "notFound": {
     "title": "Page non trouvée",
