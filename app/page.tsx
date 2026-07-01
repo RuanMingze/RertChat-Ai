@@ -1623,7 +1623,7 @@ export default function Home() {
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  const authUrl = "https://ruanftrix.cn/oauth/authorize?client_id=82pzcqnewykalcccsekopwgd2zrin32p&redirect_uri=https://rertx.ruanftrix.cn/callback&response_type=code&scope=read write"
+                  const authUrl = "https://ruanftrix.cn/oauth/authorize?client_id=82pzcqnewykalcccsekopwgd2zrin32p&redirect_uri=https://rertchat.ruanftrix.cn/callback&response_type=code&scope=read write"
                   window.location.href = authUrl
                 }}
                 className="h-9 w-9 text-muted-foreground hover:text-foreground"

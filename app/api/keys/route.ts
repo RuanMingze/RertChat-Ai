@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
-const WORKERS_API_URL = process.env.NEXT_PUBLIC_KEYS_API_URL || 'https://api.rertx.dpdns.org'
+const WORKERS_API_URL = process.env.NEXT_PUBLIC_KEYS_API_URL || 'https://api.rertchat.ruanftrix.cn'
 const WORKERS_API_KEY = process.env.WORKERS_API_KEY
 
 // GET /api/keys - 获取用户的所有 API Keys

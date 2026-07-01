@@ -218,11 +218,11 @@ export default function DocsPage() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{t('docs.production')}</Badge>
-                    <code className="text-sm">https://rertx.dpdns.org</code>
+                    <code className="text-sm">https://rertchat.ruanftrix.cn</code>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{t('docs.development')}</Badge>
-                    <code className="text-sm">http://apidev.rertx.dpdns.org</code>
+                    <code className="text-sm">http://appdev.ruanftrix.cn</code>
                   </div>
                 </div>
               </CardContent>

@@ -11,7 +11,7 @@
 > 📋 **Changelog**: View version history in [CHANGELOG.md](./CHANGELOG.md)
 
 **Project URLs**:
-- **Cloudflare Pages Primary**: <https://rertx.dpdns.org>
+- **Cloudflare Pages Primary**: <https://rertchat.dpdns.org>
 - **Cloudflare Pages Backup**: <https://rertchat-ai.pages.dev>
 - **Vercel Primary**: <https://www.rertx.dpdns.org>
 - **Vercel Backup**: <https://rertx.vercel.app>
@@ -183,7 +183,7 @@ A：In rare cases, when you encounter access difficulties or have no browser, pl
 
 ![QR Code](public/qrcode.png)
 
-**For more detailed help and the complete FAQ, visit**: <https://rertx.dpdns.org/faq>
+**For more detailed help and the complete FAQ, visit**: <https://rertchat.ruanftrix.cn/faq>
 
 ## License
 

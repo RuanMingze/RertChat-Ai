@@ -347,7 +347,7 @@ export default function KeysPage() {
                   {t('keys.externalApiDescription')}
                 </p>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
-                  <code>{`fetch('https://rertx.dpdns.org/api/v1/chat', {
+                  <code>{`fetch('https://rertchat.ruanftrix.cn/api/v1/chat', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -364,7 +364,7 @@ export default function KeysPage() {
               <div>
                 <Label className="text-sm font-medium">3. {t('keys.curlExample')}</Label>
                 <pre className="mt-2 rounded-lg bg-muted p-4 text-xs overflow-x-auto">
-                  <code>{`curl -X POST https://rertx.dpdns.org/api/v1/chat \\
+                  <code>{`curl -X POST https://rertchat.ruanftrix.cn/api/v1/chat \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -382,7 +382,7 @@ export default function KeysPage() {
                   <code>{`import requests
 
 API_KEY = "YOUR_API_KEY"
-API_URL = "https://rertx.dpdns.org/api/v1/chat"
+API_URL = "https://rertchat.ruanftrix.cn/api/v1/chat"
 
 headers = {
     "Authorization": f"Bearer {API_KEY}",
@@ -406,7 +406,7 @@ print(response.text)`}</code>
                   <code>{`const fetch = require('node-fetch');
 
 const API_KEY = 'YOUR_API_KEY';
-const API_URL = 'https://rertx.dpdns.org/api/v1/chat';
+const API_URL = 'https://rertchat.ruanftrix.cn/api/v1/chat';
 
 async function chat() {
   const response = await fetch(API_URL, {

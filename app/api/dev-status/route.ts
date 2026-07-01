@@ -7,7 +7,7 @@ export async function GET() {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 10000)
 
-    const response = await fetch('https://apidev.rertx.dpdns.org/', {
+    const response = await fetch('https://appdev.ruanftrix.cn/', {
       method: 'HEAD',
       signal: controller.signal,
     })

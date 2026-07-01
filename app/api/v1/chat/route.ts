@@ -2,7 +2,7 @@ export const runtime = 'edge'
 
 import { NextRequest, NextResponse } from 'next/server'
 
-const CHAT_SERVER_URL = process.env.CHAT_SERVER_URL || 'https://chatapi.rertx.dpdns.org'
+const CHAT_SERVER_URL = process.env.CHAT_SERVER_URL || 'https://chatapi.rertchat.ruanftrix.cn'
 
 export async function POST(request: NextRequest) {
   try {

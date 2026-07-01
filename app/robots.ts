@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/settings/', '/callback/'],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://rertx.dpdns.org'}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://rertchat.ruanftrix.cn'}/sitemap.xml`,
   }
 }

@@ -20,7 +20,7 @@ export default function AppDevViewPage() {
         <span>{t('keyboardShortcuts.back')}</span>
       </Link>
       <iframe
-        src="https://apidev.rertx.dpdns.org"
+        src="https://appdev.ruanftrix.cn"
         className="w-full h-full border-0"
         title={t('appdev.title')}
       />
