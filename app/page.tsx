@@ -54,9 +54,19 @@ import {
   SquarePen,
   CheckSquare,
   Trash,
+  BookOpen,
+  CircleDot,
+  Link,
+  Sun,
+  Cpu,
+  Radio,
+  GitBranch,
+  Lock,
+  Code2,
 } from "lucide-react"
 import { ContextMenu, ContextMenuItem } from "@/components/ui/context-menu-custom"
 import { RenameDialog } from "@/components/ui/rename-dialog"
+import { DeepThinkingRenderer } from "@/components/deep-thinking-renderer"
 import { notificationManager } from "@/lib/notification"
 import {
   DropdownMenu,
@@ -1207,20 +1217,20 @@ export default function Home() {
   }
 
   const suggestions = deepThinkingMode ? [
-    { icon: Brain, text: t('suggestions.deepThinking.0') },
-    { icon: Brain, text: t('suggestions.deepThinking.1') },
-    { icon: Brain, text: t('suggestions.deepThinking.2') },
-    { icon: Brain, text: t('suggestions.deepThinking.3') },
+    { icon: CircleDot, text: t('suggestions.deepThinking.0') },
+    { icon: GitBranch, text: t('suggestions.deepThinking.1') },
+    { icon: Sun, text: t('suggestions.deepThinking.2') },
+    { icon: Cpu, text: t('suggestions.deepThinking.3') },
   ] : programmingMode ? [
-    { icon: Code, text: t('suggestions.programmingMode.0') },
-    { icon: Code, text: t('suggestions.programmingMode.1') },
-    { icon: Code, text: t('suggestions.programmingMode.2') },
-    { icon: Code, text: t('suggestions.programmingMode.3') },
+    { icon: Radio, text: t('suggestions.programmingMode.0') },
+    { icon: Zap, text: t('suggestions.programmingMode.1') },
+    { icon: Lock, text: t('suggestions.programmingMode.2') },
+    { icon: Link, text: t('suggestions.programmingMode.3') },
   ] : [
     { icon: MessageSquare, text: t('suggestions.default.0') },
-    { icon: Code, text: t('suggestions.default.1') },
+    { icon: BookOpen, text: t('suggestions.default.1') },
     { icon: Sparkles, text: t('suggestions.default.2') },
-    { icon: Zap, text: t('suggestions.default.3') },
+    { icon: Brain, text: t('suggestions.default.3') },
   ]
 
   return (
@@ -1709,7 +1719,7 @@ export default function Home() {
                         <div className="prose prose-sm prose-invert max-w-none break-words">
                           {message.content ? (
                             <MarkdownErrorBoundary fallback="内容渲染失败">
-                              <MarkdownContent content={message.content} />
+                              <DeepThinkingRenderer content={message.content} />
                             </MarkdownErrorBoundary>
                           ) : isLoading && index === messages.length - 1 ? (
                             <span className="inline-flex gap-1">

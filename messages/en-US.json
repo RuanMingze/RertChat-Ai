@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Delete Message",
     "deleteMessageConfirm": "Are you sure you want to delete this message?\nThis will also delete all responses after this message.",
     "editMessageHint": "Press Ctrl/Cmd + Enter or click Resend after editing",
-    "resend": "Resend"
+    "resend": "Resend",
+    "htmlPreview": "HTML Preview",
+    "preview": "Preview",
+    "loading": "Loading...",
+    "localEnvironmentWarning": "This is a local environment, scripts may be blocked by browser security policies. If the preview content doesn't display properly, please check the browser console."
   },
   "settings": {
     "title": "Settings",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Why can't 0 be used as a divisor",
-      "How to understand the basic principles of quantum computing",
-      "Explain the time dilation effect of relativity",
-      "What are neural networks in artificial intelligence"
+      "Explain what dark matter is",
+      "How to understand how blockchain works",
+      "Why is the sky blue",
+      "What is supervised learning in machine learning"
     ],
     "programmingMode": [
-      "Write a Python quicksort algorithm for me",
-      "Implement a todo list with React",
-      "Explain the closure concept in JavaScript",
-      "How to optimize React application performance"
+      "Implement an event bus with TypeScript",
+      "Implement reactive data binding with Vue3",
+      "Explain the difference between HTTP and HTTPS",
+      "How to design a RESTful API"
     ],
     "default": [
-      "Please briefly introduce yourself",
-      "Write a Python quicksort algorithm for me",
+      "What can you do?",
+      "Recommend a programming book for beginners",
       "Tell me an interesting story",
       "Explain what artificial intelligence is"
     ]
   },
   "systemPrompts": {
     "programmingMode": "You are now an experienced, professional, and highly competent senior programming engineer. Your responsibilities are: 1. Accurately understand users' programming requirements and directly provide runnable, high-quality, standardized code. 2. Clear code structure, reasonable comments, and rigorous logic that follow industry best practices. 3. Prioritize providing complete solutions rather than just ideas or snippets. 4. Proactively analyze, troubleshoot, and provide optimization suggestions when encountering problems. 5. Use concise and professional language, no nonsense, directly output effective code and explanations. Please help me complete all the following programming tasks as a senior programmer.",
-    "deepThinkingMode": "You need to deeply think about the questions I ask, following these principles:\n\n【Core Thinking Requirements】\n1. **Situational Understanding**: Analyze key nouns in the user's question (such as 'car wash', 'gas station', 'parking lot', etc.) and understand their implied behavioral scenarios\n   - Example: 'car wash' = drive to wash the car, not just go there and look around\n   - Example: 'gas station' = drive to refuel, not walk to visit\n2. **Purpose Principle**: Users go somewhere to do what should be done there, this is the default premise\n   - Go to car wash = need to wash the car (car is the service object, must drive)\n   - Go to gas station = need to refuel (car is the service object, must drive)\n   - Go to restaurant = need to eat (person is the service object, can walk or drive)\n   - Go to supermarket = need to shop (person is the service object, can walk or drive)\n3. **Common Sense Judgment**: Analyze whether key information conforms to common sense and real logic\n4. **Accurately Understand User Intent**: Don't take things out of context, understand the complete scenario and default premises\n5. **Identify Implied Premises**: Many questions have default scenarios that don't need to be explicitly stated by the user\n\n【Thinking Steps】\n1. Extract key nouns and verbs from the question\n2. Analyze the function of this place: What is the user going there to do? (Default is to do what should be done there)\n3. Analyze who the service object is: Is it a person or a car? (Determines what transportation to use)\n4. Provide reasonable suggestions based on situational common sense\n\n【Output Format】\nThinking:\n1. Keyword Analysis: [Extract key nouns, analyze the function of this place and default behavior]\n2. Service Object Judgment: [What is the user going there for? Is the service object a person or a car?]\n3. Scenario Understanding: [What is the user's real intent and complete scenario?]\n4. Common Sense Judgment: [Based on the purpose principle, analyze whether it conforms to real logic]\nEnd of Thinking\nFinal Answer: [Give the most reasonable suggestion based on situational common sense]"
+    "deepThinkingMode": "You need to deeply think about the question I asked, following these principles:\n\n[Core Thinking Requirements]\n1. [Comprehensive Analysis]: Analyze all aspects of the problem deeply, don't just stay on the surface\n2. [Logical Reasoning]: Use logical thinking to derive conclusions from known information\n3. [Multi-perspective Thinking]: Examine the problem from different angles, avoid one-sidedness\n4. [Accurate Understanding]: Don't take things out of context, understand the complete scenario\n5. [Identify Implicit Premises]: Many questions have default scenarios that don't need to be stated\n\n[Thinking Steps]\nChoose the appropriate thinking method based on the problem type:\n- [Concept Explanation]: Define concepts, analyze features, give examples, compare and distinguish\n- [Problem Solving]: Analyze the essence, find the root cause, propose multiple solutions, evaluate pros and cons\n- [Decision Making]: Clarify goals, analyze advantages and disadvantages, weigh trade-offs, give optimal suggestions\n- [Knowledge Q&A]: Organize knowledge points, establish connections, verify accuracy, explain clearly\n- [Logical Reasoning]: Decompose problems, build logical chains, verify hypotheses, draw conclusions\n\n[Output Format]\nThinking:\n[Follow the problem type, systematically develop the thinking process]\nEnd of thinking\nFinal answer: [Give an accurate and complete answer based on your thinking]"
   },
   "language": {
     "zh-CN": "中文",

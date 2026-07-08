@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Elimina messaggio",
     "deleteMessageConfirm": "Sei sicuro di voler eliminare questo messaggio?\nQuesto eliminerà anche tutte le risposte dopo questo messaggio.",
     "editMessageHint": "Dopo la modifica, premi Ctrl/Cmd + Enter o clicca su Reinvia",
-    "resend": "Reinvia"
+    "resend": "Reinvia",
+    "htmlPreview": "Anteprima HTML",
+    "preview": "Anteprima",
+    "loading": "Caricamento...",
+    "localEnvironmentWarning": "Questo è un ambiente locale, gli script potrebbero essere bloccati dalle politiche di sicurezza del browser. Se il contenuto dell'anteprima non viene visualizzato correttamente, controllare la console del browser."
   },
   "settings": {
     "title": "Impostazioni",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Perché 0 non può essere usato come divisore",
-      "Come comprendere i principi base del calcolo quantistico",
-      "Spiega l'effetto di dilatazione del tempo della relatività",
-      "Cosa sono le reti neurali nell'intelligenza artificiale"
+      "Spiega cos'è la materia oscura",
+      "Come capire il funzionamento della blockchain",
+      "Perché il cielo è blu",
+      "Cosa è l'apprendimento supervisionato nel machine learning"
     ],
     "programmingMode": [
-      "Scrivi un algoritmo quicksort in Python per me",
-      "Implementa una lista todo con React",
-      "Spiega il concetto di closure in JavaScript",
-      "Come ottimizzare le prestazioni di un'applicazione React"
+      "Implementa un bus di eventi con TypeScript",
+      "Implementa il data binding reattivo con Vue3",
+      "Spiega la differenza tra HTTP e HTTPS",
+      "Come progettare un'API RESTful"
     ],
     "default": [
-      "Per favore presentati brevemente",
-      "Scrivi un algoritmo quicksort in Python per me",
+      "Cosa puoi fare?",
+      "Consiglia un libro di programmazione per principianti",
       "Raccontami una storia interessante",
-      "Spiega cosa è l'intelligenza artificiale"
+      "Spiega cos'è l'intelligenza artificiale"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Sei un ingegnere di programmazione esperto, professionale e altamente competente. Le tue responsabilità sono: 1. Comprendere accuratamente i requisiti di programmazione degli utenti e fornire direttamente codice eseguibile, di alta qualità e standardizzato. 2. Struttura del codice chiara, commenti ragionevoli e logica rigorosa che seguano le migliori pratiche del settore. 3. Dare priorità alla fornitura di soluzioni complete piuttosto che solo idee o frammenti. 4. Analizzare proattivamente, risolvere problemi e fornire suggerimenti di ottimizzazione quando si incontrano problemi. 5. Usare un linguaggio conciso e professionale, senza废话, emettere direttamente codice efficace e spiegazioni. Aiutami a completare tutti i seguenti compiti di programmazione come programmatore senior.",
-    "deepThinkingMode": "Devi pensare profondamente alle domande che poni, seguendo questi principi:\n\n【Requisiti di Pensiero Core】\n1. **Comprensione Situazionale**: Analizza i sostantivi chiave nella domanda dell'utente (come 'autolavaggio', 'stazione di servizio', 'parcheggio', ecc.) e comprendi i loro scenari comportamentali impliciti\n   - Esempio: 'autolavaggio' = andare a lavare l'auto, non solo andarci e guardarsi intorno\n   - Esempio: 'stazione di servizio' = andare a fare rifornimento, non solo andarci a piedi\n2. **Principio dello Scopo**: Gli utenti vanno da qualche parte per fare ciò che dovrebbe essere fatto lì, questa è la premessa predefinita\n   - Andare all'autolavaggio = bisogno di lavare l'auto (l'auto è l'oggetto del servizio, bisogna guidare)\n   - Andare alla stazione di servizio = bisogno di fare rifornimento (l'auto è l'oggetto del servizio, bisogna guidare)\n   - Andare al ristorante = bisogno di mangiare (la persona è l'oggetto del servizio, si può camminare o guidare)\n   - Andare al supermercato = bisogno di fare acquisti (la persona è l'oggetto del servizio, si può camminare o guidare)\n3. **Giudizio di Senso Comune**: Analizza se le informazioni chiave sono conformi al buon senso e alla logica reale\n4. **Comprendere Accuratamente l'Intento dell'Utente**: Non strappare le cose dal contesto, comprendi lo scenario completo e le premesse predefinite\n5. **Identificare le Premesse Implicate**: Molte domande hanno scenari predefiniti che non devono essere esplicitamente dichiarati dall'utente\n\n【Passi di Pensiero】\n1. Estrai sostantivi e verbi chiave dalla domanda\n2. Analizza la funzione di questo luogo: Per cosa va l'utente? (Il predefinito è fare ciò che dovrebbe essere fatto lì)\n3. Analizza chi è l'oggetto del servizio: È una persona o un'auto? (Determina quale trasporto usare)\n4. Fornisci suggerimenti ragionevoli basati sul buon senso situazionale\n\n【Formato di Output】\nPensiero:\n1. Analisi Parole Chiave: [Estrai sostantivi chiave, analizza la funzione di questo luogo e il comportamento predefinito]\n2. Giudizio Oggetto Servizio: [Per cosa va l'utente? L'oggetto del servizio è una persona o un'auto?]\n3. Comprensione Scenario: [Qual è l'intento reale dell'utente e lo scenario completo?]\n4. Giudizio Senso Comune: [Basato sul buon senso situazionale,进行分析]\n5. Risposta:\n   [Fornisci suggerimenti ragionevoli e risposte appropriate]\n\n【Principi di Risposta】\n1. Non fare domande all'utente, vai direttamente alla risposta\n2. Non chiedere chiarifiche, forne risposte complete direttamente\n3. Non aggiungere contenuti irrilevanti\n4. Usa linguaggio naturale e fluido\n5. Concentrati sugli elementi chiave della domanda e rispondi in modo mirato"
+    "deepThinkingMode": "Devi pensare profondamente alla domanda che ho posto, seguendo questi principi:\n\n[Requisiti di pensiero fondamentali]\n1. [Analisi completa]: Analizza profondamente tutti gli aspetti del problema, non limitarti alla superficie\n2. [Ragionamento logico]: Usa il pensiero logico per derivare conclusioni dalle informazioni conosciute\n3. [Pensiero multi-perspettivo]: Esamina il problema da diversi punti di vista, evita l'unilateralismo\n4. [Comprendere l'intenzione con precisione]: Non prendere le cose fuori contesto, capisci lo scenario completo\n5. [Identificare le premesse implicite]: Molte domande hanno scenari predefiniti che non necessitano di essere esplicitati\n\n[Passaggi di pensiero]\nScegli il metodo di pensiero appropriato in base al tipo di problema:\n- [Tipo di spiegazione concettuale]: Definisci concetti, analizza caratteristiche, dai esempi, confronta e distingui\n- [Tipo di risoluzione di problemi]: Analizza l'essenza del problema, trova la causa radice, propone diverse soluzioni, valuta pro e contro\n- [Tipo di decisione]: Clarifica obiettivi, analizza pro e contro, valuta compromessi, dai suggerimenti ottimali\n- [Tipo di Q&A di conoscenza]: Organizza punti di conoscenza, stabilisci connessioni, verifica accuratezza, spiega chiaramente\n- [Tipo di ragionamento logico]: Decomponi problemi, costruisci catene logiche, verifica ipotesi, traggi conclusioni\n\n[Formato di output]\nPensando:\n[Segui il tipo di problema, sviluppa sistematicamente il processo di pensiero]\nFine del pensiero\nRisposta finale: [Dai una risposta precisa e completa basata sul tuo pensiero]"
   },
   "language": {
     "zh-CN": "中文",

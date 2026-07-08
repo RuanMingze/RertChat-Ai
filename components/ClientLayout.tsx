@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, type ReactNode } from 'react'
-import { SWUpdateBanner } from './sw-update-banner'
 
 interface ClientLayoutProps {
   children: ReactNode
@@ -18,10 +17,5 @@ export function ClientLayout({ children }: ClientLayoutProps) {
     return null
   }
 
-  return (
-    <>
-      <SWUpdateBanner />
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

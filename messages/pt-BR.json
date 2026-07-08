@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Excluir mensagem",
     "deleteMessageConfirm": "Tem certeza de que deseja excluir esta mensagem?\nIsso também excluirá todas as respostas após esta mensagem.",
     "editMessageHint": "Após editar, pressione Ctrl/Cmd + Enter ou clique em Reenviar",
-    "resend": "Reenviar"
+    "resend": "Reenviar",
+    "htmlPreview": "Pré-visualização HTML",
+    "preview": "Pré-visualizar",
+    "loading": "Carregando...",
+    "localEnvironmentWarning": "Este é um ambiente local, os scripts podem ser bloqueados pelas políticas de segurança do navegador. Se o conteúdo da pré-visualização não for exibido corretamente, verifique o console do navegador."
   },
   "settings": {
     "title": "Configurações",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Por que 0 não pode ser usado como divisor",
-      "Como entender os princípios básicos da computação quântica",
-      "Explique o efeito de dilatação do tempo da relatividade",
-      "O que são redes neurais em inteligência artificial"
+      "Explique o que é matéria escura",
+      "Como entender o funcionamento da blockchain",
+      "Por que o céu é azul",
+      "O que é aprendizado supervisionado em machine learning"
     ],
     "programmingMode": [
-      "Escreva um algoritmo quicksort em Python para mim",
-      "Implemente uma lista de tarefas com React",
-      "Explique o conceito de closure em JavaScript",
-      "Como otimizar o desempenho de um aplicativo React"
+      "Implemente um barramento de eventos com TypeScript",
+      "Implemente a vinculação de dados reativa com Vue3",
+      "Explique a diferença entre HTTP e HTTPS",
+      "Como projetar uma API RESTful"
     ],
     "default": [
-      "Por favor, apresente-se brevemente",
-      "Escreva um algoritmo quicksort em Python para mim",
+      "O que você pode fazer?",
+      "Recomende um livro de programação para iniciantes",
       "Conte-me uma história interessante",
       "Explique o que é inteligência artificial"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Você é um engenheiro de programação experiente, profissional e altamente competente. Suas responsabilidades são: 1. Compreender准确adamente os requisitos de programação dos usuários e fornecer diretamente código executável, de alta qualidade e padronizado. 2. Estrutura de código clara, comentários razoáveis e lógica rigorosa que sigam as melhores práticas do setor. 3. Priorizar fornecer soluções completas em vez de apenas ideias ou trechos. 4. Analisar proativamente, solucionar problemas e fornecer sugestões de otimização ao encontrar problemas. 5. Usar linguagem concisa e profissional, sem rodeios, gerar diretamente código eficaz e explicações. Ajude-me a completar todas as seguintes tarefas de programação como programador sênior.",
-    "deepThinkingMode": "Você precisa pensar profundamente sobre as perguntas que faz, seguindo estes princípios:\n\n【Requisitos de Pensamento Core】\n1. **Compreensão Situacional**: Analise os substantivos-chave na pergunta do usuário (como 'lavagem de carro', 'posto de gasolina', 'estacionamento', etc.) e compreenda seus cenários comportamentais implícitos\n   - Exemplo: 'lavagem de carro' = ir lavar o carro, não apenas ir lá e olhar ao redor\n   - Exemplo: 'posto de gasolina' = ir reabastecer, não apenas ir a pé\n2. **Princípio do Propósito**: Os usuários vão a algum lugar para fazer o que deveria ser feito lá, esta é a premissa padrão\n   - Ir à lavagem de carro = precisa lavar o carro (o carro é o objeto do serviço, precisa dirigir)\n   - Ir ao posto de gasolina = precisa reabastecer (o carro é o objeto do serviço, precisa dirigir)\n   - Ir ao restaurante = precisa comer (a pessoa é o objeto do serviço, pode caminhar ou dirigir)\n   - Ir ao supermercado = precisa fazer compras (a pessoa é o objeto do serviço, pode caminhar ou dirigir)\n3. **Julgamento de Senso Comum**: Analise se as informações-chave são conformes ao senso comum e à lógica real\n4. **Compreender Precisamente a Intenção do Usuário**: Não arranque as coisas do contexto, compreenda o cenário completo e as premissas padrão\n5. **Identificar Premissas Implícitas**: Muitas perguntas têm cenários padrão que não precisam ser explicitamente declarados pelo usuário\n\n【Passos de Pensamento】\n1. Extraia substantivos e verbos-chave da pergunta\n2. Analise a função deste lugar: Para que o usuário está indo? (O padrão é fazer o que deveria ser feito lá)\n3. Analise quem é o objeto do serviço: É uma pessoa ou um carro? (Determina qual transporte usar)\n4. Forneça sugestões razoáveis baseadas no senso comum situacional\n\n【Formato de Saída】\nPensamento:\n1. Análise de Palavras-Chave: [Extraia substantivos-chave, analise a função deste lugar e o comportamento padrão]\n2. Julgamento do Objeto de Serviço: [Para que o usuário está indo? O objeto do serviço é uma pessoa ou um carro?]\n3. Compreensão do Cenário: [Qual é a intenção real do usuário e o cenário completo?]\n4. Julgamento de Senso Comum: [Baseado no senso comum situacional,进行分析]\n5. Resposta:\n   [Forneça sugestões razoáveis e respostas apropriadas]\n\n【Princípios de Resposta】\n1. Não faça perguntas ao usuário, vá diretamente à resposta\n2. Não peça esclarecimentos, forneça respostas completas diretamente\n3. Não adicione conteúdos irrelevantes\n4. Use linguagem natural e fluente\n5. Concentre-se nos elementos-chave da pergunta e responda de forma direcionada"
+    "deepThinkingMode": "Você precisa pensar profundamente na pergunta que eu fiz, seguindo esses princípios:\n\n[Requisitos de pensamento básico]\n1. [Análise completa]: Analise profundamente todos os aspectos do problema, não fique só na superfície\n2. [Raciocínio lógico]: Use o pensamento lógico para derivar conclusões a partir das informações conhecidas\n3. [Pensamento multiperspectivo]: Examine o problema de diferentes ângulos, evite a unilateralidade\n4. [Compreender a intenção com precisão]: Não tire as coisas do contexto, entenda o cenário completo\n5. [Identificar premissas implícitas]: Muitas perguntas têm cenários padrão que não precisam ser explicados\n\n[Passos de pensamento]\nEscolha o método de pensamento adequado de acordo com o tipo de problema:\n- [Tipo de explicação de conceitos]: Defina conceitos, analise características, dê exemplos, compare e distingua\n- [Tipo de resolução de problemas]: Analise a essência do problema, encontre a causa raiz, proponha múltiplas soluções, avalie prós e contras\n- [Tipo de tomada de decisão]: Clarifique objetivos, analise prós e contras, avalie compensações, dê sugestões ótimas\n- [Tipo de Q&A de conhecimento]: Organize pontos de conhecimento, estabeleça conexões, verifique precisão, explique claramente\n- [Tipo de raciocínio lógico]: Descompõe problemas, constrói cadeias lógicas, verifica hipóteses, deduz conclusões\n\n[Formato de saída]\nPensando:\n[Siga o tipo de problema, desenvolva sistematicamente o processo de pensamento]\nFim do pensamento\nResposta final: [Dê uma resposta precisa e completa com base no seu pensamento]"
   },
   "language": {
     "zh-CN": "中文",

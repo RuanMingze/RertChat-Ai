@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Nachricht löschen",
     "deleteMessageConfirm": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?\nDies löscht auch alle Antworten nach dieser Nachricht.",
     "editMessageHint": "Drücken Sie Strg/Cmd + Enter oder klicken Sie auf Erneut senden nach der Bearbeitung",
-    "resend": "Erneut senden"
+    "resend": "Erneut senden",
+    "htmlPreview": "HTML-Vorschau",
+    "preview": "Vorschau",
+    "loading": "Laden...",
+    "localEnvironmentWarning": "Dies ist eine lokale Umgebung, Skripte können durch Browser-Sicherheitsrichtlinien blockiert werden. Wenn der Vorschauinhalt nicht ordnungsgemäß angezeigt wird, überprüfen Sie bitte die Browserkonsole."
   },
   "settings": {
     "title": "Einstellungen",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Warum kann 0 nicht als Divisor verwendet werden",
-      "Wie versteht man die Grundprinzipien des Quantencomputings",
-      "Erklären Sie den Zeitdilatationseffekt der Relativität",
-      "Was sind neuronale Netze in der künstlichen Intelligenz"
+      "Erklären Sie, was Dunkelmaterie ist",
+      "Wie man die Funktionsweise von Blockchain versteht",
+      "Warum ist der Himmel blau",
+      "Was ist überwachtes Lernen im maschinellen Lernen"
     ],
     "programmingMode": [
-      "Schreiben Sie einen Python-QuickSort-Algorithmus für mich",
-      "Implementieren Sie eine Todo-Liste mit React",
-      "Erklären Sie das Closure-Konzept in JavaScript",
-      "Wie optimiere ich die Leistung einer React-Anwendung"
+      "Implementieren Sie einen Event-Bus mit TypeScript",
+      "Implementieren Sie reaktive Datenbindung mit Vue3",
+      "Erklären Sie den Unterschied zwischen HTTP und HTTPS",
+      "Wie man eine RESTful API entwirft"
     ],
     "default": [
-      "Bitte stellen Sie sich kurz vor",
-      "Schreiben Sie einen Python-QuickSort-Algorithmus für mich",
+      "Was können Sie tun?",
+      "Empfehlen Sie ein Programmierbuch für Anfänger",
       "Erzählen Sie mir eine interessante Geschichte",
       "Erklären Sie, was künstliche Intelligenz ist"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Sie sind jetzt ein erfahrener, professioneller und hochkompetenter Senior-Programmieringenieur. Ihre Aufgaben sind: 1. Verstehen Sie die Programmieranforderungen der Benutzer genau und liefern Sie direkt ausführbaren, hochwertigen, standardisierten Code. 2. Klare Codestruktur, sinnvolle Kommentare und rigorose Logik, die Best Practices der Branche befolgen. 3. Priorisieren Sie die Bereitstellung vollständiger Lösungen, nicht nur Ideen oder Snippets. 4. Analysieren und beheben Sie proaktiv Probleme und geben Sie Optimierungsvorschläge. 5. Verwenden Sie prägnante und professionelle Sprache, keinen Unsinn, geben Sie direkt effektiven Code und Erklärungen aus. Bitte helfen Sie mir, alle folgenden Programmieraufgaben als Senior-Programmierer zu erledigen.",
-    "deepThinkingMode": "Sie müssen die Fragen, die ich stelle, tiefgründig durchdenken und folgende Prinzipien befolgen:\n\n【Kern-Denk-Anforderungen】\n1. 【Situatives Verständnis】: Analysieren Sie Schlüsselwörter in der Frage des Benutzers und verstehen Sie ihre implizierten Verhaltensszenarien\n2. 【Zweckprinzip】: Benutzer gehen irgendwohin um das zu tun, was dort getan werden sollte\n3. 【Gesunder Menschenverstand】: Analysieren Sie, ob Schlüsselinformationen dem gesunden Menschenverstand und der realen Logik entsprechen\n4. 【Genaues Verstehen der Benutzerabsicht】: Kontext nicht aus dem Zusammenhang reißen\n5. 【Implizite Prämissen identifizieren】: Viele Fragen haben Standardszenarien, die nicht explizit angegeben werden müssen\n\n【Denkschritte】\n1. Schlüsselwörter und Verben aus der Frage extrahieren\n2. Funktion des Ortes analysieren\n3. Analyse des Serviceobjekts\n4. Vernünftige Vorschläge basierend auf situativem gesundem Menschenverstand bereitstellen\n\n【Ausgabeformat】\nDenken:\n1. Schlüsselwortanalyse: [Schlüsselwörter extrahieren]\n2. Serviceobjekt-Urteil: [Wofür geht der Benutzer?]\n3. Szenarioverständnis: [Was ist die wahre Absicht des Benutzers?]\n4. Urteil des gesunden Menschenverstands: [Basierend auf...]\n\nAntwort:..."
+    "deepThinkingMode": "Sie müssen die Frage, die ich gestellt habe, tiefgehend überdenken und folgende Prinzipien befolgen:\n\n[Kernüberlegungsanforderungen]\n1. [Umfassende Analyse]: Analysieren Sie alle Aspekte des Problems gründlich, bleiben Sie nicht nur an der Oberfläche\n2. [Logisches Denken]: Nutzen Sie logisches Denken, um Schlussfolgerungen aus bekannten Informationen abzuleiten\n3. [Multi-Perspektivisches Denken]: Betrachten Sie das Problem aus verschiedenen Blickwinkeln, vermeiden Sie Einseitigkeit\n4. [Genaues Verständnis]: Nehmen Sie Dinge nicht aus dem Kontext, verstehen Sie das gesamte Szenario\n5. [Identifizieren impliziter Voraussetzungen]: Viele Fragen haben Standard-Szenarien, die nicht ausdrücklich genannt werden müssen\n\n[Denk-Schritte]\nWählen Sie die passende Denk-Methode basierend auf dem Problemtyp:\n- [Begriffserklärungs-Typ]: Definieren Sie Begriffe, analysieren Sie Merkmale, geben Sie Beispiele, vergleichen und unterscheiden\n- [Problemlösung-Typ]: Analysieren Sie das Wesen des Problems, finden Sie die Wurzelursache, schlagen Sie mehrere Lösungen vor, bewerten Sie Vor- und Nachteile\n- [Entscheidungs-Typ]: Klären Sie Ziele, analysieren Sie Vor- und Nachteile, wiegen Sie Kompromisse ab, geben Sie optimale Vorschläge\n- [Wissensfragen-Typ]: Ordnen Sie Wissenspunkte, etablieren Sie Verbindungen, überprüfen Sie Genauigkeit, erklären Sie klar\n- [Logisches Denken-Typ]: Zerlegen Sie Probleme, bauen Sie logische Ketten auf, überprüfen Sie Hypothesen, ziehen Sie Schlussfolgerungen\n\n[Ausgabeformat]\nDenken:\n[Folgen Sie dem Problemtyp, entwickeln Sie systematisch den Denkprozess]\nEnde des Denkens\nFinale Antwort: [Geben Sie eine genaue und vollständige Antwort basierend auf Ihrem Denken]"
   },
   "language": {
     "zh-CN": "Chinesisch",

@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Supprimer le message",
     "deleteMessageConfirm": "Êtes-vous sûr de vouloir supprimer ce message ?\nCela supprimera également toutes les réponses après ce message.",
     "editMessageHint": "Appuyez sur Ctrl/Cmd + Enter ou cliquez sur Renvoyer après modification",
-    "resend": "Renvoyer"
+    "resend": "Renvoyer",
+    "htmlPreview": "Aperçu HTML",
+    "preview": "Aperçu",
+    "loading": "Chargement...",
+    "localEnvironmentWarning": "Ceci est un environnement local, les scripts peuvent être bloqués par les politiques de sécurité du navigateur. Si le contenu de l'aperçu ne s'affiche pas correctement, veuillez vérifier la console du navigateur."
   },
   "settings": {
     "title": "Paramètres",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Pourquoi 0 ne peut pas être utilisé comme diviseur",
-      "Comment comprendre les principes de base de l'informatique quantique",
-      "Expliquer l'effet de dilatation du temps de la relativité",
-      "Que sont les réseaux de neurones en intelligence artificielle"
+      "Expliquez ce qu'est la matière noire",
+      "Comment comprendre le fonctionnement de la blockchain",
+      "Pourquoi le ciel est-il bleu",
+      "Qu'est-ce que l'apprentissage supervisé en machine learning"
     ],
     "programmingMode": [
-      "Écrivez-moi un algorithme de tri rapide en Python",
-      "Implémentez une liste de tâches avec React",
-      "Expliquez le concept de closure en JavaScript",
-      "Comment optimiser les performances d'une application React"
+      "Implémentez un bus d'événements avec TypeScript",
+      "Implémentez la liaison de données réactive avec Vue3",
+      "Expliquez la différence entre HTTP et HTTPS",
+      "Comment concevoir une API RESTful"
     ],
     "default": [
-      "Veuillez vous présenter brièvement",
-      "Écrivez-moi un algorithme de tri rapide en Python",
+      "Que pouvez-vous faire?",
+      "Recommandez un livre de programmation pour les débutants",
       "Racontez-moi une histoire intéressante",
       "Expliquez ce qu'est l'intelligence artificielle"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Vous êtes maintenant un ingénieur de programmation senior expérimenté, professionnel et extrêmement compétent. Vos responsabilités: 1. Comprendre précisément les besoins de programmation des utilisateurs et fournir directement du code exécutable de haute qualité et standardisé. 2. Structure de code claire, commentaires raisonnables, logique rigoureuse respectant les meilleures pratiques de l'industrie. 3. Priorité à la fourniture de solutions complètes plutôt que d'idées ou de fragments. 4. Analyser, dépanner et suggérer des optimisations de manière proactive lors de problèmes. 5. Langage concis et professionnel, pas de verbiage, sortie directe de code efficace et d'explications. Aidez-moi à accomplir toutes les tâches de programmation en tant que développeur senior.",
-    "deepThinkingMode": "Vous devez réfléchir profondément aux questions que je pose, en suivant ces principes:\n\n【Exigences de réflexion fondamentales】\n1. **Compréhension contextuelle**: Analysez les noms clés dans la question de l'utilisateur (tels que 'station de lavage', 'station-service', 'parking', etc.) et comprenez leurs scénarios comportementaux implicites\n   - Exemple: 'station de lavage' = conduire pour laver la voiture, pas juste y jeter un coup d'œil\n   - Exemple: 'station-service' = conduire pour faire le plein, pas y aller à pied\n2. **Principe de finalité**: L'utilisateur va quelque part pour y faire ce qui doit être fait, c'est la prémisse par défaut\n   - Aller à la station de lavage = нужно помыть машину (la voiture est l'objet du service, doit conduire)\n   - Aller à la station-service = нужно заправиться (la voiture est l'objet du service, doit conduire)\n   - Aller au restaurant = нужно поесть (la personne est l'objet du service, peut marcher ou conduire)\n   - Aller au supermarché = нужно купить (la personne est l'objet du service, peut marcher ou conduire)\n3. **Jugement de bon sens**: Analyser si les informations clés sont conformes au bon sens et à la logique réelle\n4. **Comprendre précisément l'intention de l'utilisateur**: Ne pas déformer le contexte, comprendre le scénario complet et les prémisses par défaut\n5. **Identifier les prémisses implicites**: De nombreuses questions ont des scénarios par défaut qui n'ont pas besoin d'être explicitement mentionnés par l'utilisateur\n\n【Étapes de réflexion】\n1. Extraire les noms et verbes clés de la question\n2. Analyser la fonction de ce lieu: Qu'est-ce que l'utilisateur va faire là-bas? (Par défaut, y faire ce qui doit être fait)\n3. Analyser qui est l'objet du service: Une personne ou une voiture? (Détermine le moyen de transport à utiliser)\n4. Fournir des suggestions raisonnables basées sur le bon sens contextuel\n\n【Format de sortie】\nEn réflexion:\n1. Analyse des mots-clés: [Extraire les noms clés, analyser la fonction de ce lieu et le comportement par défaut]\n2. Jugement de l'objet du service: [Qu'est-ce que l'utilisateur va faire là-bas? L'objet du service est-il une personne ou une voiture?]\n3. Compréhension du scénario: [Quelle est la vraie intention de l'utilisateur et le scénario complet?]\n4. Jugement de bon sens: [Basé sur le principe de finalité, analyser si c'est conforme à la logique réelle]\nFin de la réflexion\nRéponse finale: [Basé sur la réflexion, fournir la suggestion la plus conforme au bon sens contextuel]"
+    "deepThinkingMode": "Vous devez réfléchir profondément à la question que j'ai posée, en suivant ces principes :\n\n[Exigences de réflexion fondamentales]\n1. [Analyse complète] : Analysez profondément tous les aspects du problème, ne vous contentez pas de la surface\n2. [Raisonnement logique] : Utilisez la pensée logique pour dériver des conclusions à partir d'informations connues\n3. [Pensée multiforme] : Examinez le problème sous différents angles, évitez l'unilatéralisme\n4. [Comprendre précisément l'intention] : Ne prenez pas les choses hors contexte, comprenez le scénario complet\n5. [Identifier les présupposés implicites] : Beaucoup de questions ont des scénarios par défaut qui n'ont pas besoin d'être explicités\n\n[Étapes de réflexion]\nChoisissez la méthode de réflexion appropriée en fonction du type de problème :\n- [Type d'explication de concept] : Définir des concepts, analyser des caractéristiques, donner des exemples, comparer et distinguer\n- [Type de résolution de problème] : Analyser l'essence du problème, trouver la cause racine, proposer plusieurs solutions, évaluer les avantages et inconvénients\n- [Type de prise de décision] : Clarifier les objectifs, analyser les avantages et inconvénients, peser les compromis, donner des suggestions optimales\n- [Type de Q&A sur les connaissances] : Organiser les points de connaissance, établir des connexions, vérifier l'exactitude, expliquer clairement\n- [Type de raisonnement logique] : Décomposer les problèmes, construire des chaînes logiques, vérifier des hypothèses, tirer des conclusions\n\n[Format de sortie]\nRéflexion :\n[Suivez le type de problème, développez systématiquement le processus de réflexion]\nFin de la réflexion\nRéponse finale : [Donnez une réponse précise et complète basée sur votre réflexion]"
   },
   "language": {
     "zh-CN": "中文",

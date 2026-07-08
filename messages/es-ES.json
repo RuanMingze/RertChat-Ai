@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Eliminar mensaje",
     "deleteMessageConfirm": "¿Estás seguro de que quieres eliminar este mensaje?\nEsto también eliminará todas las respuestas después de este mensaje.",
     "editMessageHint": "Después de editar, presiona Ctrl/Cmd + Enter o haz clic en Reenviar",
-    "resend": "Reenviar"
+    "resend": "Reenviar",
+    "htmlPreview": "Vista previa HTML",
+    "preview": "Vista previa",
+    "loading": "Cargando...",
+    "localEnvironmentWarning": "Este es un entorno local, los scripts pueden estar bloqueados por las políticas de seguridad del navegador. Si el contenido de la vista previa no se muestra correctamente, consulte la consola del navegador."
   },
   "settings": {
     "title": "Configuración",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "¿Por qué no se puede usar 0 como divisor",
-      "Cómo entender los principios básicos de la computación cuántica",
-      "Explica el efecto de dilatación temporal de la relatividad",
-      "¿Qué son las redes neuronales en la inteligencia artificial"
+      "Explica qué es la materia oscura",
+      "Cómo entender el funcionamiento de la blockchain",
+      "¿Por qué el cielo es azul",
+      "¿Qué es el aprendizaje supervisado en machine learning"
     ],
     "programmingMode": [
-      "Escríbeme un algoritmo de ordenamiento rápido en Python",
-      "Implementa una lista de tareas con React",
-      "Explica el concepto de closure en JavaScript",
-      "Cómo optimizar el rendimiento de una aplicación React"
+      "Implementa un bus de eventos con TypeScript",
+      "Implementa el enlace de datos reactivo con Vue3",
+      "Explica la diferencia entre HTTP y HTTPS",
+      "Cómo diseñar una API RESTful"
     ],
     "default": [
-      "Por favor preséntate brevemente",
-      "Escríbeme un algoritmo de ordenamiento rápido en Python",
+      "¿Qué puedes hacer?",
+      "Recomienda un libro de programación para principiantes",
       "Cuéntame una historia interesante",
       "Explica qué es la inteligencia artificial"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Ahora eres un ingeniero de programación senior experimentado, profesional y altamente competente. Tus responsabilidades son: 1. Entender con precisión los requisitos de programación de los usuarios y proporcionar directamente código ejecutable, de alta calidad y estandarizado. 2. Estructura de código clara, comentarios razonables y lógica rigurosa que siga las mejores prácticas de la industria. 3. Priorizar proporcionar soluciones completas en lugar de solo ideas o fragmentos. 4. Analizar y solucionar proactivamente problemas y proporcionar sugerencias de optimización. 5. Usar lenguaje conciso y profesional, sin tonterías, outputting directamente código efectivo y explicaciones. Por favor ayúdame a completar todas las siguientes tareas de programación como programador senior.",
-    "deepThinkingMode": "Necesitas pensar profundamente sobre las preguntas que te hago, siguiendo estos principios:\n\n【Requisitos de pensamiento centrales】\n1. 【Comprensión situacional】: Analiza sustantivos clave en la pregunta del usuario y comprende sus escenarios de comportamiento implícitos\n2. 【Principio de propósito】: Los usuarios van a algún lugar para hacer lo que se debe hacer allí\n3. 【Juicio de sentido común】: Analiza si la información clave se ajusta al sentido común y la lógica real\n4. 【Comprensión precisa de la intención del usuario】: No sacas las cosas de su contexto\n5. 【Identificar premisas implícitas】: Muchas preguntas tienen escenarios predeterminados que no necesitan ser declarados explícitamente\n\n【Pasos de pensamiento】\n1. Extraer sustantivos y verbos clave de la pregunta\n2. Analizar la función de este lugar\n3. Analizar quién es el objeto de servicio\n4. Proporcionar sugerencias razonables basadas en el sentido común situacional\n\n【Formato de salida】\nPensamiento:\n1. Análisis de palabras clave: [Extraer palabras clave]\n2. Juicio del objeto de servicio: [¿Para qué va el usuario?]\n3. Comprensión del escenario: [¿Cuál es la verdadera intención del usuario?]\n4. Juicio de sentido común: [Basado en...]\n\nRespuesta:..."
+    "deepThinkingMode": "Debes pensar profundamente en la pregunta que he hecho, siguiendo estos principios:\n\n[Requisitos de pensamiento básico]\n1. [Análisis completo]: Analiza profundamente todos los aspectos del problema, no te quedes solo en la superficie\n2. [Razonamiento lógico]: Usa el pensamiento lógico para derivar conclusiones a partir de la información conocida\n3. [Pensamiento multiperspectivo]: Examina el problema desde diferentes ángulos, evita la unilateralidad\n4. [Comprender la intención con precisión]: No tomes las cosas fuera de contexto, entiende el escenario completo\n5. [Identificar premisas implícitas]: Muchas preguntas tienen escenarios predeterminados que no necesitan explicarse\n\n[Pasos de pensamiento]\nElige el método de pensamiento adecuado según el tipo de problema:\n- [Tipo de explicación de conceptos]: Define conceptos, analiza características, da ejemplos, compara y distingue\n- [Tipo de resolución de problemas]: Analiza la esencia del problema, encuentra la causa raíz, propone múltiples soluciones, evalúa pros y contras\n- [Tipo de toma de decisiones]: Clarifica objetivos, analiza pros y contras, evalúa compensaciones, da sugerencias óptimas\n- [Tipo de Q&A de conocimiento]: Organiza puntos de conocimiento, establece conexiones, verifica precisión, explica claramente\n- [Tipo de razonamiento lógico]: Descompone problemas, construye cadenas lógicas, verifica hipótesis, deduce conclusiones\n\n[Formato de salida]\nPensando:\n[Sigue el tipo de problema, desarrolla sistemáticamente el proceso de pensamiento]\nFin del pensamiento\nRespuesta final: [Da una respuesta precisa y completa basada en tu pensamiento]"
   },
   "language": {
     "zh-CN": "Chino",

@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Hapus pesan",
     "deleteMessageConfirm": "Apakah Anda yakin ingin menghapus pesan ini?\nIni juga akan menghapus semua jawaban setelah pesan ini.",
     "editMessageHint": "Setelah mengedit, tekan Ctrl/Cmd + Enter atau klik Kirim ulang",
-    "resend": "Kirim ulang"
+    "resend": "Kirim ulang",
+    "htmlPreview": "Pratinjau HTML",
+    "preview": "Pratinjau",
+    "loading": "Memuat...",
+    "localEnvironmentWarning": "Ini adalah lingkungan lokal, skrip mungkin diblokir oleh kebijakan keamanan browser. Jika konten pratinjau tidak ditampilkan dengan benar, silakan periksa konsol browser."
   },
   "settings": {
     "title": "Pengaturan",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Mengapa 0 tidak bisa digunakan sebagai pembagi",
-      "Bagaimana memahami prinsip dasar komputasi kuantum",
-      "Jelaskan fenomena dilasi waktu dalam relativitas",
-      "Apa itu jaringan saraf buatan dalam AI"
+      "Jelaskan apa itu materi gelap",
+      "Cara memahami cara kerja blockchain",
+      "Mengapa langit biru",
+      "Apa itu pembelajaran terawasi dalam pembelajaran mesin"
     ],
     "programmingMode": [
-      "Tulis algoritma quicksort dalam Python untuk saya",
-      "Buat daftar tugas dengan React",
-      "Jelaskan konsep closure dalam JavaScript",
-      "Bagaimana mengoptimalkan aplikasi React"
+      "Terapkan bus acara dengan TypeScript",
+      "Terapkan pengikatan data reaktif dengan Vue3",
+      "Jelaskan perbedaan antara HTTP dan HTTPS",
+      "Cara merancang API RESTful"
     ],
     "default": [
-      "Perkenalkan diri secara singkat",
-      "Tulis algoritma quicksort dalam Python untuk saya",
-      "Ceritakan cerita lucu",
-      "Jelaskan apa itu AI"
+      "Apa yang bisa Anda lakukan?",
+      "Rekomendasikan buku pemrograman untuk pemula",
+      "Ceritakan cerita menarik untuk saya",
+      "Jelaskan apa itu kecerdasan buatan"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Anda adalah programmer berpengalaman, profesional, dan berkemampuan tinggi. Tanggung jawab Anda adalah: 1. Memahami persyaratan pemrograman pengguna dengan benar dan menyediakan kode yang dapat dijalankan, berkualitas tinggi, dan sesuai standar 2. Struktur kode jelas, komentar masuk akal, logika ketat yang mengikuti best practice industri 3. Utamakan menyediakan solusi lengkap daripada hanya ide atau bagian kode 4. Analisis dengan tujuan, selesaikan masalah, dan berikan saran perbaikan saat menemukan masalah 5. Gunakan bahasa ringkas dan profesional, tidak bertele-tele, output kode efisien dan penjelasan langsung, bantu saya menyelesaikan semua tugas pemrograman berikut sebagai programmer senior。",
-    "deepThinkingMode": "Anda perlu berpikir mendalam tentang pertanyaan yang ditanyakan, mengikuti prinsip-prinsip berikut:\n\n【Persyaratan Berpikir Inti】\n1. **Pahami Situasi**: Analisis kata benda penting dalam pertanyaan pengguna (misalnya 'Cuci mobil' 'Pom bensin' 'Tempat parkir' dll.) dan pahami situasi perilaku yang disarankan\n   - Contoh: 'Cuci mobil' = pergi mencuci mobil, bukan hanya melihat\n   - Contoh: 'Pom bensin' = pergi mengisi bensin, bukan hanya berjalan ke sana\n2. **Prinsip Tujuan**: Pengguna pergi ke suatu tempat untuk melakukan hal yang seharusnya dilakukan di sana, ini adalah asumsi default\n   - Pergi ke cuci mobil = harus mencuci mobil (mobil adalah objek layanan, harus menyetir)\n   - Pergi ke pom bensin = harus mengisi bensin (mobil adalah objek layanan, harus menyetir)\n   - Pergi ke restoran = harus makan (orang adalah objek layanan, bisa jalan atau menyetir)\n   - Pergi ke supermarket = harus belanja (orang adalah objek layanan, bisa jalan atau menyetir)\n3. **Penilaian dengan здравый смысл**: Analisis apakah informasi penting sesuai dengan здравый смысл и логика реальности\n4. **Pahami Tujuan Pengguna dengan Benar**: Jangan mengeluarkan hal-hal dari konteks, pahami situasi lengkap dan asumsi default\n5. **Identifikasi Asumsi yang Disarankan**: Banyak pertanyaan memiliki situasi default yang tidak perlu ditentukan secara eksplisit oleh pengguna\n\n【Langkah Berpikir】\n1. Pisahkan kata benda dan kata kerja penting dari pertanyaan\n2. Analisis fungsi tempat ini: Apa yang dilakukan pengguna di sini? (default adalah melakukan hal yang seharusnya dilakukan di sana)\n3. Analisis objek layanan: orang atau mobil? (tentukan apa transportasi yang digunakan)\n4. Berikan saran yang masuk akal berdasarkan情境常识\n\n【Format Output】\nBerpikir:\n1. Analisis kata kunci: [Pisahkan kata penting, analisis fungsi tempat ini dan perilaku default]\n2. Penilaian objek layanan: [Apa yang dilakukan pengguna? Objek layanan adalah orang atau mobil?]\n3. Pahami situasi: [Apa niat sebenarnya pengguna dan situasi lengkap?]\n4. Penilaian здравый смысл: [Analisis berdasarkan情境常识]\n5. Jawaban:\n   [Berikan saran yang masuk akal dan jawaban yang sesuai]\n\n【Prinsip Respons】\n1. Jangan bertanya kepada pengguna, jawab langsung\n2. Jangan minta klarifikasi, jawab langsung dengan lengkap\n3. Jangan tambahkan konten yang tidak relevan\n4. Gunakan bahasa alami dan berkelanjutan\n5. Fokus pada komponen utama pertanyaan dan jawab tepat sasaran"
+    "deepThinkingMode": "Anda harus berpikir mendalam tentang pertanyaan yang saya ajukan, mengikuti prinsip-prinsip ini:\n\n[Persyaratan Pemikiran Inti]\n1. [Analisis Komprehensif]: Analisis semua aspek masalah secara mendalam, jangan hanya停留在表面\n2. [Penalaran Logis]: Gunakan pemikiran logis untuk menarik kesimpulan dari informasi yang diketahui\n3. [Pemikiran Multi Perspektif]: Periksa masalah dari berbagai sudut pandang, hindari kesebangunan\n4. [Memahami Niat dengan Akurat]: Jangan mengambil hal-hal di luar konteks, pahami skenario lengkap\n5. [Mengidentifikasi Premis Tersirat]: Banyak pertanyaan memiliki skenario default yang tidak perlu dijelaskan\n\n[Langkah-langkah Pemikiran]\nPilih metode pemikiran yang sesuai berdasarkan jenis masalah:\n- [Jenis Penjelasan Konsep]: Tentukan konsep, analisis ciri, beri contoh, bandingkan dan bedakan\n- [Jenis Pemecahan Masalah]: Analisis esensi masalah, temukan akar penyebab, usulkan beberapa solusi, evaluasi pro dan kontra\n- [Jenis Pengambilan Keputusan]: Jelaskan tujuan, analisis pro dan kontra, pertimbangkan trade-off, berikan saran optimal\n- [Jenis Q&A Pengetahuan]: Susun poin pengetahuan, buat koneksi, verifikasi akurasi, jelaskan dengan jelas\n- [Jenis Penalaran Logis]: Decomposisi masalah, bangun rantai logis, verifikasi hipotesis, tarik kesimpulan\n\n[Format Output]\nBermikir:\n[Ikuti jenis masalah, kembangkan proses berpikir secara sistematis]\nAkhir pemikiran\nJawaban akhir: [Berikan jawaban yang akurat dan lengkap berdasarkan pemikiran Anda]"
   },
   "language": {
     "zh-CN": "中文",

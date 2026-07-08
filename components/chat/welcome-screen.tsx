@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Bot, Sparkles, Zap, MessageSquare, Code } from "lucide-react"
+import { Bot, Sparkles, MessageSquare, BookOpen, Brain } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface WelcomeScreenProps {
@@ -9,10 +9,10 @@ interface WelcomeScreenProps {
 }
 
 const suggestions = [
-  { icon: MessageSquare, text: "请简要介绍一下你自己" },
-  { icon: Code, text: "帮我写一个 Python 快速排序算法" },
+  { icon: MessageSquare, text: "你能做些什么？" },
+  { icon: BookOpen, text: "推荐一本适合初学者的编程书籍" },
   { icon: Sparkles, text: "给我讲一个有趣的故事" },
-  { icon: Zap, text: "解释一下什么是人工智能" },
+  { icon: Brain, text: "解释一下什么是人工智能" },
 ]
 
 export function WelcomeScreen({ onSuggestionClick }: WelcomeScreenProps) {

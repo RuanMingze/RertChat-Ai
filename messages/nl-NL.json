@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Bericht verwijderen",
     "deleteMessageConfirm": "Weet u zeker dat u dit bericht wilt verwijderen?\nDit zal ook alle antwoorden na dit bericht verwijderen.",
     "editMessageHint": "Druk na bewerken op Ctrl/Cmd + Enter of klik op Opnieuw verzenden",
-    "resend": "Opnieuw verzenden"
+    "resend": "Opnieuw verzenden",
+    "htmlPreview": "HTML Voorbeeld",
+    "preview": "Voorbeeld",
+    "loading": "Laden...",
+    "localEnvironmentWarning": "Dit is een lokale omgeving, scripts kunnen worden geblokkeerd door beveiligingsbeleid van de browser. Als de voorbeeldinhoud niet correct wordt weergegeven, controleer dan de browserconsole."
   },
   "settings": {
     "title": "Instellingen",
@@ -188,27 +192,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Waarom kan 0 niet als deler worden gebruikt",
-      "Hoe begrijp ik de basisprincipes van quantumcomputing",
-      "Leg het fenomeen van tijdverdunning in de relativiteitstheorie uit",
-      "Wat is een neurale netwerk in AI"
+      "Leg uit wat donkere materie is",
+      "Hoe de werking van blockchain te begrijpen",
+      "Waarom is de lucht blauw",
+      "Wat is gecontroleerd leren in machine learning"
     ],
     "programmingMode": [
-      "Schrijf een quicksort-algoritme in Python voor mij",
-      "Maak een takenlijst met React",
-      "Leg het concept van closure in JavaScript uit",
-      "Hoe optimaliseer ik een React-applicatie"
+      "Implementeer een eventbus met TypeScript",
+      "Implementeer reactieve databinding met Vue3",
+      "Leg het verschil tussen HTTP en HTTPS uit",
+      "Hoe een RESTful API te ontwerpen"
     ],
     "default": [
-      "Introduceer jezelf kort",
-      "Schrijf een quicksort-algoritme in Python voor mij",
-      "Vertel een grappig verhaal",
-      "Leg uit wat AI is"
+      "Wat kun je doen?",
+      "Raad een programmeringsboek voor beginners aan",
+      "Vertel me een interessante verhaal",
+      "Leg uit wat kunstmatige intelligentie is"
     ]
   },
   "systemPrompts": {
     "programmingMode": "U bent een ervaren, professionele en hooggekwalificeerde programmeur. Uw taak is: 1. Begrijp de programmeervereisten van de gebruiker correct en lever draagbaar, hoogwaardige code die voldoet aan de normen 2. De code-structuur is duidelijk, commentaar is redelijk, logica is solide en volgt de beste praktijken van de industrie 3. Geef voorrang aan het leveren van complete oplossingen in plaats van alleen ideeën of codefragmenten 4. Analyseer doelgericht, oploss problemen en geef verbeteringsvoorstellen bij het tegenkomen van problemen 5. Gebruik beknopt en professioneel taalgebruik, niet langdradig, efficiënte code-uitvoer en directe uitleg, help me om alle volgende programmeertaken als senior programmeur te voltooien。",
-    "deepThinkingMode": "U moet diep nadenken over de gestelde vraag, volgens de volgende principes:\n\n【Kern Denkvereisten】\n1. **Situatie Begrijpen**: Analyseer de belangrijkste zelfstandige naamwoorden in de vraag van de gebruiker (bv. 'autowasplaats' 'brandstoftankstation' 'parkeerplaats' enz.) en begrijp de voorgestelde gedragsituatie\n   - Voorbeeld: 'autowasplaats' = gaan naar de wasplaats, niet alleen kijken\n   - Voorbeeld: 'brandstoftankstation' = gaan tanken, niet alleen lopen\n2. **Doelprincipe**: De gebruiker gaat ergens heen om te doen wat daar moet worden gedaan, dit is de standaardveronderstelling\n   - Naar de autowasplaats gaan = moet de auto wassen (auto is dienstobject, moet rijden)\n   - Naar het tankstation gaan = moet tanken (auto is dienstobject, moet rijden)\n   - Naar een restaurant gaan = moet eten (persoon is dienstobject, kan lopen of rijden)\n   - Naar de supermarkt gaan = moet winkelen (persoon is dienstobject, kan lopen of rijden)\n3. **Verstandige Beoordeling**: Analyseer of belangrijke informatie overeenkomt met gezond verstand en de logica van de realiteit\n4. **Doel van de Gebruiker Correct Begrijpen**: Haal niet dingen uit context, begrijp de volledige situatie en standaardveronderstellingen\n5. **Voorgestelde Veronderstellingen Identificeren**: Veel vragen hebben een standaardsituatie die de gebruiker niet expliciet hoeft te specificeren\n\n【Denkstappen】\n1. Scheid de belangrijkste zelfstandige naamwoorden en werkwoorden uit de vraag\n2. Analyseer de functie van deze plaats: Wat doet de gebruiker hier? (standaard is het doen van wat daar moet worden gedaan)\n3. Analyseer het dienstobject: persoon of auto? (bepaal welke transportmiddel zal worden gebruikt)\n4. Geef redelijke voorstellen op basis van gezond verstand\n\n【Uitvoerformaat】\nDenken:\n1. Sleutelwoordanalyse: [Scheid de belangrijkste woorden, analyseer de functie van deze plaats en het standaardgedrag]\n2. Dienstobjectbeoordeling: [Wat doet de gebruiker? Is het dienstobject een persoon of een auto?]\n3. Situatie Begrijpen: [Wat is het echte doel van de gebruiker en de volledige situatie?]\n4. Verstandige Beoordeling: [Analyse op basis van gezond verstand]\n5. Antwoord:\n   [Geef redelijke voorstellen en passende antwoorden]\n\n【Antwoordprincipes】\n1. Vraag de gebruiker niet, antwoord direct\n2. Vraag niet om uitleg, antwoord direct en volledig\n3. Voeg geen niet-gerelateerde inhoud toe\n4. Gebruik natuurlijke en vloeiende taal\n5. Concentreer u op de belangrijkste componenten van de vraag en antwoord op het punt"
+    "deepThinkingMode": "Je moet diep nadenken over de vraag die ik heb gesteld, volgens deze principes:\n\n[Kernvereisten voor nadenken]\n1. [Comprehensive analyse]: Analyseer alle aspecten van het probleem diepgaand, beperk je niet alleen tot de oppervlakte\n2. [Logisch redeneren]: Gebruik logisch denken om conclusies te trekken uit bekende informatie\n3. [Multi-perspectief denken]: Onderzoek het probleem vanuit verschillende hoeken, vermijd eenzijdigheid\n4. [Precies begrip]: Neem dingen niet uit hun context, begrijp het volledige scenario\n5. [Identificeer impliciete voorwaarden]: Veel vragen hebben standaardscenario's die niet hoeven te worden uitgelegd\n\n[Nadenk stappen]\nKies de juiste denkmethode op basis van het probleemtype:\n- [Conceptuitleg type]: Definieer concepten, analyseer kenmerken, geef voorbeelden, vergelijk en onderscheid\n- [Probleemoplossing type]: Analyseer de essentie van het probleem, vind de worteloorzaak, stel meerdere oplossingen voor, evalueer voor- en nadelen\n- [Besluitvorming type]: Verduidelijk doelen, analyseer voor- en nadelen, overweeg compromissen, geef optimale suggesties\n- [Kennisvraag type]: Organiseer kennispunten, maak verbindingen, verifieer nauwkeurigheid, leg duidelijk uit\n- [Logisch redeneren type]: Decomponeer problemen, bouw logische ketens, verifieer hypothesen, trek conclusies\n\n[Uitvoerformaat]\nNadenken:\n[Volg het probleemtype, ontwikkel systematisch het denkproces]\nEinde van nadenken\nEindantwoord: [Geef een nauwkeurig en compleet antwoord op basis van uw nadenken]"
   },
   "language": {
     "zh-CN": "中文",

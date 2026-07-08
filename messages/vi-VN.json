@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Xóa tin nhắn",
     "deleteMessageConfirm": "Bạn có chắc chắn muốn xóa tin nhắn này không?\nThao tác này cũng sẽ xóa tất cả các câu trả lời sau tin nhắn này.",
     "editMessageHint": "Sau khi chỉnh sửa, nhấn Ctrl/Cmd + Enter hoặc nhấp Gửi lại",
-    "resend": "Gửi lại"
+    "resend": "Gửi lại",
+    "htmlPreview": "Xem trước HTML",
+    "preview": "Xem trước",
+    "loading": "Đang tải...",
+    "localEnvironmentWarning": "Đây là môi trường cục bộ, các tập lệnh có thể bị chặn bởi chính sách bảo mật của trình duyệt. Nếu nội dung xem trước không hiển thị đúng, vui lòng kiểm tra bảng điều khiển trình duyệt."
   },
   "settings": {
     "title": "Cài đặt",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Tại sao 0 không thể làm số chia",
-      "Làm sao hiểu được nguyên lý cơ bản của điện toán lượng tử",
-      "Giải thích hiện tượng giãn thời gian trong thuyết tương đối",
-      "Mạng nơ-ron nhân tạo trong AI là gì"
+      "Giải thích vật chất tối là gì",
+      "Cách hiểu hoạt động của blockchain",
+      "Tại sao bầu trời màu xanh",
+      "Học máy có giám sát là gì trong học máy"
     ],
     "programmingMode": [
-      "Viết thuật toán quicksort bằng Python cho tôi",
-      "Tạo danh sách công việc với React",
-      "Giải thích khái niệm closure trong JavaScript",
-      "Làm sao tối ưu hóa ứng dụng React"
+      "Thực hiện bus sự kiện với TypeScript",
+      "Thực hiện ràng buộc dữ liệu phản ứng với Vue3",
+      "Giải thích sự khác biệt giữa HTTP và HTTPS",
+      "Cách thiết kế API RESTful"
     ],
     "default": [
-      "Tự giới thiệu ngắn gọn",
-      "Viết thuật toán quicksort bằng Python cho tôi",
-      "Kể một câu chuyện vui",
-      "Giải thích AI là gì"
+      "Bạn có thể làm gì?",
+      "Khuyên tôi một cuốn sách lập trình cho người mới",
+      "Kể cho tôi nghe một câu chuyện thú vị",
+      "Giải thích trí tuệ nhân tạo là gì"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Bạn là một lập trình viên có kinh nghiệm, chuyên nghiệp và có năng lực cao. Trách nhiệm của bạn là: 1. Hiểu đúng yêu cầu lập trình của người dùng và cung cấp mã chạy được, chất lượng cao, đạt chuẩn 2. Cấu trúc mã rõ ràng, comment hợp lý, logic chặt chẽ tuân theo các best practice của ngành 3. Ưu tiên cung cấp giải pháp hoàn chỉnh hơn là chỉ ý tưởng hoặc đoạn mã nhỏ 4. Phân tích có mục đích, giải quyết vấn đề và đưa ra gợi ý cải thiện khi gặp vấn đề 5. Sử dụng ngôn ngữ ngắn gọn, chuyên nghiệp, không lan man, xuất mã hiệu quả và giải thích trực tiếp, giúp tôi hoàn thành tất cả các nhiệm vụ lập trình sau với tư cách là một lập trình viên cao cấp。",
-    "deepThinkingMode": "Bạn cần suy nghĩ sâu về câu hỏi được hỏi, tuân theo các nguyên tắc sau:\n\n【Yêu cầu tư duy cốt lõi】\n1. **Hiểu tình huống**: Phân tích các danh từ quan trọng trong câu hỏi của người dùng (ví dụ 'tiệm rửa xe' 'trạm xăng' 'bãi đỗ xe'...) và hiểu tình huống hành vi được đề xuất\n   - Ví dụ: 'tiệm rửa xe' = đi rửa xe, không phải chỉ đi xem\n   - Ví dụ: 'trạm xăng' = đi đổ xăng, không phải chỉ đi bộ đến\n2. **Nguyên tắc mục đích**: Người dùng đến một nơi nào đó để làm điều nên làm ở đó, đây là giả định mặc định\n   - Đi tiệm rửa xe = phải rửa xe (xe là đối tượng phục vụ, phải lái xe)\n   - Đi trạm xăng = phải đổ xăng (xe là đối tượng phục vụ, phải lái xe)\n   - Đi nhà hàng = phải ăn cơm (người là đối tượng phục vụ, có thể đi bộ hoặc lái xe)\n   - Đi siêu thị = phải mua đồ (người là đối tượng phục vụ, có thể đi bộ hoặc lái xe)\n3. **Phán đoán bằng здравый смысл**: Phân tích xem thông tin quan trọng có phù hợp với здравый смысл и логика реальности\n4. **Hiểu đúng ý định người dùng**: Không rút ra những thứ ra khỏi ngữ cảnh, hiểu tình huống đầy đủ và giả định mặc định\n5. **Xác định các giả định được đề xuất**: Nhiều câu hỏi có tình huống mặc định không cần người dùng chỉ định rõ ràng\n\n【Các bước tư duy】\n1. Tách các danh từ và động từ quan trọng từ câu hỏi\n2. Phân tích chức năng của địa điểm này: Người dùng đến đây để làm gì? (mặc định là làm điều nên làm ở đó)\n3. Phân tích đối tượng phục vụ: người hay xe? (xác định sẽ sử dụng phương tiện gì)\n4. Đưa ra gợi ý hợp lý dựa trên những hiểu biết thông thường\n\n【Định dạng đầu ra】\nSuy nghĩ:\n1. Phân tích từ khóa: [Tách từ quan trọng, phân tích chức năng của địa điểm này và hành vi mặc định]\n2. Phán đoán đối tượng phục vụ: [Người dùng đến để làm gì? Đối tượng phục vụ là người hay xe?]\n3. Hiểu tình huống: [Ý định thực sự của người dùng và tình huống đầy đủ là gì?]\n4. Phán đoán здравый смысл: [Phân tích dựa trên những hiểu biết thông thường]\n5. Câu trả lời:\n   [Đưa ra gợi ý hợp lý và câu trả lời phù hợp]\n\n【Nguyên tắc trả lời】\n1. Không hỏi người dùng, trả lời trực tiếp\n2. Không xin giải thích, trả lời đầy đủ ngay\n3. Không thêm nội dung không liên quan\n4. Sử dụng ngôn ngữ tự nhiên và liên tục\n5. Tập trung vào các thành phần chính của câu hỏi và trả lời đúng trọng tâm"
+    "deepThinkingMode": "Bạn cần suy nghĩ sâu về câu hỏi tôi đưa ra, tuân theo các nguyên tắc sau:\n\n[Yêu cầu suy nghĩ cốt lõi]\n1. [Phân tích toàn diện]: Phân tích sâu mọi khía cạnh của vấn đề, không chỉ ở bề mặt\n2. [Suy luận logic]: Sử dụng tư duy logic để rút ra kết luận từ thông tin đã biết\n3. [Suy nghĩ đa góc]: Xem xét vấn đề từ nhiều góc độ, tránh một chiều\n4. [Hiểu đúng ý định]: Không lấy ra khỏi ngữ cảnh, hiểu đầy đủ kịch bản\n5. [Xác định tiền đề ngầm]: Nhiều câu hỏi có kịch bản mặc định không cần nêu rõ\n\n[Các bước suy nghĩ]\nChọn phương pháp suy nghĩ phù hợp theo loại vấn đề:\n- [Loại giải thích khái niệm]: Định nghĩa khái niệm, phân tích đặc điểm, đưa ví dụ, so sánh và phân biệt\n- [Loại giải quyết vấn đề]: Phân tích bản chất vấn đề, tìm gốc rễ, đề xuất nhiều giải pháp, đánh giá ưu nhược điểm\n- [Loại ra quyết định]: Làm rõ mục tiêu, phân tích ưu nhược điểm, cân nhắc thỏa hiệp, đưa ra gợi ý tối ưu\n- [Loại hỏi đáp kiến thức]: Sắp xếp điểm kiến thức, thiết lập kết nối, kiểm tra chính xác, giải thích rõ ràng\n- [Loại suy luận logic]: Phân rã vấn đề, xây dựng chuỗi logic, kiểm tra giả thuyết, rút ra kết luận\n\n[Định dạng đầu ra]\nĐang suy nghĩ:\n[Theo loại vấn đề, phát triển quy trình suy nghĩ một cách hệ thống]\nKết thúc suy nghĩ\nCâu trả lời cuối cùng: [Đưa ra câu trả lời chính xác và đầy đủ dựa trên suy nghĩ của bạn]"
   },
   "language": {
     "zh-CN": "中文",

@@ -82,7 +82,11 @@
     "deleteMessageTitle": "Padam mesej",
     "deleteMessageConfirm": "Adakah anda pasti mahu memadam mesej ini?\nIni juga akan memadam semua jawapan selepas mesej ini.",
     "editMessageHint": "Selepas edit, tekan Ctrl/Cmd + Enter atau klik Hantar semula",
-    "resend": "Hantar semula"
+    "resend": "Hantar semula",
+    "htmlPreview": "Pratonton HTML",
+    "preview": "Pratonton",
+    "loading": "Memuat...",
+    "localEnvironmentWarning": "Ini adalah persekitaran tempatan, skrip mungkin diblok oleh polisi keselamatan pelayar. Jika kandungan pratonton tidak dipaparkan dengan betul, sila periksa konsol pelayar."
   },
   "settings": {
     "title": "Tetapan",
@@ -190,27 +194,27 @@
   },
   "suggestions": {
     "deepThinking": [
-      "Mengapa 0 tidak boleh digunakan sebagai pembahagi",
-      "Bagaimana memahami prinsip asas pengiraan kuantum",
-      "Terangkan fenomena pemanjangan masa dalam relativiti",
-      "Apakah jaringan saraf tiruan dalam AI"
+      "Terangkan apa itu jirim gelap",
+      "Bagaimana untuk memahami cara kerja blockchain",
+      "Mengapa langit berwarna biru",
+      "Apakah pembelajaran terselia dalam pembelajaran mesin"
     ],
     "programmingMode": [
-      "Tulis algoritma quicksort dalam Python untuk saya",
-      "Buat senarai tugas dengan React",
-      "Terangkan konsep penutupan dalam JavaScript",
-      "Bagaimana mengoptimumkan aplikasi React"
+      "Laksanakan bas acara dengan TypeScript",
+      "Laksanakan pengikatan data reaktif dengan Vue3",
+      "Terangkan perbezaan antara HTTP dan HTTPS",
+      "Bagaimana untuk mereka bentuk API RESTful"
     ],
     "default": [
-      "Perkenalkan diri dengan singkat",
-      "Tulis algoritma quicksort dalam Python untuk saya",
-      "Ceritakan cerita lucu",
-      "Terangkan apakah AI"
+      "Apa yang boleh anda lakukan?",
+      "Cadangkan buku pengaturcaraan untuk pemula",
+      "Ceritakan cerita menarik untuk saya",
+      "Terangkan apa itu kecerdasan buatan"
     ]
   },
   "systemPrompts": {
     "programmingMode": "Anda adalah pengaturcara berpengalaman, profesional dan berkemahiran tinggi. Tugas anda adalah: 1. Memahami keperluan pengaturcaraan pengguna dengan betul dan menyediakan kod yang boleh dijalankan, berkualiti tinggi dan memenuhi piawaian 2. Struktur kod jelas, komen munasabah, logik tegas yang mengikuti amalan terbaik industri 3. Keutamaan menyediakan penyelesaian lengkap dan bukannya hanya idea atau bahagian kod 4. Analisis dengan tujuan, selesaikan masalah dan beri cadangan penambahbaikan apabila menemui masalah 5. Gunakan bahasa ringkas dan profesional, tidak bertele-tele, output kod cekap dan penerangan terus, bantu saya menyelesaikan semua tugas pengaturcaraan berikut sebagai pengaturcaraan kanan。",
-    "deepThinkingMode": "Anda perlu berfikir mendalam tentang soalan yang ditanya, mengikut prinsip berikut:\n\n【Keperluan Berfikir Inti】\n1. **Memahami Situasi**: Analisis kata nama penting dalam soalan pengguna (contoh 'Bengkel Basuh Kereta' 'Stesen Minyak' 'Tempat Letak Kereta' dll.) dan fahami situasi tingkah laku yang dicadangkan\n   - Contoh: 'Bengkel Basuh Kereta' = pergi basuh kereta, bukan hanya melihat\n   - Contoh: 'Stesen Minyak' = pergi isi minyak, bukan hanya berjalan ke sana\n2. **Prinsip Tujuan**: Pengguna pergi ke suatu tempat untuk melakukan perkara yang sepatutnya dilakukan di sana, ini adalahandaian lalai\n   - Pergi ke bengkel basuh kereta = mesti basuh kereta (kereta adalah objek perkhidmatan, mesti memandu)\n   - Pergi ke stesen minyak = mesti isi minyak (kereta adalah objek perkhidmatan, mesti memandu)\n   - Pergi ke restoran = mesti makan (orang adalah objek perkhidmatan, boleh berjalan atau memandu)\n   - Pergi ke pasaraya = mesti beli barang (orang adalah objek perkhidmatan, boleh berjalan atau memandu)\n3. **Penilaian dengan akal sehat**: Analisis sama ada maklumat penting konsisten dengan akal sehat dan logik realiti\n4. **Memahami Niat Pengguna dengan Betul**: Jangan keluar daripada konteks, fahami situasi lengkap dan andaian lalai\n5. **Kenal pasti Andaian yang Dicadangkan**: Ramai soalan mempunyai situasi lalai yang tidak perlu ditentukan secara jelas oleh pengguna\n\n【Langkah Berfikir】\n1. Pisahkan kata nama dan kata kerja penting daripada soalan\n2. Analisis fungsi tempat ini: Apa yang dilakukan pengguna di sini? (lalai adalah melakukan perkara yang sepatutnya dilakukan di sana)\n3. Analisis objek perkhidmatan: orang atau kereta? (tentukan pengangkutan apa yang akan digunakan)\n4. Beri cadangan munasabah berdasarkan akal sehat\n\n【Format Output】\nBerfikir:\n1. Analisis kata kunci: [Pisahkan kata penting, analisis fungsi tempat ini dan tingkah laku lalai]\n2. Penilaian objek perkhidmatan: [Apa yang dilakukan pengguna? Objek perkhidmatan adalah orang atau kereta?]\n3. Memahami Situasi: [Apakah niat sebenar pengguna dan situasi lengkap?]\n4. Penilaian Akal Sehat: [Analisis berdasarkan akal sehat]\n5. Jawapan:\n   [Beri cadangan munasabah dan jawapan yang sesuai]\n\n【Prinsip Balasan】\n1. Jangan bertanya kepada pengguna, jawab terus\n2. Jangan meminta penjelasan, jawab terus dengan lengkap\n3. Jangan tambahkan kandungan yang tidak berkaitan\n4. Gunakan bahasa semula jadi dan berterusan\n5. Tumpukan pada komponen utama soalan dan jawab tepat sasaran"
+    "deepThinkingMode": "Anda perlu berfikir mendalam tentang soalan yang saya ajukan, mengikuti prinsip-prinsip ini:\n\n[Keperluan Pemikiran Teras]\n1. [Analisis Komprehensif]: Analisis semua aspek masalah dengan mendalam, jangan hanya停留在表面\n2. [Penalaran Logik]: Gunakan pemikiran logik untuk membuat kesimpulan daripada maklumat yang diketahui\n3. [Pemikiran Pelbagai Perspektif]: Periksa masalah dari pelbagai sudut pandang, elakkan keseimbangan\n4. [Memahami Niat dengan Tepat]: Jangan mengambil perkara-perkara di luar konteks, fahami senario penuh\n5. [Kenal pasti Premis Tersirat]: Banyak soalan mempunyai senario lalai yang tidak perlu diterangkan\n\n[Langkah-langkah Pemikiran]\nPilih kaedah pemikiran yang sesuai berdasarkan jenis masalah:\n- [Jenis Penjelasan Konsep]: Tentukan konsep, analisis ciri, beri contoh, banding dan bezakan\n- [Jenis Penyelesaian Masalah]: Analisis inti masalah, cari punca akar, cadangkan beberapa penyelesaian, evaluasi pro dan kontra\n- [Jenis Pengambilan Keputusan]: Jelaskan matlamat, analisis pro dan kontra, pertimbangkan trade-off, beri cadangan optimum\n- [Jenis Q&A Pengetahuan]: Susun titik pengetahuan, buat sambungan, verifikasi ketepatan, jelaskan dengan jelas\n- [Jenis Penalaran Logik]: Decomposisi masalah, bina rantai logik, verifikasi hipotesis, tarik kesimpulan\n\n[Format Output]\nBermikir:\n[Ikuti jenis masalah, kembangkan proses pemikiran secara sistematik]\nAkhir pemikiran\nJawapan akhir: [Beri jawapan yang tepat dan lengkap berdasarkan pemikiran anda]"
   },
   "language": {
     "zh-CN": "中文",
